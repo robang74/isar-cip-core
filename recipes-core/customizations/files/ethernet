@@ -11,9 +11,13 @@
 
 allow-hotplug eth0
 allow-hotplug enp0s2
+allow-hotplug enp2s0
 
 # used on BBB
 iface eth0 inet dhcp
 
 # used on qemu-amd64
 iface enp0s2 inet dhcp
+
+# used on simatic-ipc227e
+iface enp2s0 inet dhcp
