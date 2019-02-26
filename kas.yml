@@ -19,10 +19,9 @@ repos:
 
   isar:
     url: https://github.com/ilbers/isar
-    refspec: d226c29d24f791a15fbdce9c354eb189a1003dcc
+    refspec: ee5518cc6ecdade53dcafabfbb40ba4b0c505777
     layers:
       meta:
-      meta-isar:
 
 bblayers_conf_header:
   standard: |
