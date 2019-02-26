@@ -13,4 +13,6 @@ require recipes-kernel/linux/linux-custom.inc
 
 KERNEL_DEFCONFIG = "${MACHINE}_defconfig"
 
-SRC_URI += "file://${KERNEL_DEFCONFIG}"
+SRC_URI += " \
+    https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git/snapshot/linux-cip-${PV}.tar.gz \
+    file://${KERNEL_DEFCONFIG}"

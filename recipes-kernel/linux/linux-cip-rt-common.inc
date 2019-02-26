@@ -11,4 +11,10 @@
 
 require linux-cip-common.inc
 
-SRC_URI[sha256sum] = "1409f52a1733388a4ec09d3daf3d426181091625f1ccef961251627f247a4ecf"
+SRC_URI += "file://preempt-rt.cfg"
+
+S = "${WORKDIR}/linux-cip-${PV}"
+
+do_prepare_build_prepend() {
+    cat ${WORKDIR}/preempt-rt.cfg >> ${WORKDIR}/${KERNEL_DEFCONFIG}
+}
