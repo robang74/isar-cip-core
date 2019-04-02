@@ -19,7 +19,6 @@ SRC_URI = " \
     file://99-silent-printk.conf"
 
 DEBIAN_DEPENDS = " \
-    passwd, \
     ifupdown, isc-dhcp-client, net-tools, iputils-ping, ssh, \
     rt-tests, stress-ng"
 

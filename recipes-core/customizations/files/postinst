@@ -15,5 +15,3 @@ echo "CIP Core Demo & Test Image (login: root/root)" > /etc/issue
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 echo "demo" > /etc/hostname
-
-echo "root:root" | chpasswd

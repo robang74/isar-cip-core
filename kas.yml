@@ -19,7 +19,7 @@ repos:
 
   isar:
     url: https://github.com/ilbers/isar
-    refspec: ee5518cc6ecdade53dcafabfbb40ba4b0c505777
+    refspec: 596732aa99c361b756655434bc90e0108e1caa33
     layers:
       meta:
 
@@ -34,3 +34,6 @@ local_conf_header:
     CONF_VERSION = "1"
   cross: |
     ISAR_CROSS_COMPILE = "1"
+  root_password: |
+    # 'root'
+    CFG_ROOT_PW ?= "oC3wEGl799tZU"
