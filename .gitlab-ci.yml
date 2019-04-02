@@ -1,0 +1,17 @@
+image: kasproject/kas-isar:latest
+
+variables:
+  GIT_STRATEGY: clone
+
+all:
+  stage: build
+  script:
+    - export http_proxy=$HTTP_PROXY
+    - export https_proxy=$HTTPS_PROXY
+    - export ftp_proxy=$FTP_PROXY
+    - export no_proxy=$NO_PROXY
+
+    - kas build kas.yml:board-simatic-ipc227e.yml
+
+    - sudo rm -rf build/tmp
+    - kas build kas.yml:board-bbb.yml:opt-rt.yml
