@@ -32,7 +32,7 @@ case "$1" in
 			-device ide-hd,drive=disk \
 			-device virtio-net-pci,netdev=net"
 		KERNEL_CMDLINE=" \
-			root=/dev/sda vga=0x305"
+			root=/dev/sda vga=0x305 console=ttyS0"
 		;;
 	arm64|aarch64)
 		DISTRO_ARCH=arm64
