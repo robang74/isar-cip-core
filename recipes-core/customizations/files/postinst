@@ -14,4 +14,6 @@ echo "CIP Core Demo & Test Image (login: root/root)" > /etc/issue
 
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
-echo "demo" > /etc/hostname
+HOSTNAME=demo
+echo "$HOSTNAME" > /etc/hostname
+echo "127.0.0.1 $HOSTNAME" >> /etc/hosts
