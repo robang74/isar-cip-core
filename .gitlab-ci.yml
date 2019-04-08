@@ -10,8 +10,12 @@ all:
     - export https_proxy=$HTTPS_PROXY
     - export ftp_proxy=$FTP_PROXY
     - export no_proxy=$NO_PROXY
+    - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 
     - kas build kas.yml:board-simatic-ipc227e.yml:opt-rt.yml
+    - scripts/deploy-cip-core.sh simatic-ipc227e
 
     - sudo rm -rf build/tmp
     - kas build kas.yml:board-bbb.yml:opt-rt.yml
+    - scripts/deploy-cip-core.sh bbb am335x-boneblack.dtb
