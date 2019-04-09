@@ -11,7 +11,7 @@ all:
     - export ftp_proxy=$FTP_PROXY
     - export no_proxy=$NO_PROXY
 
-    - kas build kas.yml:board-simatic-ipc227e.yml
+    - kas build kas.yml:board-simatic-ipc227e.yml:opt-rt.yml
 
     - sudo rm -rf build/tmp
     - kas build kas.yml:board-bbb.yml:opt-rt.yml
