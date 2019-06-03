@@ -27,7 +27,7 @@ This image can be run using `start-qemu.sh x86`.
 
 The BeagleBone Black target is selected by `... kas.yml:board-bbb.yml`. In
 order to build the image with the PREEMPT-RT kernel, append `:opt-rt.yml` to
-the above.
+the above. Append ':opt-4.4.yml' to use the kernel version 4.4 instead of 4.19.
 
 Physical targets will generate ready-to-boot images under
 `build/tmp/deploy/images/`. To flash, e.g., the BeagleBone Black image to an SD
