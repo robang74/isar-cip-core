@@ -18,8 +18,10 @@ SRC_URI = " \
     file://ethernet \
     file://99-silent-printk.conf"
 
+DEPENDS += "sshd-regen-keys"
+
 DEBIAN_DEPENDS = " \
-    ifupdown, isc-dhcp-client, net-tools, iputils-ping, ssh, \
+    ifupdown, isc-dhcp-client, net-tools, iputils-ping, ssh, sshd-regen-keys, \
     rt-tests, stress-ng"
 
 do_install() {
