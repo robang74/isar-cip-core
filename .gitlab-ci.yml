@@ -19,3 +19,7 @@ all:
     - sudo rm -rf build/tmp
     - kas build kas.yml:board-bbb.yml:opt-rt.yml
     - scripts/deploy-cip-core.sh bbb am335x-boneblack.dtb
+
+    - sudo rm -rf build/tmp
+    - kas build kas.yml:board-iwg20m.yml:opt-rt.yml
+    - scripts/deploy-cip-core.sh iwg20m r8a7743-iwg20d-q7-dbcm-ca.dtb
