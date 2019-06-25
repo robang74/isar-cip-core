@@ -23,8 +23,8 @@ xz -9 -k build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$TARGET.wic.img
 echo "Uploading artifacts..."
 aws s3 cp --no-progress build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$TARGET.wic.img.xz s3://download.cip-project.org/cip-core/$TARGET/
 
-aws s3 cp --no-progress build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$TARGET-vmlinuz-* s3://download.cip-project.org/cip-core/$TARGET/
-aws s3 cp --no-progress build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$TARGET-initrd.img-* s3://download.cip-project.org/cip-core/$TARGET/
+aws s3 cp --no-progress build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$TARGET-vmlinuz s3://download.cip-project.org/cip-core/$TARGET/
+aws s3 cp --no-progress build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$TARGET-initrd.img s3://download.cip-project.org/cip-core/$TARGET/
 
 if [ -n "$DTB" ]; then
 	aws s3 cp --no-progress build/tmp/work/cip-core-*/linux-cip-*/repack/linux-image/usr/lib/linux-image-*/$DTB s3://download.cip-project.org/cip-core/$TARGET/
