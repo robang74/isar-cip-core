@@ -23,7 +23,12 @@ xz -9 -k build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$TARGET.wic.img
 echo "Uploading artifacts..."
 aws s3 cp --no-progress build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$TARGET.wic.img.xz s3://download.cip-project.org/cip-core/$TARGET/
 
-aws s3 cp --no-progress build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$TARGET-vmlinuz s3://download.cip-project.org/cip-core/$TARGET/
+KERNEL_IMAGE=build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$TARGET-vmlinuz
+# iwg20m workaround
+if [ -f build/tmp/deploy/images/$TARGET/zImage ]; then
+	KERNEL_IMAGE=build/tmp/deploy/images/$TARGET/zImage
+fi
+aws s3 cp --no-progress $KERNEL_IMAGE s3://download.cip-project.org/cip-core/$TARGET/
 aws s3 cp --no-progress build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$TARGET-initrd.img s3://download.cip-project.org/cip-core/$TARGET/
 
 if [ -n "$DTB" ]; then
