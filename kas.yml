@@ -35,5 +35,6 @@ local_conf_header:
   cross: |
     ISAR_CROSS_COMPILE = "1"
   root_password: |
+    USERS += "root"
     # 'root'
-    CFG_ROOT_PW ?= "oC3wEGl799tZU"
+    USER_root[password] = "oC3wEGl799tZU"
