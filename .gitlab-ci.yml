@@ -14,12 +14,12 @@ all:
     - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 
     - kas build kas.yml:board-simatic-ipc227e.yml:opt-rt.yml
-    - scripts/deploy-cip-core.sh stretch simatic-ipc227e
+    - scripts/deploy-cip-core.sh buster simatic-ipc227e
 
     - sudo rm -rf build/tmp
     - kas build kas.yml:board-bbb.yml:opt-rt.yml
-    - scripts/deploy-cip-core.sh stretch bbb am335x-boneblack.dtb
+    - scripts/deploy-cip-core.sh buster bbb am335x-boneblack.dtb
 
     - sudo rm -rf build/tmp
     - kas build kas.yml:board-iwg20m.yml:opt-rt.yml
-    - scripts/deploy-cip-core.sh stretch iwg20m r8a7743-iwg20d-q7-dbcm-ca.dtb
+    - scripts/deploy-cip-core.sh buster iwg20m r8a7743-iwg20d-q7-dbcm-ca.dtb
