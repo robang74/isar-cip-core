@@ -71,7 +71,11 @@ case "$1" in
 		;;
 esac
 
-IMAGE_PREFIX="$(dirname $0)/build/tmp/deploy/images/qemu-${DISTRO_ARCH}/cip-core-image-cip-core-qemu-${DISTRO_ARCH}"
+if [ -z "${DISTRO_RELEASE}" ]; then
+	DISTRO_RELEASE="stretch"
+fi
+
+IMAGE_PREFIX="$(dirname $0)/build/tmp/deploy/images/qemu-${DISTRO_ARCH}/cip-core-image-cip-core-${DISTRO_RELEASE}-qemu-${DISTRO_ARCH}"
 IMAGE_FILE=$(ls ${IMAGE_PREFIX}.ext4.img)
 
 if [ -z "${DISPLAY}" ]; then

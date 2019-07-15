@@ -12,7 +12,7 @@
 header:
   version: 8
 
-distro: cip-core
+distro: cip-core-stretch
 
 repos:
   cip-core:
