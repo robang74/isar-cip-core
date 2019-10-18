@@ -33,7 +33,7 @@ Physical targets will generate ready-to-boot images under
 `build/tmp/deploy/images/`. To flash, e.g., the BeagleBone Black image to an SD
 card, run
 
-    dd if=build/tmp/deploy/images/bbb/cip-core-image-cip-core-bbb.wic.img \
+    dd if=build/tmp/deploy/images/bbb/cip-core-image-cip-core-buster-bbb.wic.img \
        of=/dev/<medium-device> bs=1M status=progress
 
 ## Community Resources
