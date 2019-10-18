@@ -1,4 +1,4 @@
-image: kasproject/kas-isar:latest
+image: kasproject/kas-isar:1.1
 
 variables:
   GIT_STRATEGY: clone
