@@ -23,3 +23,7 @@ all:
     - sudo rm -rf build/tmp
     - kas build kas.yml:board-iwg20m.yml:opt-rt.yml
     - scripts/deploy-cip-core.sh buster iwg20m r8a7743-iwg20d-q7-dbcm-ca.dtb
+
+    - sudo rm -rf build/tmp
+    - kas build kas.yml:board-rzg2m.yml:opt-rt.yml
+    - scripts/deploy-cip-core.sh buster hihope-rz2gm r8a774a1-hihope-rzg2m-ex.dtb
