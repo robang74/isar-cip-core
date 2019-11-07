@@ -3,10 +3,11 @@
 #
 # Copyright (c) Siemens AG, 2019
 #
+# Authors:
+#  Quirin Gylstorff <quirin.gylstorff@siemens.com>
+#
 # SPDX-License-Identifier: MIT
 #
 
-DISTRO_ARCH = "amd64"
-
-IMAGE_TYPE ?= "wic-img"
-IMAGER_INSTALL += "${GRUB_BOOTLOADER_INSTALL}"
+inherit wic-img
+inherit targz-img

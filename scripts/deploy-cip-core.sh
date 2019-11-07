@@ -26,6 +26,10 @@ xz -9 -k $BASE_PATH.wic.img
 echo "Uploading artifacts..."
 aws s3 cp --no-progress $BASE_PATH.wic.img.xz s3://download.cip-project.org/cip-core/$TARGET/
 
+if [ -f $BASE_PATH.tar.gz ]; then
+    aws s3 cp --no-progress $BASE_PATH.tar.gz s3://download.cip-project.org/cip-core/$TARGET/
+fi
+
 KERNEL_IMAGE=$BASE_PATH-vmlinuz
 # iwg20m workaround
 if [ -f build/tmp/deploy/images/$TARGET/zImage ]; then
