@@ -18,8 +18,8 @@ repos:
   cip-core:
 
   isar:
-    url: https://github.com/ilbers/isar
-    refspec: 20a5e368021d988d8f0dcd1951b395d194a37ebb
+    url: https://github.com/ilbers/isar.git
+    refspec: 619d6d88ac8c745282fd16773d50a466567615b6
     layers:
       meta:
 
