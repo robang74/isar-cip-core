@@ -1,0 +1,37 @@
+From 4961476f3affabd2bfb8f12ccc86c0abc6a66200 Mon Sep 17 00:00:00 2001
+From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+Date: Wed, 8 Jan 2020 14:43:01 +0100
+Subject: [PATCH] linux-custom: add path to image for arm* kernels < 4.12
+To: isar-users@googlegroups.com
+
+ARM/ARM64 Kernel with a version < 4.12 do not contain the path to
+the kernel image in image_name. This was added with commits:
+152e6744ebfc8fa6cc9fff4ba36271f5f1ba2821 for arm and
+06995804b5762f016c7a80503406da853a8f3785 for arm64.
+
+Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+---
+ meta/recipes-kernel/linux/files/debian/isar/install.tmpl | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/meta/recipes-kernel/linux/files/debian/isar/install.tmpl b/meta/recipes-kernel/linux/files/debian/isar/install.tmpl
+index 67b7ce3..ac347aa 100644
+--- a/meta/recipes-kernel/linux/files/debian/isar/install.tmpl
++++ b/meta/recipes-kernel/linux/files/debian/isar/install.tmpl
+@@ -56,7 +56,12 @@ EOF
+ 
+ install_image() {
+     install -m 755 -d ${deb_img_dir}/$(dirname ${kimage_path})
+-    cp ${O}/${kimage} ${deb_img_dir}/${kimage_path}
++    # ARM/ARM64 kernels < 4.12 do not include the path to the kernel
++    if [ -e ${O}/${kimage} ]; then
++        cp ${O}/${kimage} ${deb_img_dir}/${kimage_path}
++    else
++        cp ${O}/arch/$ARCH/boot/${kimage} ${deb_img_dir}/${kimage_path}
++    fi
+ 
+     # Make sure arm64 kernels are decompressed
+     if [ "${ARCH}" = "arm64" ]; then
+-- 
+2.20.1
+
