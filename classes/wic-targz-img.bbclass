@@ -11,3 +11,5 @@
 
 inherit wic-img
 inherit targz-img
+
+addtask do_targz_image after do_wic_image
