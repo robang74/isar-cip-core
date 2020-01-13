@@ -39,5 +39,5 @@ aws s3 cp --no-progress $KERNEL_IMAGE s3://download.cip-project.org/cip-core/$TA
 aws s3 cp --no-progress $BASE_PATH-initrd.img s3://download.cip-project.org/cip-core/$TARGET/
 
 if [ -n "$DTB" ]; then
-	aws s3 cp --no-progress build/tmp/work/cip-core-*/linux-cip/*/linux-cip-*/debian/linux-image-cip/usr/lib/linux-image-*/$DTB s3://download.cip-project.org/cip-core/$TARGET/
+	aws s3 cp --no-progress build/tmp/work/cip-core-*/linux-cip*/*/linux-cip-*/debian/linux-image-cip*/usr/lib/linux-image-*/$DTB s3://download.cip-project.org/cip-core/$TARGET/
 fi
