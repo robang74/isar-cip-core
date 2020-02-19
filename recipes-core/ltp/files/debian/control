@@ -1,0 +1,18 @@
+Source: ltp-full
+Section: embedded
+Priority: optional
+Maintainer: Gylstorff Quirin <quirin.gylstorff@siemens.com>
+Build-Depends: debhelper (>= 11), autotools-dev
+Standards-Version: 4.1.3
+Homepage: https://linux-test-project.github.io/
+
+Package: ltp-full
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A collection of tools for testing the Linux kernel
+ The Linux Test Project is a joint project started by SGI,
+ developed and maintained by IBM, Cisco, Fujitsu, SUSE,
+ Red Hat and others, that has a goal to deliver test suites to the
+ open source community that validate the reliability, robustness,
+ and stability of Linux. The LTP testsuite contains a collection
+ of tools for testing the Linux kernel and related features.
