@@ -26,4 +26,4 @@ all:
 
     - sudo rm -rf build/tmp
     - kas build kas.yml:board-rzg2m.yml:opt-rt.yml:opt-targz-img.yml
-    - scripts/deploy-cip-core.sh buster hihope-rz2gm r8a774a1-hihope-rzg2m-ex.dtb
+    - scripts/deploy-cip-core.sh buster hihope-rzg2m r8a774a1-hihope-rzg2m-ex.dtb
