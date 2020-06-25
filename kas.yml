@@ -19,14 +19,9 @@ repos:
 
   isar:
     url: https://github.com/ilbers/isar.git
-    refspec: 619d6d88ac8c745282fd16773d50a466567615b6
+    refspec: 351af175bc54a201c6f44307d4e998bd6c0afdb8
     layers:
       meta:
-    patches:
-      build-arm-with-4.4:
-        path: isar-patches/0001-linux-custom-add-path-to-image-for-arm-kernels-4.12.patch
-        repo: cip-core
-
 
 bblayers_conf_header:
   standard: |
