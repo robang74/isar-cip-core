@@ -12,7 +12,7 @@ $ git clone https://gitlab.com/cip-project/cip-core/isar-cip-core.git
 $ cd isar-cip-core
 $ wget https://raw.githubusercontent.com/siemens/kas/master/kas-docker
 $ chmod a+x kas-docker
-$ ./kas-docker --isar build kas.yml:board-iwg20m.yml
+$ ./kas-docker --isar build kas-cip.yml:kas/board/iwg20m.yml
 ```
 
 After the build is finished, insert a micro SDCard and flash the image with `bmaptool` (a better `dd`). Make sure you substitute `/dev/sdX` by the device file corresponding to your SDCard.
