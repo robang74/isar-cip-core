@@ -1,0 +1,15 @@
+Source: swupdate
+Section: embedded
+Priority: optional
+Maintainer: Stefano Babic <sbabic@denx.de>
+Build-Depends: ${BUILD_DEB_DEPENDS}
+Standards-Version: 4.2.1
+Homepage: http://sbabic.github.io/swupdate
+
+Package: swupdate
+Architecture: any
+Depends: ${DEBIAN_DEPENDS}
+Description: reliable way to update an embedded system
+ This project is thought to help to update an embedded system from a storage media or from network.
+ However, it should be mainly considered as a framework, where further protocols or installers
+ (in SWUpdate they are called handlers) can be easily added to the application.

@@ -1,0 +1,2 @@
+#!/bin/sh
+deb-systemd-helper enable swupdate.socket || true
