@@ -22,6 +22,10 @@ repos:
     refspec: 351af175bc54a201c6f44307d4e998bd6c0afdb8
     layers:
       meta:
+    patches:
+      01-libubootenv:
+        path: isar-patches/0001-u-boot-add-libubootenv.patch
+        repo: cip-core
 
 bblayers_conf_header:
   standard: |
