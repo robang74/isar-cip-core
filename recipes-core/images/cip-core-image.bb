@@ -17,3 +17,13 @@ DESCRIPTION = "CIP Core image"
 IMAGE_INSTALL += "customizations"
 # for cip-testing
 IMAGE_INSTALL += "ltp-full"
+
+# for swupdate
+EXTRACT_PARTITIONS = "img4"
+ROOTFS_PARTITION_NAME="img4.gz"
+
+SRC_URI += "file://sw-description.tmpl"
+TEMPLATE_FILES += "sw-description.tmpl"
+TEMPLATE_VARS += "PN ROOTFS_PARTITION_NAME"
+
+SWU_ADDITIONAL_FILES += "linux.signed.efi ${ROOTFS_PARTITION_NAME}"
