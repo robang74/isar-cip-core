@@ -1,0 +1,2 @@
+bg_setenv usr/bin
+bg_printenv usr/bin

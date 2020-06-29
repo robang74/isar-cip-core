@@ -1,0 +1,3 @@
+include/ebgenv.h usr/include/efibootguard
+libebgenv.a usr/lib/x86_64-linux-gnu
+

@@ -1,0 +1,20 @@
+Source: ${PN}
+Section: base
+Priority: optional
+Standards-Version: 3.9.6
+Build-Depends: ${BUILD_DEB_DEPENDS}
+Homepage: ${HOMEPAGE}
+Maintainer: ${MAINTAINER}
+
+Package: ${PN}
+Depends: ${shlibs:Depends}
+Section: base
+Architecture: ${DISTRO_ARCH}
+Priority: required
+Description: ${DESCRIPTION}
+
+Package: ${PN}-dev
+Section: base
+Architecture: ${DISTRO_ARCH}
+Priority: optional
+Description: ${DESCRIPTION_DEV}
