@@ -75,7 +75,11 @@ if [ -z "${DISTRO_RELEASE}" ]; then
 	DISTRO_RELEASE="buster"
 fi
 
-IMAGE_PREFIX="$(dirname $0)/build/tmp/deploy/images/qemu-${DISTRO_ARCH}/cip-core-image-cip-core-${DISTRO_RELEASE}-qemu-${DISTRO_ARCH}"
+if [ -z "${TARGET_IMAGE}" ]; then
+	TARGET_IMAGE="cip-core-image"
+fi
+
+IMAGE_PREFIX="$(dirname $0)/build/tmp/deploy/images/qemu-${DISTRO_ARCH}/${TARGET_IMAGE}-cip-core-${DISTRO_RELEASE}-qemu-${DISTRO_ARCH}"
 IMAGE_FILE=$(ls ${IMAGE_PREFIX}.ext4.img)
 
 if [ -z "${DISPLAY}" ]; then
