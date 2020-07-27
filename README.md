@@ -36,6 +36,16 @@ card, run
     dd if=build/tmp/deploy/images/bbb/cip-core-image-cip-core-buster-bbb.wic.img \
        of=/dev/<medium-device> bs=1M status=progress
 
+## Building Security target images
+Building images for QEMU x86-64bit machine
+
+    ./kas-docker --isar build --target cip-core-image-security kas.yml:board-qemu-amd64.yml
+
+Run the generated securiy images on QEMU (x86-64bit)
+
+    TARGET_IMAGE=cip-core-image-security ./start-qemu.sh amd64
+
+
 ## Community Resources
 
 TBD
