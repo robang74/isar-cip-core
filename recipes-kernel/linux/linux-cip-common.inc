@@ -26,4 +26,4 @@ SRC_URI += " \
 SRC_URI_append = " ${@conditional("USE_CIP_KERNEL_CONFIG", "1", \
     "git://gitlab.com/cip-project/cip-kernel/cip-kernel-config.git;protocol=https;destsuffix=cip-kernel-config;name=cip-kernel-config", \
     "file://${KERNEL_DEFCONFIG}",d)}"
-SRCREV_cip-kernel-config ?= "f88ee1e75253104f975263cf4d0bddd557388197"
+SRCREV_cip-kernel-config ?= "db2085219b5f28ed7c3e0fbdf93b7867947958a8"
