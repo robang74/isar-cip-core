@@ -27,3 +27,6 @@ all:
     - sudo rm -rf build/tmp
     - kas build kas-cip.yml:kas/board/rzg2m.yml:kas/opt/rt.yml:kas/opt/targz-img.yml
     - scripts/deploy-cip-core.sh buster hihope-rzg2m renesas/r8a774a1-hihope-rzg2m-ex.dtb
+
+    - sudo rm -rf build/tmp
+    - kas build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/security.yml
