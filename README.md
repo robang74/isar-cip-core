@@ -39,7 +39,7 @@ card, run
 ## Building Security target images
 Building images for QEMU x86-64bit machine
 
-    ./kas-docker --isar build --target cip-core-image-security kas.yml:board-qemu-amd64.yml
+    ./kas-docker --isar build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/security.yml
 
 Run the generated securiy images on QEMU (x86-64bit)
 
