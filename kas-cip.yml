@@ -13,6 +13,7 @@ header:
   version: 8
 
 distro: cip-core-buster
+target: cip-core-image
 
 repos:
   cip-core:
