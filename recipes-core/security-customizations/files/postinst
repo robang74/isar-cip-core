@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# CIP Security, generic profile
+# Security Package configurations
+#
+
+echo "CIP Core Security Image (login: root/root)" > /etc/issue
+
+HOSTNAME=demo
+echo "$HOSTNAME" > /etc/hostname
+echo "127.0.0.1 $HOSTNAME" >> /etc/hosts
+
+# CR1.7: Strength of password-based authentication
+# Pam configuration to  enforce password strength
+PAM_PWD_FILE="/etc/pam.d/common-password"
+pam_cracklib_config="password  requisite    pam_cracklib.so retry=3 minlen=8 maxrepeat=3 ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1  difok=3 gecoscheck=1 reject_username  enforce_for_root"
+if grep -c "pam_cracklib.so" "${PAM_PWD_FILE}";then
+        sed -i '/pam_cracklib.so/ s/^#*/#/'  "${PAM_PWD_FILE}"
+fi
+sed -i "0,/^password.*/s/^password.*/${pam_cracklib_config}\n&/" "${PAM_PWD_FILE}"
+
+# CR1.11: Unsuccessful login attempts
+# Lock user account after unsuccessful login attempts
+PAM_AUTH_FILE="/etc/pam.d/common-auth"
+pam_tally="auth   required  pam_tally2.so  deny=3 even_deny_root unlock_time=60 root_unlock_time=60"
+if grep -c "pam_tally2.so" "${PAM_AUTH_FILE}";then
+        sed -i '/pam_tally2/ s/^#*/#/'  "${PAM_AUTH_FILE}"
+fi
+sed -i "0,/^auth.*/s/^auth.*/${pam_tally}\n&/" "${PAM_AUTH_FILE}"
+
+# CR2.6: Remote session termination
+# Terminate remote session after inactive time period
+SSHD_CONFIG="/etc/ssh/sshd_config"
+alive_interval=$(sed -n '/ClientAliveInterval/p' "${SSHD_CONFIG}")
+alive_countmax=$(sed -n '/ClientAliveCountMax/p' "${SSHD_CONFIG}")
+sed -i "/${alive_interval}/c ClientAliveInterval 120"  "${SSHD_CONFIG}"
+sed -i "/${alive_countmax}/c ClientAliveCountMax 0" "${SSHD_CONFIG}"
+
+# CR2.7: Concurrent session control
+# Limit the concurrent login sessions
+LIMITS_CONFIG="/etc/security/limits.conf"
+echo "* hard maxlogins 2" >> ${LIMITS_CONFIG}
+
+# CR2.9: Audit storage capacity
+# CR2.9 RE-1: Warn when audit record storage capacity threshold reached
+AUDIT_CONF_FILE="/etc/audit/auditd.conf"
+sed -i 's/space_left_action = .*/space_left_action = SYSLOG/'  $AUDIT_CONF_FILE
+sed -i 's/admin_space_left_action = .*/admin_space_left_action = SYSLOG/' $AUDIT_CONF_FILE
+
+# CR2.10: Response to audit processing failures
+sed -i 's/disk_error_action = .*/disk_error_action = SYSLOG/' $AUDIT_CONF_FILE

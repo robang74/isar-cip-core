@@ -13,7 +13,7 @@ inherit image
 
 DESCRIPTION = "CIP Core image including security packages"
 
-IMAGE_INSTALL += "customizations"
+IMAGE_INSTALL += "security-customizations"
 
 # Debian packages that provide security features
 IMAGE_PREINSTALL += " \
