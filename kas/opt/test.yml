@@ -1,0 +1,19 @@
+#
+# Copyright (c) Siemens AG, 2019
+# Copyright (c) Toshiba Corporation, 2020
+#
+# Authors:
+#  Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
+#
+# SPDX-License-Identifier: MIT
+#
+
+header:
+  version: 8
+
+local_conf_header:
+  testing: |
+    IMAGE_INSTALL += "ltp-full"
+    IMAGE_PREINSTALL += "rt-tests stress-ng"
+    DESCRIPTION_append = " with test packages"
+    IMAGE_FULLNAME_append = "-test"
