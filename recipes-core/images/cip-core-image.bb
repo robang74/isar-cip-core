@@ -15,8 +15,6 @@ ISAR_RELEASE_CMD = "git -C ${LAYERDIR_cip-core} describe --tags --dirty --always
 DESCRIPTION = "CIP Core image"
 
 IMAGE_INSTALL += "customizations"
-# for cip-testing
-IMAGE_INSTALL += "ltp-full"
 
 # for swupdate
 EXTRACT_PARTITIONS = "img4"
