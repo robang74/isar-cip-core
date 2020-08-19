@@ -11,7 +11,7 @@
 
 inherit dpkg-raw
 
-DESCRIPTION = "CIP Core image demo & test customizations"
+DESCRIPTION = "CIP Core image demo & customizations"
 
 SRC_URI = " \
     file://postinst \
@@ -21,8 +21,7 @@ SRC_URI = " \
 DEPENDS += "sshd-regen-keys"
 
 DEBIAN_DEPENDS = " \
-    ifupdown, isc-dhcp-client, net-tools, iputils-ping, ssh, sshd-regen-keys, \
-    rt-tests, stress-ng"
+    ifupdown, isc-dhcp-client, net-tools, iputils-ping, ssh, sshd-regen-keys"
 
 do_install() {
 	install -v -d ${D}/etc/network/interfaces.d
