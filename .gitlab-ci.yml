@@ -2,10 +2,17 @@ image: kasproject/kas-isar:1.1
 
 variables:
   GIT_STRATEGY: clone
+  release: buster
+  extention: base
+  use_rt: enable
+  targz: enable
+  dtb: none
 
-all:
-  stage: build
-  script:
+stages:
+  - build
+
+default:
+  before_script:
     - export http_proxy=$HTTP_PROXY
     - export https_proxy=$HTTPS_PROXY
     - export ftp_proxy=$FTP_PROXY
@@ -13,20 +20,51 @@ all:
     - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
     - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 
-    - kas build kas-cip.yml:kas/board/simatic-ipc227e.yml:kas/opt/rt.yml:kas/opt/targz-img.yml
-    - scripts/deploy-cip-core.sh buster simatic-ipc227e
-
+.build_base:
+  stage: build
+  variables:
+    base_yaml: "kas-cip.yml:kas/board/${target}.yml"
+  script:
     - sudo rm -rf build/tmp
-    - kas build kas-cip.yml:kas/board/bbb.yml:kas/opt/rt.yml:kas/opt/targz-img.yml
-    - scripts/deploy-cip-core.sh buster bbb am335x-boneblack.dtb
+    - if [ "${use_rt}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/rt.yml"; fi;
+    - if [ "${extention}" != "base" ]; then base_yaml="${base_yaml}:kas/opt/${extention}.yml"; fi;
+    - if [ "${targz}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/targz-img.yml"; fi;
+    - kas build ${base_yaml}
+    - scripts/deploy-cip-core.sh ${release} ${target} ${extention} ${dtb}
 
-    - sudo rm -rf build/tmp
-    - kas build kas-cip.yml:kas/board/iwg20m.yml:kas/opt/rt.yml:kas/opt/targz-img.yml
-    - scripts/deploy-cip-core.sh buster iwg20m r8a7743-iwg20d-q7-dbcm-ca.dtb
+# base image
+build:simatic-ipc227e-base:
+  extends:
+    - .build_base
+  variables:
+    target: simatic-ipc227e
 
-    - sudo rm -rf build/tmp
-    - kas build kas-cip.yml:kas/board/rzg2m.yml:kas/opt/rt.yml:kas/opt/targz-img.yml
-    - scripts/deploy-cip-core.sh buster hihope-rzg2m renesas/r8a774a1-hihope-rzg2m-ex.dtb
+build:bbb-base:
+  extends:
+    - .build_base
+  variables:
+    target: bbb
+    dtb: am335x-boneblack.dtb
 
-    - sudo rm -rf build/tmp
-    - kas build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/security.yml
+build:iwg20m-base:
+  extends:
+    - .build_base
+  variables:
+    target: iwg20m
+    dtb: r8a7743-iwg20d-q7-dbcm-ca.dtb
+
+build:hihope-rzg2m-base:
+  extends:
+    - .build_base
+  variables:
+    target: rzg2m
+    dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
+
+build:qemu-amd64-base:
+  extends:
+    - .build_base
+  variables:
+    target: qemu-amd64
+    extention: security
+    use_rt: disable
+    targz: disable
