@@ -68,3 +68,35 @@ build:qemu-amd64-base:
     extention: security
     use_rt: disable
     targz: disable
+
+# test
+build:simatic-ipc227e-test:
+  extends:
+    - .build_base
+  variables:
+    target: simatic-ipc227e
+    extention: test
+
+build:bbb-test:
+  extends:
+    - .build_base
+  variables:
+    target: bbb
+    extention: test
+    dtb: am335x-boneblack.dtb
+
+build:iwg20m-test:
+  extends:
+    - .build_base
+  variables:
+    target: iwg20m
+    extention: test
+    dtb: r8a7743-iwg20d-q7-dbcm-ca.dtb
+
+build:hihope-rzg2m-test:
+  extends:
+    - .build_base
+  variables:
+    target: rzg2m
+    extention: test
+    dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
