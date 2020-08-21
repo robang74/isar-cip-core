@@ -1,0 +1,3 @@
+if [ -d /usr/share/secureboot ]; then
+    patch -s -p0 /usr/share/initramfs-tools/scripts/local /usr/share/secureboot/secure-boot-debian-local.patch
+fi

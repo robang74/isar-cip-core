@@ -1,0 +1,79 @@
+--- local	2020-07-02 14:59:15.461895194 +0200
++++ ../../../../../../../../../../../recipes-support/initramfs-config/files/local	2020-07-02 14:58:58.405730914 +0200
+@@ -1,5 +1,4 @@
+ # Local filesystem mounting			-*- shell-script -*-
+-
+ local_top()
+ {
+ 	if [ "${local_top_used}" != "yes" ]; then
+@@ -155,34 +154,47 @@
+ local_mount_root()
+ {
+ 	local_top
+-	if [ -z "${ROOT}" ]; then
+-		panic "No root device specified. Boot arguments must include a root= parameter."
+-	fi
+-	local_device_setup "${ROOT}" "root file system"
+-	ROOT="${DEV}"
+-
+-	# Get the root filesystem type if not set
+-	if [ -z "${ROOTFSTYPE}" ] || [ "${ROOTFSTYPE}" = auto ]; then
+-		FSTYPE=$(get_fstype "${ROOT}")
+-	else
+-		FSTYPE=${ROOTFSTYPE}
++	if [ ! -e /conf/image_uuid ]; then
++		 panic "could not find image_uuid to select correct root file system"
+ 	fi
++	local INITRAMFS_IMAGE_UUID=$(cat /conf/image_uuid)
++	local partitions=$(blkid -o device)
++	for part in $partitions; do
++			if [ "$(blkid -p ${part} --match-types novfat -s USAGE -o value)" = "filesystem" ]; then
++					local_device_setup "${part}" "root file system"
++					ROOT="${DEV}"
++
++					# Get the root filesystem type if not set
++					if [ -z "${ROOTFSTYPE}" ] || [ "${ROOTFSTYPE}" = auto ]; then
++							FSTYPE=$(get_fstype "${ROOT}")
++					else
++							FSTYPE=${ROOTFSTYPE}
++					fi
+ 
+-	local_premount
++				local_premount
+ 
+-	if [ "${readonly?}" = "y" ]; then
+-		roflag=-r
+-	else
+-		roflag=-w
+-	fi
++				if [ "${readonly?}" = "y" ]; then
++						roflag=-r
++				else
++						roflag=-w
++				fi
++				checkfs "${ROOT}" root "${FSTYPE}"
+ 
+-	checkfs "${ROOT}" root "${FSTYPE}"
++				# Mount root
++				# shellcheck disable=SC2086
++				if mount ${roflag} ${FSTYPE:+-t "${FSTYPE}"} ${ROOTFLAGS} "${ROOT}" "${rootmnt?}"; then
++						if [ -e "${rootmnt?}"/etc/os-release ]; then
++								image_uuid=$(sed -n 's/^IMAGE_UUID=//p' "${rootmnt?}"/etc/os-release | tr -d '"' )
++								if [ "${INITRAMFS_IMAGE_UUID}" = "${image_uuid}" ]; then
++										return
++								fi
++						fi
++						umount "${rootmnt?}"
++				fi
++			fi
++	done
++	panic "Could not find ROOTFS with matching UUID $INITRAMFS_IMAGE_UUID"
+ 
+-	# Mount root
+-	# shellcheck disable=SC2086
+-	if ! mount ${roflag} ${FSTYPE:+-t "${FSTYPE}"} ${ROOTFLAGS} "${ROOT}" "${rootmnt?}"; then
+-		panic "Failed to mount ${ROOT} as root file system."
+-	fi
+ }
+ 
+ local_mount_fs()
