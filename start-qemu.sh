@@ -94,8 +94,8 @@ fi
 shift 1
 
 if [ -n "${SECURE_BOOT}" ]; then
-		ovmf_code=${OVMF_CODE:-/usr/share/OVMF/OVMF_CODE.secboot.fd}
-		ovmf_vars=${OVMF_VARS:-./OVMF_VARS.fd}
+		ovmf_code=${OVMF_CODE:-./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_CODE.secboot.fd}
+		ovmf_vars=${OVMF_VARS:-./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_VARS.snakeoil.fd}
 		QEMU_EXTRA_ARGS=" ${QEMU_EXTRA_ARGS} \
 			-global ICH9-LPC.disable_s3=1 \
 			-global isa-fdc.driveA= "
