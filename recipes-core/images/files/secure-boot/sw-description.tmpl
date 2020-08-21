@@ -11,7 +11,7 @@
 software =
 {
     version = "0.2";
-    name = "cip software update"
+    name = "secure boot update"
     images: ({
             filename = "${ROOTFS_PARTITION_NAME}";
             device = "fedcba98-7654-3210-cafe-5e0710000001,fedcba98-7654-3210-cafe-5e0710000002";
@@ -20,17 +20,10 @@ software =
             filesystem = "ext4";
     });
     files: ({
-            filename = "${KERNEL_IMAGE}";
-            path = "vmlinuz";
+            filename = "linux.signed.efi";
+            path = "linux.signed.efi";
             type = "kernelfile";
             device = "sda2,sda3";
             filesystem = "vfat";
-    },
-    {
-            filename = "${INITRD_IMAGE}";
-            path = "initrd.img";
-            type = "kernelfile";
-            device = "sda2,sda3";
-            filesystem = "vfat";
-    });
+    })
 }

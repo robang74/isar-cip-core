@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+set -x
+signee=$1
+signed=$2
+
+usage(){
+    echo "sign with debian snakeoil"
+    echo "$0 signee signed"
+    echo "signee: path to the image to be signed"
+    echo "signed: path to store the signed image"
+}
+
+
+if [ -z "$signee" ] || [ -z "$signed" ]; then
+    usage
+    exit 1
+fi
+
+pesign --force --verbose --padding -n ${SB_CERT_PATH}/${SB_CERTDB} -c "${SB_KEY_NAME}" -s -i $signee -o $signed
+sbverify --cert ${SB_CERT_PATH}/${SB_VERIFY_CERT} $signed
+exit 0

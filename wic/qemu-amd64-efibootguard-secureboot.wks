@@ -1,0 +1,9 @@
+# short-description: Qemu-amd64 with Efibootguard and SWUpdate
+# long-description: Disk image for qemu-amd64 with EFI Boot Guard and SWUpdate
+include ebg-signed-bootloader.inc
+
+# EFI Boot Guard environment/config partitions plus Kernel files
+part --source efibootguard-boot --ondisk sda --size 32M --extra-space 0 --overhead-factor 1 --label BOOT0 --align 1024 --part-type=0700 --sourceparams "revision=2,unified-kernel=y,signwith=/usr/bin/sign_secure_image.sh"
+part --source efibootguard-boot --ondisk sda --size 32M --extra-space 0 --overhead-factor 1 --label BOOT1 --align 1024 --part-type=0700 --sourceparams "revision=1,unified-kernel=y,signwith=/usr/bin/sign_secure_image.sh"
+
+include swupdate-partition.inc

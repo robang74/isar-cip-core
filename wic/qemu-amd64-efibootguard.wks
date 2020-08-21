@@ -1,5 +1,4 @@
 # short-description: Qemu-amd64 with Efibootguard and SWUpdate
 # long-description: Disk image for qemu-amd64 with EFI Boot Guard and SWUpdate
-
 include ebg-sysparts.inc
 include swupdate-partition.inc

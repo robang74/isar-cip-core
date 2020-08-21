@@ -22,5 +22,5 @@ local_conf_header:
     WICVARS += "WDOG_TIMEOUT"
 
   wic: |
-    IMAGE_TYPE = "wic-img"
-    WKS_FILE = "${MACHINE}-${BOOTLOADER}.wks"
+    IMAGE_TYPE = "wic-swu-img"
+    WKS_FILE ?= "${MACHINE}-${BOOTLOADER}.wks"

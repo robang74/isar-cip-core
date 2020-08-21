@@ -80,17 +80,29 @@ class EfibootguardBootPlugin(SourcePlugin):
 
 
         boot_files = source_params.get("files", "").split(' ')
+        uefi_kernel = source_params.get("unified-kernel")
         cmdline = bootloader.append
-        root_dev = source_params.get("root", None)
-        if not root_dev:
-            msger.error("Specify root in source params")
-            exit(1)
+        if uefi_kernel:
+            boot_image = cls._create_unified_kernel_image(rootfs_dir,
+                                                          cr_workdir,
+                                                          cmdline,
+                                                          uefi_kernel,
+                                                          deploy_dir,
+                                                          kernel_image,
+                                                          initrd_image,
+                                                          source_params)
+            boot_files.append(boot_image)
+        else:
+            root_dev = source_params.get("root", None)
+            if not root_dev:
+                msger.error("Specify root in source params")
+                exit(1)
             root_dev = root_dev.replace(":", "=")
 
-        cmdline += " root=%s rw" % root_dev
-        boot_files.append(kernel_image)
-        boot_files.append(initrd_image)
-        cmdline += "initrd=%s" % initrd_image if initrd_image else ""
+            cmdline += " root=%s rw" % root_dev
+            boot_files.append(kernel_image)
+            boot_files.append(initrd_image)
+            cmdline += "initrd=%s" % initrd_image if initrd_image else ""
 
         part_rootfs_dir = "%s/disk/%s.%s" % (cr_workdir,
                                              part.label, part.lineno)
@@ -160,3 +172,62 @@ class EfibootguardBootPlugin(SourcePlugin):
 
         part.size = bootimg_size
         part.source_file = bootimg
+
+    @classmethod
+    def _create_unified_kernel_image(cls, rootfs_dir, cr_workdir, cmdline,
+                                     uefi_kernel, deploy_dir, kernel_image,
+                                     initrd_image, source_params):
+        rootfs_path = rootfs_dir.get('ROOTFS_DIR')
+        os_release_file = "{root}/etc/os-release".format(root=rootfs_path)
+        efistub = "{rootfs_path}/usr/lib/systemd/boot/efi/linuxx64.efi.stub"\
+            .format(rootfs_path=rootfs_path)
+        msger.debug("osrelease path: %s", os_release_file)
+        kernel_cmdline_file = "{cr_workdir}/kernel-command-line-file.txt"\
+            .format(cr_workdir=cr_workdir)
+        with open(kernel_cmdline_file, "w") as cmd_fd:
+            cmd_fd.write(cmdline)
+        uefi_kernel_name = "linux.efi"
+        uefi_kernel_file = "{deploy_dir}/{uefi_kernel_name}"\
+            .format(deploy_dir=deploy_dir, uefi_kernel_name=uefi_kernel_name)
+        kernel = "{deploy_dir}/{kernel_image}"\
+            .format(deploy_dir=deploy_dir, kernel_image=kernel_image)
+        initrd = "{deploy_dir}/{initrd_image}"\
+            .format(deploy_dir=deploy_dir, initrd_image=initrd_image)
+        objcopy_cmd = 'objcopy \
+            --add-section .osrel={os_release_file} \
+            --change-section-vma .osrel=0x20000 \
+            --add-section .cmdline={kernel_cmdline_file} \
+            --change-section-vma .cmdline=0x30000 \
+            --add-section .linux={kernel} \
+            --change-section-vma .linux=0x2000000 \
+            --add-section .initrd={initrd} \
+            --change-section-vma .initrd=0x3000000 \
+            {efistub} {uefi_kernel_file}'.format(
+                os_release_file=os_release_file,
+                kernel_cmdline_file=kernel_cmdline_file,
+                kernel=kernel,
+                initrd=initrd,
+                efistub=efistub,
+                uefi_kernel_file=uefi_kernel_file)
+        exec_cmd(objcopy_cmd)
+
+        return cls._sign_file(name=uefi_kernel_name,
+                              signee=uefi_kernel_file,
+                              deploy_dir=deploy_dir,
+                              source_params=source_params)
+
+    @classmethod
+    def _sign_file(cls, name, signee, deploy_dir, source_params):
+        sign_script = source_params.get("signwith")
+        if sign_script and os.path.exists(sign_script):
+            msger.info("sign with script %s", sign_script)
+            name = name.replace(".efi", ".signed.efi")
+            sign_cmd = "{sign_script} {signee} {deploy_dir}/{name}"\
+                .format(sign_script=sign_script, signee=signee,
+                        deploy_dir=deploy_dir, name=name)
+            exec_cmd(sign_cmd)
+        elif sign_script and not os.path.exists(sign_script):
+            msger.error("Could not find script %s", sign_script)
+            exit(1)
+
+        return name

@@ -64,10 +64,17 @@ class EfibootguardEFIPlugin(SourcePlugin):
         exec_cmd(create_dir_cmd)
 
         for bootloader in bootloader_files:
-            cp_cmd = "cp %s/%s %s/EFI/BOOT/%s" % (deploy_dir,
-                                                  bootloader,
-                                                  part_rootfs_dir,
-                                                  bootloader)
+            signed_bootloader = cls._sign_file(bootloader,
+                                               "{}/{}".format(deploy_dir,
+                                                              bootloader
+                                                              ),
+                                               cr_workdir,
+                                               source_params)
+            # important the bootloader in deploy_dir is no longer signed
+            cp_cmd = "cp %s/%s %s/EFI/BOOT/%s" % (cr_workdir,
+                                                signed_bootloader,
+                                                part_rootfs_dir,
+                                                bootloader)
             exec_cmd(cp_cmd, True)
         du_cmd = "du --apparent-size -ks %s" % part_rootfs_dir
         blocks = int(exec_cmd(du_cmd).split()[0])
@@ -100,3 +107,28 @@ class EfibootguardEFIPlugin(SourcePlugin):
 
         part.size = efi_part_image_size
         part.source_file = efi_part_image
+
+
+    @classmethod
+    def _sign_file(cls, name, signee, cr_workdir, source_params):
+        sign_script = source_params.get("signwith")
+        if sign_script and os.path.exists(sign_script):
+            work_name = name.replace(".efi", ".signed.efi")
+            sign_cmd = "{sign_script} {signee} \
+            {cr_workdir}/{work_name}".format(sign_script=sign_script,
+                                             signee=signee,
+                                             cr_workdir=cr_workdir,
+                                             work_name=work_name)
+            exec_cmd(sign_cmd)
+        elif sign_script and not os.path.exists(sign_script):
+            msger.error("Could not find script %s", sign_script)
+            exit(1)
+        else:
+            # if we do nothing copy the signee to the work directory
+            work_name = name
+            cp_cmd = "cp {signee} {cr_workdir}/{work_name}".format(
+                signee=signee,
+                cr_workdir=cr_workdir,
+                work_name=work_name)
+            exec_cmd(cp_cmd)
+        return work_name
