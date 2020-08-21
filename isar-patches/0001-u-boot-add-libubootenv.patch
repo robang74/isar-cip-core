@@ -1,4 +1,4 @@
-From 76897e89977f895495e21e37cb76f90392d55ef9 Mon Sep 17 00:00:00 2001
+From dda00e6addc7c51862b8175d473a1ea42dcd5c9e Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Fri, 19 Jun 2020 17:00:36 +0200
 Subject: [PATCH v2] u-boot: add libubootenv
@@ -16,20 +16,25 @@ as both try to install fw_printenv and fw_sentenv. This conflict is not
 part of the control file as it breaks the installation of custom u-boot-tools
 from the u-boot-sources.
 
+This patch uses dpkg-gdb to build the package from salsa.debian.org and adds
+a fix for https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=967487.
+
 Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---
+
+Changes V2:
+- use dpkg-gbd instead dpkg
+- use salsa.debian.org as source
+- add fix for https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=967487
+
  meta-isar/conf/machine/de0-nano-soc.conf      |  2 +-
- .../libubootenv/files/debian/compat           |  1 +
- .../libubootenv/files/debian/control.tmpl     | 15 +++++++++
- .../libubootenv/files/debian/rules.tmpl       | 24 ++++++++++++++
- .../libubootenv/libubootenv_0.2.bb            | 32 +++++++++++++++++++
+ .../0002-Add-support-GNUInstallDirs.patch     | 48 +++++++++++++++++++
+ .../libubootenv/libubootenv_0.2.bb            | 30 ++++++++++++
  .../files/debian/u-boot-tools.conffiles       |  1 -
- .../u-boot/files/debian/u-boot-tools.install  |  2 --
+ .../u-boot/files/debian/u-boot-tools.install  |  2 -
  .../u-boot/files/debian/u-boot-tools.links    |  1 -
- 8 files changed, 73 insertions(+), 5 deletions(-)
- create mode 100644 meta/recipes-bsp/libubootenv/files/debian/compat
- create mode 100644 meta/recipes-bsp/libubootenv/files/debian/control.tmpl
- create mode 100644 meta/recipes-bsp/libubootenv/files/debian/rules.tmpl
+ 6 files changed, 79 insertions(+), 5 deletions(-)
+ create mode 100644 meta/recipes-bsp/libubootenv/files/0002-Add-support-GNUInstallDirs.patch
  create mode 100644 meta/recipes-bsp/libubootenv/libubootenv_0.2.bb
  delete mode 100644 meta/recipes-bsp/u-boot/files/debian/u-boot-tools.conffiles
  delete mode 100644 meta/recipes-bsp/u-boot/files/debian/u-boot-tools.links
@@ -44,70 +49,66 @@ index 3a2c009..6558d90 100644
  
 -IMAGE_INSTALL += "u-boot-tools u-boot-script"
 +IMAGE_INSTALL += "u-boot-tools libubootenv u-boot-script"
-diff --git a/meta/recipes-bsp/libubootenv/files/debian/compat b/meta/recipes-bsp/libubootenv/files/debian/compat
+diff --git a/meta/recipes-bsp/libubootenv/files/0002-Add-support-GNUInstallDirs.patch b/meta/recipes-bsp/libubootenv/files/0002-Add-support-GNUInstallDirs.patch
 new file mode 100644
-index 0000000..b4de394
+index 0000000..f8c3038
 --- /dev/null
-+++ b/meta/recipes-bsp/libubootenv/files/debian/compat
-@@ -0,0 +1 @@
-+11
-diff --git a/meta/recipes-bsp/libubootenv/files/debian/control.tmpl b/meta/recipes-bsp/libubootenv/files/debian/control.tmpl
-new file mode 100644
-index 0000000..fade69a
---- /dev/null
-+++ b/meta/recipes-bsp/libubootenv/files/debian/control.tmpl
-@@ -0,0 +1,15 @@
-+Source: libubootenv
-+Section: embedded
-+Priority: optional
-+Maintainer: Stefano Babic <sbabic@denx.de>
-+Build-Depends: ${BUILD_DEB_DEPENDS}
-+Standards-Version: 4.2.1
-+Homepage: https://sbabic.github.io/libubootenv
++++ b/meta/recipes-bsp/libubootenv/files/0002-Add-support-GNUInstallDirs.patch
+@@ -0,0 +1,48 @@
++From b17d194bd8285a19382a902a0bec9e5e042df064 Mon Sep 17 00:00:00 2001
++From: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
++Date: Tue, 16 Apr 2019 08:52:01 +0900
++Subject: [PATCH 2/4] Add support GNUInstallDirs
 +
-+Package: libubootenv
-+Architecture: any
-+Depends: ${DEBIAN_DEPENDS}
-+Description: libubootenv is a library that provides a hardware independent
-+ way to access to U-Boot environment. U-Boot has its default environment
-+ compiled board-dependently and this means that tools to access the environment
-+ are also board specific, too.
-diff --git a/meta/recipes-bsp/libubootenv/files/debian/rules.tmpl b/meta/recipes-bsp/libubootenv/files/debian/rules.tmpl
-new file mode 100644
-index 0000000..56ccd19
---- /dev/null
-+++ b/meta/recipes-bsp/libubootenv/files/debian/rules.tmpl
-@@ -0,0 +1,24 @@
-+#!/usr/bin/make -f
++This adds the functionality of the module "GNUInstallDirs" to make the
++installation compatible with GNU.
 +
-+ifneq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
-+export CROSS_COMPILE=$(DEB_HOST_GNU_TYPE)-
-+export CC=$(DEB_HOST_GNU_TYPE)-gcc
-+export LD=$(DEB_HOST_GNU_TYPE)-gcc
-+endif
++https://cmake.org/cmake/help/v3.14/module/GNUInstallDirs.html
 +
-+export DH_VERBOSE = 1
++Signed-off-by: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
++---
++ CMakeLists.txt     | 2 ++
++ src/CMakeLists.txt | 8 ++++----
++ 2 files changed, 6 insertions(+), 4 deletions(-)
 +
-+export DEB_BUILD_MAINT_OPTIONS = hardening=+bindnow
++diff --git a/CMakeLists.txt b/CMakeLists.txt
++index 104969e..57477fc 100644
++--- a/CMakeLists.txt
+++++ b/CMakeLists.txt
++@@ -10,6 +10,8 @@ add_definitions(-DVERSION="${VERSION}")
++ 
++ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
++ 
+++include("GNUInstallDirs")
+++
++ #set(CMAKE_C_FLAGS_DEBUG "-g")
++ include_directories ("${PROJECT_SOURCE_DIR}/src")
++ add_subdirectory (src)
++diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
++index ea5979c..d97f221 100644
++--- a/src/CMakeLists.txt
+++++ b/src/CMakeLists.txt
++@@ -19,7 +19,7 @@ add_executable(fw_setenv fw_setenv.c)
++ target_link_libraries(fw_printenv ubootenv z)
++ target_link_libraries(fw_setenv ubootenv z)
++ 
++-install (TARGETS ubootenv DESTINATION lib)
++-install (FILES libuboot.h DESTINATION include)
++-install (TARGETS fw_printenv DESTINATION bin)
++-install (TARGETS fw_setenv DESTINATION bin)
+++install (TARGETS ubootenv DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+++install (FILES libuboot.h DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+++install (TARGETS fw_printenv DESTINATION "${CMAKE_INSTALL_BINDIR}")
+++install (TARGETS fw_setenv DESTINATION "${CMAKE_INSTALL_BINDIR}")
++-- 
++2.20.1
 +
-+override_dh_auto_configure:
-+	dh_auto_configure --
-+
-+%:
-+	echo $@
-+	dh $@
-+
-+override_dh_installchangelogs:
-+	true
-+
-+override_dh_installdocs:
-+	true
 diff --git a/meta/recipes-bsp/libubootenv/libubootenv_0.2.bb b/meta/recipes-bsp/libubootenv/libubootenv_0.2.bb
 new file mode 100644
-index 0000000..1be058c
+index 0000000..995e581
 --- /dev/null
 +++ b/meta/recipes-bsp/libubootenv/libubootenv_0.2.bb
-@@ -0,0 +1,32 @@
+@@ -0,0 +1,30 @@
 +# libubootenv
 +#
 +# This software is a part of ISAR.
@@ -119,26 +120,24 @@ index 0000000..1be058c
 +HOMEPAGE= "https://github.com/sbabic/swupdate"
 +LICENSE = "GPL-2.0"
 +LIC_FILES_CHKSUM = "file://${LAYERDIR_isar}/licenses/COPYING.GPLv2;md5=751419260aa954499f7abaabaa882bbe"
-+SRC_URI = "gitsm://github.com/sbabic/libubootenv.git;branch=master;protocol=https"
 +
-+SRCREV = "bf6ff631c0e38cede67268ceb8bf1383b5f8848e"
++inherit dpkg-gbp
 +
-+BUILD_DEB_DEPENDS = "cmake, zlib1g-dev"
-+
-+SRC_URI += "file://debian"
-+TEMPLATE_FILES = "debian/control.tmpl debian/rules.tmpl"
-+TEMPLATE_VARS += "BUILD_DEB_DEPENDS DEFCONFIG DEBIAN_DEPENDS"
-+
-+
-+inherit dpkg
++SRC_URI = "git://salsa.debian.org/debian/libubootenv.git;protocol=https \
++           file://0002-Add-support-GNUInstallDirs.patch;apply=no "
++SRCREV = "2c7cb6d941d906dcc1d2e447cc17e418485dff12"
 +
 +S = "${WORKDIR}/git"
 +
 +do_prepare_build() {
-+        DEBDIR=${S}/debian
-+        install -d ${DEBDIR}
-+        cp -R ${WORKDIR}/debian ${S}
-+        deb_add_changelog
++  cd ${S}
++  export QUILT_PATCHES=debian/patches
++  quilt import -f ${WORKDIR}/*.patch
++	quilt push -a
++}
++
++dpkg_runbuild_prepend() {
++	export DEB_BUILD_OPTIONS="nocheck"
 +}
 diff --git a/meta/recipes-bsp/u-boot/files/debian/u-boot-tools.conffiles b/meta/recipes-bsp/u-boot/files/debian/u-boot-tools.conffiles
 deleted file mode 100644

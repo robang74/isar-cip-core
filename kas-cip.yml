@@ -27,6 +27,9 @@ repos:
       01-libubootenv:
         path: isar-patches/0001-u-boot-add-libubootenv.patch
         repo: cip-core
+      02-initramfs:
+        path: isar-patches/v7-0001-meta-support-Generate-a-custom-initramfs.patch
+        repo: cip-core
 
 bblayers_conf_header:
   standard: |
