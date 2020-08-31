@@ -20,10 +20,12 @@ def conditional(variable, checkvalue, truevalue, falsevalue, d):
 require recipes-kernel/linux/linux-custom.inc
 
 SRC_URI += " \
-    https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git/snapshot/linux-cip-${PV}.tar.gz \
+    https://gitlab.com/cip-project/cip-kernel/linux-cip/-/archive/v${PV}/linux-cip-v${PV}.tar.gz \
     "
 
 SRC_URI_append = " ${@conditional("USE_CIP_KERNEL_CONFIG", "1", \
     "git://gitlab.com/cip-project/cip-kernel/cip-kernel-config.git;protocol=https;destsuffix=cip-kernel-config;name=cip-kernel-config", \
     "file://${KERNEL_DEFCONFIG}",d)}"
 SRCREV_cip-kernel-config ?= "ca24d965adf77730caf1cd32bdfcffd69e369502"
+
+S = "${WORKDIR}/linux-cip-v${PV}"
