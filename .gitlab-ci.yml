@@ -57,7 +57,7 @@ build:hihope-rzg2m-base:
   extends:
     - .build_base
   variables:
-    target: rzg2m
+    target: hihope-rzg2m
     dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
 
 build:qemu-amd64-base:
@@ -97,6 +97,6 @@ build:hihope-rzg2m-test:
   extends:
     - .build_base
   variables:
-    target: rzg2m
+    target: hihope-rzg2m
     extention: test
     dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
