@@ -39,16 +39,14 @@ TEMPLATE_FILES = "debian/changelog.tmpl debian/control.tmpl debian/rules.tmpl"
 TEMPLATE_VARS += "BUILD_DEB_DEPENDS DEFCONFIG DEBIAN_DEPENDS"
 
 do_prepare_build() {
-        DEBDIR=${S}/debian
-        cp -R ${WORKDIR}/debian ${S}
+    cp -R ${WORKDIR}/debian ${S}
 
-        install -m 0644 ${WORKDIR}/${PN}.cfg ${S}/swupdate.cfg
-        install -m 0644 ${WORKDIR}/${DEFCONFIG}.gen ${S}/configs/${DEFCONFIG}
+    install -m 0644 ${WORKDIR}/${PN}.cfg ${S}/swupdate.cfg
+    install -m 0644 ${WORKDIR}/${DEFCONFIG}.gen ${S}/configs/${DEFCONFIG}
 
-        if ! grep -q "configs/${DEFCONFIG}" ${S}/.gitignore
-        then
-                echo "configs/${DEFCONFIG}" >> ${S}/.gitignore
-        fi
-        # luahandler
-        install -m 0644 ${WORKDIR}/${SWUPDATE_LUASCRIPT} ${S}
+    if ! grep -q "configs/${DEFCONFIG}" ${S}/.gitignore; then
+        echo "configs/${DEFCONFIG}" >> ${S}/.gitignore
+    fi
+    # luahandler
+    install -m 0644 ${WORKDIR}/${SWUPDATE_LUASCRIPT} ${S}
 }
