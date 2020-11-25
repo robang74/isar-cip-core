@@ -12,7 +12,7 @@
 def generate_image_uuid(d):
     import uuid
 
-    base_hash = d.getVar("BB_BASEHASH_task-do_rootfs_install", True)
+    base_hash = d.getVar("BB_TASKHASH", True)
     if base_hash is None:
         return None
     return str(uuid.UUID(base_hash[:32], version=4))
