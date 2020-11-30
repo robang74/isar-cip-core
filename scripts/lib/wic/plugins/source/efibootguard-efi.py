@@ -33,7 +33,7 @@ import os
 msger = logging.getLogger('wic')
 
 from wic.pluginbase import SourcePlugin
-from wic.utils.misc import exec_cmd, get_bitbake_var, BOOTDD_EXTRA_SPACE
+from wic.misc import exec_cmd, get_bitbake_var, BOOTDD_EXTRA_SPACE
 
 class EfibootguardEFIPlugin(SourcePlugin):
     """
