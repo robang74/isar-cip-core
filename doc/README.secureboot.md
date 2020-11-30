@@ -78,8 +78,8 @@ Set up a secure boot test environment with [QEMU](https://www.qemu.org/)
 
 ### Debian Snakeoil keys
 
-The build copies the  Debian Snakeoil keys to the directory `./build/tmp/deploy/images/<machine>/OVMF. Y
-u can use them as described in section [Start Image](### Start the image).
+The build copies the  Debian Snakeoil keys to the directory `./build/tmp/deploy/images/<machine>/OVMF.
+You can use them as described in section [Start Image](### Start the image).
 
 ### Generate Keys
 
@@ -112,8 +112,8 @@ mkdir secureboot-tools
 cp -r keys secureboot-tools
 cp /lib/efitools/x86_64-linux-gnu/KeyTool.efi secureboot-tools
 ```
-2. Copy the file OVMF_VARS.fd (in Debian the file can be found at /usr/share/OVMF/OVMF_VARS.fd)
-to the current directory. OVMF_VARS.fd contains no keys can be instrumented for secureboot.
+2. Copy the file OVMF_VARS_4M.fd (in Debian the file can be found at /usr/share/OVMF/OVMF_VARS_4M.fd)
+to the current directory. OVMF_VARS_4M.fd contains no keys can be instrumented for secureboot.
 3. Start QEMU with the script scripts/start-efishell.sh
 ```
 scripts/start-efishell.sh secureboot-tools
@@ -172,7 +172,7 @@ SECURE_BOOT=y \
 ./start-qemu.sh amd64
 ```
 
-The default `OVMF_VARS.snakeoil.fd` boot to the EFI shell. To boot Linux enter the following command:
+The default `OVMF_VARS.snakeoil_4M.fd` boot to the EFI shell. To boot Linux enter the following command:
 ```
 FS0:\EFI\BOOT\bootx64.efi
 ```
@@ -182,7 +182,7 @@ To change the boot behavior, enter `exit` in the shell to enter the bios and cha
 Start the image with the following command:
 ```
 SECURE_BOOT=y \
-OVMF_CODE=./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_CODE.secboot.fd \
+OVMF_CODE=./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_CODE_4M.secboot.fd \
 OVMF_VARS=<path to the modified OVMF_VARS.fd> \
 ./start-qemu.sh amd64
 ```
