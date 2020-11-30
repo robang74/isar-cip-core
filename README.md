@@ -48,8 +48,23 @@ Run the generated securiy images on QEMU (x86-64bit)
 
 ## Community Resources
 
-TBD
+Mailing list:
 
+ - cip-dev@lists.cip-project.org
+
+ - Subscription:
+   - cip-dev+subscribe@lists.cip-project.org
+   - https://lists.cip-project.org/g/cip-dev
+
+ - Archives:
+   - https://lore.kernel.org/cip-dev/
+   - https://lists.cip-project.org/g/cip-dev
+
+Continuous integration:
+
+  - https://gitlab.com/cip-project/cip-core/isar-cip-core/-/pipelines
+
+ 
 ## License
 
 Unless otherwise stated in the respective file, files in this layer are
