@@ -139,13 +139,13 @@ scripts/start-efishell.sh secureboot-tools
 Build the image with a signed efibootguard and unified kernel image
 with the snakeoil keys by executing:
 ```
-kas-docker --isar build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml:kas/opt/ebg-secure-boot-snakeoil.yml
+kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml:kas/opt/ebg-secure-boot-snakeoil.yml
 ```
 
 For user-generated keys, create a new option file. This option file could look like this:
 ```
 header:
-  version: 8
+  version: 10
   includes:
    - opt/ebg-swu.yml
    - opt/ebg-secure-boot-initramfs.yml

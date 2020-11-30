@@ -5,15 +5,14 @@ Copyright: Toshiba corp.
 
 ## Build the CIP Core image
 
-Use [kas-docker](https://github.com/siemens/kas/blob/master/kas-docker) to build the image. Currently this board is only supported by the CIP kernel version `4.4.y`.
+Set up `kas-container` as described in the [top-level README](../README.md).
+Then build the image:
 
 ```
-$ git clone https://gitlab.com/cip-project/cip-core/isar-cip-core.git
-$ cd isar-cip-core
-$ wget https://raw.githubusercontent.com/siemens/kas/master/kas-docker
-$ chmod a+x kas-docker
-$ ./kas-docker --isar build kas-cip.yml:kas/board/iwg20m.yml
+$ ./kas-container build kas-cip.yml:kas/board/iwg20m.yml
 ```
+
+Note: Currently this board is only supported by the CIP kernel version `4.4.y`.
 
 After the build is finished, insert a micro SDCard and flash the image with `bmaptool` (a better `dd`). Make sure you substitute `/dev/sdX` by the device file corresponding to your SDCard.
 

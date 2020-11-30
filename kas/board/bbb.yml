@@ -10,6 +10,6 @@
 #
 
 header:
-  version: 8
+  version: 10
 
 machine: bbb

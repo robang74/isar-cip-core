@@ -10,18 +10,18 @@ from scratch.
 
 ## Building Target Images
 
-Install `kas-docker` from the [kas project](https://github.com/siemens/kas):
+Install `kas-container` from the [kas project](https://github.com/siemens/kas):
 
-    wget https://raw.githubusercontent.com/siemens/kas/2.2/kas-docker
-    chmod a+x kas-docker
+    wget https://raw.githubusercontent.com/siemens/kas/2.3.3/kas-container
+    chmod a+x kas-container
 
 Furthermore, install docker and make sure you have required permissions to
 start containers.
 
-To build, e.g., the QEMU AMD64 target inside Docker, invoke kas-docker like
+To build, e.g., the QEMU AMD64 target inside Docker, invoke kas-container like
 this:
 
-    ./kas-docker --isar build kas-cip.yml:kas/board/qemu-amd64.yml
+    ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml
 
 This image can be run using `start-qemu.sh x86`.
 
@@ -39,7 +39,7 @@ card, run
 ## Building Security target images
 Building images for QEMU x86-64bit machine
 
-    ./kas-docker --isar build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/security.yml
+    ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/security.yml
 
 Run the generated securiy images on QEMU (x86-64bit)
 

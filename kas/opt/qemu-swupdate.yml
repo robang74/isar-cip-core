@@ -11,7 +11,7 @@
 
 
 header:
-  version: 8
+  version: 10
 
 local_conf_header:
   qemu-wic: |

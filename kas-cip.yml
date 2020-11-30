@@ -10,10 +10,12 @@
 #
 
 header:
-  version: 8
+  version: 10
 
 distro: cip-core-buster
 target: cip-core-image
+
+build_system: isar
 
 repos:
   cip-core:
