@@ -29,8 +29,8 @@ DEBIAN_CONFLICTS = "ebg-secure-boot-snakeoil"
 SRC_URI = " \
     file://sign_secure_image.sh.tmpl \
     file://control.tmpl"
-SRC_URI_append = " ${@ d.getVar(SB_CERTDB) or "" }"
-SRC_URI_append = " ${@ d.getVar(SB_VERIFY_CERT) or "" }"
+SRC_URI_append = " ${@ "file://"+d.getVar('SB_CERTDB') if d.getVar('SB_CERTDB') else '' }"
+SRC_URI_append = " ${@ "file://"+d.getVar('SB_VERIFY_CERT') if d.getVar('SB_VERIFY_CERT') else '' }"
 TEMPLATE_FILES = "sign_secure_image.sh.tmpl"
 TEMPLATE_VARS += "SB_CERT_PATH SB_CERTDB SB_VERIFY_CERT SB_KEY_NAME"
 
