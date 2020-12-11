@@ -2,3 +2,4 @@ build/
 isar/
 kas-docker
 kas-container
+__pycache__
