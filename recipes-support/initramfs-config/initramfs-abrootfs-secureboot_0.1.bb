@@ -10,8 +10,6 @@
 
 require recipes-support/initramfs-config/initramfs-config.inc
 
-FILESPATH =. "${LAYERDIR_isar-siemens}/recipes-support/initramfs-config/files:"
-
 DEBIAN_DEPENDS += ", busybox, patch"
 
 SRC_URI += "file://postinst.ext \
