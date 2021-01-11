@@ -9,7 +9,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-SWU_IMAGE_FILE ?= "${PN}-${DISTRO}-${MACHINE}.swu"
+SWU_IMAGE_FILE ?= "${DEPLOY_DIR_IMAGE}/${PN}-${DISTRO}-${MACHINE}.swu"
 SWU_DESCRIPTION_FILE ?= "sw-description"
 SWU_ADDITIONAL_FILES ?= ""
 SWU_SIGNED ?= ""
@@ -21,7 +21,7 @@ IMAGER_INSTALL += "${@'openssl' if bb.utils.to_boolean(d.getVar('SWU_SIGNED')) e
 do_swupdate_image[stamp-extra-info] = "${DISTRO}-${MACHINE}"
 do_swupdate_image[cleandirs] += "${WORKDIR}/swu"
 do_swupdate_image() {
-    rm -f '${DEPLOY_DIR_IMAGE}/${SWU_IMAGE_FILE}'
+    rm -f '${SWU_IMAGE_FILE}'
     cp '${WORKDIR}/${SWU_DESCRIPTION_FILE}' '${WORKDIR}/swu/${SWU_DESCRIPTION_FILE}'
 
     # Create symlinks for files used in the update image
@@ -68,7 +68,7 @@ do_swupdate_image() {
             echo "$file".'${SWU_SIGNATURE_EXT}'
         fi
     done | cpio -ovL -H crc \
-        > '${DEPLOY_DIR_IMAGE}/${SWU_IMAGE_FILE}'
+        > '${SWU_IMAGE_FILE}'
     cd -
 }
 
