@@ -39,13 +39,13 @@ do_swupdate_image() {
         image_do_mounts
         cp -f '${SIGN_KEY}' '${WORKDIR}/dev.key'
         test -e '${SIGN_CRT}' && cp -f '${SIGN_CRT}' '${WORKDIR}/dev.crt'
-
-        # Fill in file check sums
-        for file in ${SWU_ADDITIONAL_FILES}; do
-            sed -i "s:$file-sha256:$(sha256sum '${WORKDIR}/swu/'$file | cut -f 1 -d ' '):g" \
-                '${WORKDIR}/swu/${SWU_DESCRIPTION_FILE}'
-        done
     fi
+
+    # Fill in file check sums
+    for file in ${SWU_ADDITIONAL_FILES}; do
+        sed -i "s:$file-sha256:$(sha256sum '${WORKDIR}/swu/'$file | cut -f 1 -d ' '):g" \
+            '${WORKDIR}/swu/${SWU_DESCRIPTION_FILE}'
+    done
 
     cd "${WORKDIR}/swu"
     for file in '${SWU_DESCRIPTION_FILE}' ${SWU_ADDITIONAL_FILES}; do
