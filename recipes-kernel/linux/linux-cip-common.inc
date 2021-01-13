@@ -9,6 +9,8 @@
 # SPDX-License-Identifier: MIT
 #
 
+FILESEXTRAPATHS_prepend := "${FILE_DIRNAME}/files:"
+
 KERNEL_DEFCONFIG ?= "${MACHINE}_defconfig"
 
 def conditional(variable, checkvalue, truevalue, falsevalue, d):
