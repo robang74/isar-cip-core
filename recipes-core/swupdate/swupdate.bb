@@ -8,7 +8,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-hDESCRIPTION = "swupdate utility for software updates"
+DESCRIPTION = "swupdate utility for software updates"
 HOMEPAGE= "https://github.com/sbabic/swupdate"
 LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://${LAYERDIR_isar}/licenses/COPYING.GPLv2;md5=751419260aa954499f7abaabaa882bbe"

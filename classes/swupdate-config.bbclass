@@ -15,7 +15,7 @@ inherit kconfig-snippets
 
 BUILD_DEB_DEPENDS = " \
     zlib1g-dev, debhelper, libconfig-dev, libarchive-dev, \
-    python-sphinx:native, dh-systemd, libsystemd-dev, libssl-dev"
+    python-sphinx:native, dh-systemd, libsystemd-dev, libssl-dev, pkg-config"
 
 KFEATURE_lua = ""
 KFEATURE_lua[BUILD_DEB_DEPENDS] = "liblua5.3-dev"

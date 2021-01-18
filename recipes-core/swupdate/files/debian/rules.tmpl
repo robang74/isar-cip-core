@@ -2,6 +2,7 @@
 
 ifneq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
 export CROSS_COMPILE=$(DEB_HOST_GNU_TYPE)-
+export PKG_CONFIG_PATH=/usr/lib/$(DEB_HOST_GNU_TYPE)/pkgconfig
 export CC=$(DEB_HOST_GNU_TYPE)-gcc
 export LD=$(DEB_HOST_GNU_TYPE)-gcc
 endif
