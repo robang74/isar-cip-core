@@ -46,8 +46,8 @@ KFEATURE_ubi[KCONFIG_SNIPPETS] = "file://swupdate_defconfig_ubi.snippet"
 KFEATURE_DEPS[ubi] = "mtd"
 
 KFEATURE_u-boot = ""
-KFEATURE_u-boot[BUILD_DEB_DEPENDS] = "u-boot-${MACHINE}-dev"
-KFEATURE_u-boot[DEBIAN_DEPENDS] = "u-boot-tools"
+KFEATURE_u-boot[BUILD_DEB_DEPENDS] = "libubootenv-dev"
+KFEATURE_u-boot[DEBIAN_DEPENDS] = "libubootenv-tool, u-boot-tools"
 KFEATURE_u-boot[DEPENDS] = "${U_BOOT}"
 KFEATURE_u-boot[KCONFIG_SNIPPETS] = "file://swupdate_defconfig_u-boot.snippet"
 
