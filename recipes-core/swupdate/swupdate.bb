@@ -24,8 +24,6 @@ SRC_URI += "file://debian \
             file://${DEFCONFIG} \
             file://${PN}.cfg"
 
-DEPENDS += "libubootenv"
-
 DEBIAN_DEPENDS = "${shlibs:Depends}, ${misc:Depends}"
 
 inherit dpkg

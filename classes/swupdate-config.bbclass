@@ -45,10 +45,13 @@ KFEATURE_ubi[KCONFIG_SNIPPETS] = "file://swupdate_defconfig_ubi.snippet"
 
 KFEATURE_DEPS[ubi] = "mtd"
 
+USE_U_BOOT_CONFIG ?= "true"
 KFEATURE_u-boot = ""
 KFEATURE_u-boot[BUILD_DEB_DEPENDS] = "libubootenv-dev"
-KFEATURE_u-boot[DEBIAN_DEPENDS] = "libubootenv-tool, u-boot-tools"
-KFEATURE_u-boot[DEPENDS] = "${U_BOOT}"
+KFEATURE_u-boot[DEBIAN_DEPENDS] = "${@ 'libubootenv0.1, u-boot-${MACHINE}-config' \
+                                          if d.getVar("USE_U_BOOT_CONFIG", True) == "true" \
+                                          else 'libubootenv0.1'}"
+KFEATURE_u-boot[DEPENDS] = "${U_BOOT} libubootenv"
 KFEATURE_u-boot[KCONFIG_SNIPPETS] = "file://swupdate_defconfig_u-boot.snippet"
 
 SWUPDATE_LUASCRIPT ?= "swupdate_handlers.lua"
@@ -73,4 +76,3 @@ python do_check_bootloader () {
         bb.warn("swupdate: BOOTLOADER set to incompatible value: " + bootloader)
 }
 addtask check_bootloader before do_fetch
-
