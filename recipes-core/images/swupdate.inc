@@ -9,8 +9,6 @@
 # SPDX-License-Identifier: MIT
 #
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files/secure-boot:"
-
 EXTRACT_PARTITIONS = "img4"
 ROOTFS_PARTITION_NAME="img4.gz"
 
