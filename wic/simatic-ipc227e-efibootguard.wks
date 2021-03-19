@@ -3,3 +3,5 @@
 
 include ebg-sysparts.inc
 include swupdate-partition.inc
+
+bootloader --ptable gpt --append="console=tty0 console=ttyS0,115200 rootwait earlyprintk"
