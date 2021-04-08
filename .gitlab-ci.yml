@@ -74,6 +74,16 @@ build:qemu-amd64-base:
     targz: enable
     deploy: disable
 
+build:qemu-arm64-base:
+  extends:
+    - .build_base
+  variables:
+    target: qemu-arm64
+    extention: security
+    use_rt: disable
+    wic_targz: disable
+    targz: enable
+
 # test
 build:simatic-ipc227e-test:
   extends:
@@ -105,3 +115,12 @@ build:hihope-rzg2m-test:
     target: hihope-rzg2m
     extention: test
     dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
+
+build:qemu-arm64-test:
+  extends:
+    - .build_base
+  variables:
+    target:  qemu-arm64
+    extention: test
+    wic_targz: disable
+    targz: enable
