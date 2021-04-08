@@ -6,6 +6,7 @@ variables:
   extention: base
   use_rt: enable
   wic_targz: enable
+  targz: disable
   dtb: none
   deploy: enable
 
@@ -30,6 +31,7 @@ default:
     - if [ "${use_rt}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/rt.yml"; fi;
     - if [ "${extention}" != "base" ]; then base_yaml="${base_yaml}:kas/opt/${extention}.yml"; fi;
     - if [ "${wic_targz}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/wic-targz-img.yml"; fi;
+    - if [ "${targz}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/targz-img.yml"; fi;
     - kas build ${base_yaml}
     - if [ "${deploy}" = "enable" ]; then scripts/deploy-cip-core.sh ${release} ${target} ${extention} ${dtb}; fi
 
@@ -69,6 +71,7 @@ build:qemu-amd64-base:
     extention: security
     use_rt: disable
     wic_targz: disable
+    targz: enable
     deploy: disable
 
 # test
