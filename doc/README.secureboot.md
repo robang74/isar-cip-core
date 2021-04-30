@@ -119,6 +119,7 @@ to the current directory. OVMF_VARS_4M.fd contains no keys can be instrumented f
 scripts/start-efishell.sh secureboot-tools
 ```
 4. Start the KeyTool.efi FS0:\KeyTool.efi and execute the the following steps:
+```
           -> "Edit Keys"
              -> "The Allowed Signatures Database (db)"
                 -> "Add New Key"
@@ -132,35 +133,44 @@ scripts/start-efishell.sh secureboot-tools
                 -> "Replace Key(s)"
                 -> Change/Confirm device
                 -> Select "PK.auth" file
+```
 5. quit QEMU
 
 ### Build image
 
 Build the image with a signed efibootguard and unified kernel image
 with the snakeoil keys by executing:
+
 ```
 kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml:kas/opt/ebg-secure-boot-snakeoil.yml
 ```
 
-For user-generated keys, create a new option file. This option file could look like this:
+For user-generated keys, create a new option file in the repository. This option file could look like this:
 ```
 header:
   version: 10
   includes:
-   - opt/ebg-swu.yml
-   - opt/ebg-secure-boot-initramfs.yml
+   - kas/opt/ebg-swu.yml
+   - kas/opt/ebg-secure-boot-base.yml
 
 local_conf_header:
   secure-boot: |
     IMAGER_BUILD_DEPS += "ebg-secure-boot-secrets"
     IMAGER_INSTALL += "ebg-secure-boot-secrets"
-  user-keys:
+  user-keys: |
     SB_CERTDB = "democertdb"
     SB_VERIFY_CERT = "demo.crt"
     SB_KEY_NAME = "demo"
 ```
 
-Replace `demo` with the name of the user-generated certificates.
+Replace `demo` with the name of the user-generated certificates. The user-generated certificates
+need to stored in the folder `recipes-devtools/ebg-secure-boot-secrets/files`.
+
+Build the image with user-generated keys by executing the command:
+
+```
+kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml:<path to the new option>.yml
+```
 
 ### Start the image
 
