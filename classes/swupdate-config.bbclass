@@ -45,13 +45,16 @@ KFEATURE_ubi[KCONFIG_SNIPPETS] = "file://swupdate_defconfig_ubi.snippet"
 
 KFEATURE_DEPS[ubi] = "mtd"
 
-USE_U_BOOT_CONFIG ?= "true"
 KFEATURE_u-boot = ""
 KFEATURE_u-boot[BUILD_DEB_DEPENDS] = "libubootenv-dev"
+# we need u-boot-${MACHINE}-config for fw_env.config
+# only custom build u-boot provides this package
+# for u-boot provided by debian u-boot-tools provides
+# example configurations at /usr/share/doc/u-boot-tools/examples
 KFEATURE_u-boot[DEBIAN_DEPENDS] = "${@ 'libubootenv0.1, u-boot-${MACHINE}-config' \
-                                          if d.getVar("USE_U_BOOT_CONFIG", True) == "true" \
+                                          if d.getVar("U_BOOT_CONFIG_PACKAGE", True) == "1" \
                                           else 'libubootenv0.1'}"
-KFEATURE_u-boot[DEPENDS] = "${U_BOOT} libubootenv"
+KFEATURE_u-boot[DEPENDS] = "libubootenv"
 KFEATURE_u-boot[KCONFIG_SNIPPETS] = "file://swupdate_defconfig_u-boot.snippet"
 
 SWUPDATE_LUASCRIPT ?= "swupdate_handlers.lua"
