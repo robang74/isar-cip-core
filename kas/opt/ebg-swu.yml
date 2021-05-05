@@ -15,7 +15,7 @@ header:
 local_conf_header:
   swupdate: |
     IMAGE_INSTALL_append = " swupdate efibootguard"
-    BOOTLOADER = "efibootguard"
+    SWUPDATE_BOOTLOADER = "efibootguard"
 
   efibootguard: |
     WDOG_TIMEOUT = "0"
@@ -23,4 +23,4 @@ local_conf_header:
 
   wic: |
     IMAGE_TYPE = "wic-swu-img"
-    WKS_FILE ?= "${MACHINE}-${BOOTLOADER}.wks"
+    WKS_FILE ?= "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks"

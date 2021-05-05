@@ -20,7 +20,7 @@ local_conf_header:
     # Add snakeoil and ovmf binaries for qemu
     IMAGER_BUILD_DEPS += "ebg-secure-boot-snakeoil ovmf-binaries"
     IMAGER_INSTALL += "ebg-secure-boot-snakeoil"
-    WKS_FILE = "${MACHINE}-${BOOTLOADER}-secureboot.wks"
+    WKS_FILE = "${MACHINE}-efibootguard-secureboot.wks"
 
   ovmf: |
     # snakeoil certs are only part of backports

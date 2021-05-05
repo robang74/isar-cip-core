@@ -16,4 +16,4 @@ header:
 local_conf_header:
   qemu-wic: |
     IMAGE_TYPE ?= "wic-swu-img"
-    WKS_FILE = "qemu-amd64-${BOOTLOADER}.wks"
+    WKS_FILE = "qemu-amd64-${SWUPDATE_BOOTLOADER}.wks"

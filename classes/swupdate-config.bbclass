@@ -60,7 +60,7 @@ KFEATURE_u-boot[KCONFIG_SNIPPETS] = "file://swupdate_defconfig_u-boot.snippet"
 SWUPDATE_LUASCRIPT ?= "swupdate_handlers.lua"
 
 def get_bootloader_featureset(d):
-    bootloader = d.getVar("BOOTLOADER", True) or ""
+    bootloader = d.getVar("SWUPDATE_BOOTLOADER", True) or ""
     if bootloader == "efibootguard":
         return "efibootguard"
     if bootloader == "u-boot":
@@ -71,11 +71,11 @@ SWUPDATE_KFEATURES ??= ""
 KFEATURES = "${SWUPDATE_KFEATURES}"
 KFEATURES += "${@get_bootloader_featureset(d)}"
 
-# Astonishingly, as an anonymous python function, BOOTLOADER is always None
+# Astonishingly, as an anonymous python function, SWUPDATE_BOOTLOADER is always None
 # one time before it gets set. So the following must be a task.
 python do_check_bootloader () {
-    bootloader = d.getVar("BOOTLOADER", True) or "None"
+    bootloader = d.getVar("SWUPDATE_BOOTLOADER", True) or "None"
     if not bootloader in ["efibootguard", "u-boot"]:
-        bb.warn("swupdate: BOOTLOADER set to incompatible value: " + bootloader)
+        bb.warn("swupdate: SWUPDATE_BOOTLOADER set to incompatible value: " + bootloader)
 }
 addtask check_bootloader before do_fetch
