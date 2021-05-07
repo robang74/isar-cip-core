@@ -142,7 +142,7 @@ Build the image with a signed efibootguard and unified kernel image
 with the snakeoil keys by executing:
 
 ```
-kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml:kas/opt/ebg-secure-boot-snakeoil.yml
+kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-secure-boot-snakeoil.yml
 ```
 
 For user-generated keys, create a new option file in the repository. This option file could look like this:
@@ -150,7 +150,6 @@ For user-generated keys, create a new option file in the repository. This option
 header:
   version: 10
   includes:
-   - kas/opt/ebg-swu.yml
    - kas/opt/ebg-secure-boot-base.yml
 
 local_conf_header:
@@ -169,7 +168,7 @@ need to stored in the folder `recipes-devtools/ebg-secure-boot-secrets/files`.
 Build the image with user-generated keys by executing the command:
 
 ```
-kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml:<path to the new option>.yml
+kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:<path to the new option>.yml
 ```
 
 ### Start the image

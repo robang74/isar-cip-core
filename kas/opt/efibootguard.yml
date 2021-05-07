@@ -8,19 +8,19 @@
 #
 # SPDX-License-Identifier: MIT
 #
+# This kas file adds efibootguard as the bootloader to the image
 
 header:
   version: 10
 
 local_conf_header:
-  swupdate: |
-    IMAGE_INSTALL_append = " swupdate efibootguard"
+  efibootguard: |
+    IMAGE_INSTALL_append = " efibootguard"
+
+  efibootguard-swupdate: |
     SWUPDATE_BOOTLOADER = "efibootguard"
 
-  efibootguard: |
+  efibootguard-wic: |
     WDOG_TIMEOUT = "0"
     WICVARS += "WDOG_TIMEOUT"
 
-  wic: |
-    IMAGE_TYPE = "wic-swu-img"
-    WKS_FILE ?= "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks"

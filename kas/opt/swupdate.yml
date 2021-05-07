@@ -8,12 +8,16 @@
 #
 # SPDX-License-Identifier: MIT
 #
-
+# This kas file adds swupdate and generates a ${IMAGE_NAME}.swu
+# from the first wic partition
 
 header:
   version: 10
 
 local_conf_header:
-  qemu-wic: |
+  swupdate: |
+    IMAGE_INSTALL_append = " swupdate"
+
+  wic-swu: |
     IMAGE_TYPE ?= "wic-swu-img"
-    WKS_FILE = "qemu-amd64-${SWUPDATE_BOOTLOADER}.wks"
+    WKS_FILE = "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks"

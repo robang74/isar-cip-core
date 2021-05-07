@@ -11,6 +11,8 @@
 
 header:
   version: 10
+  includes:
+   - efibootguard.yml
 
 local_conf_header:
   initramfs: |
