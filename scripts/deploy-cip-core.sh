@@ -24,14 +24,17 @@ if [ "${EXTENSION}" != "base" ] ; then
 	BASE_PATH=build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$RELEASE-$TARGET-$EXTENSION
 fi
 
-echo "Compressing cip-core-image-cip-core-$RELEASE-$TARGET.wic.img..."
-xz -9 -k $BASE_PATH.wic.img
+if [ -f $BASE_PATH.wic.img ] ; then
+	echo "Compressing cip-core-image-cip-core-$RELEASE-$TARGET.wic.img..."
+	xz -9 -k $BASE_PATH.wic.img
 
-echo "Uploading artifacts..."
-aws s3 cp --no-progress $BASE_PATH.wic.img.xz s3://download.cip-project.org/cip-core/$TARGET/
+	echo "Uploading artifacts..."
+	aws s3 cp --no-progress $BASE_PATH.wic.img.xz s3://download.cip-project.org/cip-core/$TARGET/
+fi
 
 if [ -f $BASE_PATH.tar.gz ]; then
-    aws s3 cp --no-progress $BASE_PATH.tar.gz s3://download.cip-project.org/cip-core/$TARGET/
+	echo "Uploading artifacts..."
+	aws s3 cp --no-progress $BASE_PATH.tar.gz s3://download.cip-project.org/cip-core/$TARGET/
 fi
 
 KERNEL_IMAGE=$BASE_PATH-vmlinuz
