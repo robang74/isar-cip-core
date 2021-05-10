@@ -125,6 +125,15 @@ build:hihope-rzg2m-test:
     extention: test
     dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
 
+build:qemu-amd64-test:
+  extends:
+    - .build_base
+  variables:
+    target:  qemu-amd64
+    extention: test
+    wic_targz: disable
+    targz: enable
+
 build:qemu-arm64-test:
   extends:
     - .build_base
