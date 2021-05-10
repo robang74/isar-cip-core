@@ -19,13 +19,19 @@ TARGET=$2
 EXTENSION=$3
 DTB=$4
 
-BASE_PATH=build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$RELEASE-$TARGET
+BASE_FILENAME=cip-core-image-cip-core-$RELEASE-$TARGET
 if [ "${EXTENSION}" != "base" ] ; then
-	BASE_PATH=build/tmp/deploy/images/$TARGET/cip-core-image-cip-core-$RELEASE-$TARGET-$EXTENSION
+	if [ "${EXTENSION}" = "security" ] ; then
+		BASE_FILENAME=cip-core-image-$EXTENSION-cip-core-$RELEASE-$TARGET
+	else
+		BASE_FILENAME=cip-core-image-cip-core-$RELEASE-$TARGET-$EXTENSION
+	fi
 fi
 
+BASE_PATH=build/tmp/deploy/images/$TARGET/$BASE_FILENAME
+
 if [ -f $BASE_PATH.wic.img ] ; then
-	echo "Compressing cip-core-image-cip-core-$RELEASE-$TARGET.wic.img..."
+	echo "Compressing $BASE_FILENAME.wic.img..."
 	xz -9 -k $BASE_PATH.wic.img
 
 	echo "Uploading artifacts..."
