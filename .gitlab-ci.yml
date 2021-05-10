@@ -72,7 +72,6 @@ build:qemu-amd64-base:
     use_rt: disable
     wic_targz: disable
     targz: enable
-    deploy: disable
 
 build:qemu-arm64-base:
   extends:
