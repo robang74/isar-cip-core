@@ -54,7 +54,9 @@ KFEATURE_u-boot[BUILD_DEB_DEPENDS] = "libubootenv-dev"
 KFEATURE_u-boot[DEBIAN_DEPENDS] = "${@ 'libubootenv0.1, u-boot-${MACHINE}-config' \
                                           if d.getVar("U_BOOT_CONFIG_PACKAGE", True) == "1" \
                                           else 'libubootenv0.1'}"
-KFEATURE_u-boot[DEPENDS] = "libubootenv"
+KFEATURE_u-boot[DEPENDS] = "${@ 'libubootenv u-boot-${MACHINE}-config' \
+                                          if d.getVar("U_BOOT_CONFIG_PACKAGE", True) == "1" \
+                                          else 'libubootenv'}"
 KFEATURE_u-boot[KCONFIG_SNIPPETS] = "file://swupdate_defconfig_u-boot.snippet"
 
 SWUPDATE_LUASCRIPT ?= "swupdate_handlers.lua"
