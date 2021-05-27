@@ -23,4 +23,6 @@ local_conf_header:
   efibootguard-wic: |
     WDOG_TIMEOUT = "0"
     WICVARS += "WDOG_TIMEOUT"
+    IMAGE_TYPE ?= "wic-img"
+    WKS_FILE ?= "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks"
 

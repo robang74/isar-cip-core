@@ -20,4 +20,4 @@ local_conf_header:
 
   wic-swu: |
     IMAGE_TYPE ?= "wic-swu-img"
-    WKS_FILE = "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks"
+    WKS_FILE ?= "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks"
