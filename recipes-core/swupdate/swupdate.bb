@@ -15,8 +15,8 @@ LIC_FILES_CHKSUM = "file://${LAYERDIR_isar}/licenses/COPYING.GPLv2;md5=751419260
 
 SRC_URI = "git://github.com/sbabic/swupdate.git;branch=master;protocol=https"
 
-SRCREV = "1a6dfbb5a0be978ac1a159758e278ab4d44167e2"
-PV = "2020.4-git+isar"
+SRCREV = "47a1246435fdb78fba15cc969596994130412956"
+PV = "2021.4-git+isar"
 
 DEFCONFIG := "swupdate_defconfig"
 
