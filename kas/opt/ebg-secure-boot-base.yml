@@ -18,3 +18,4 @@ local_conf_header:
   initramfs: |
     IMAGE_INSTALL += "initramfs-abrootfs-secureboot"
     SWU_DESCRIPTION = "secureboot"
+    SWUPDATE_ROUND_ROBIN_HANDLER_CONFIG = "secureboot/swupdate.handler.${SWUPDATE_BOOTLOADER}.ini"

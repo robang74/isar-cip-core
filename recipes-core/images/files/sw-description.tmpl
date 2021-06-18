@@ -16,21 +16,30 @@ software =
             filename = "${ROOTFS_PARTITION_NAME}";
             device = "fedcba98-7654-3210-cafe-5e0710000001,fedcba98-7654-3210-cafe-5e0710000002";
             type = "roundrobin";
-            compressed = "true";
+            compressed = "zlib";
             filesystem = "ext4";
+            properties: {
+                        subtype = "image";
+            };
     });
     files: ({
             filename = "${KERNEL_IMAGE}";
             path = "vmlinuz";
-            type = "kernelfile";
-            device = "sda2,sda3";
+            type = "roundrobin";
+            device = "fedcba98-7654-3210-cafe-5e0710000001->sda2,fedcba98-7654-3210-cafe-5e0710000002->sda3";
             filesystem = "vfat";
+            properties: {
+                        subtype = "kernel";
+            };
     },
     {
             filename = "${INITRD_IMAGE}";
-            path = "initrd.img";
-            type = "kernelfile";
-            device = "sda2,sda3";
+            path = "${INITRD_IMAGE}";
+            type = "roundrobin";
+            device = "fedcba98-7654-3210-cafe-5e0710000001->sda2,fedcba98-7654-3210-cafe-5e0710000002->sda3";
             filesystem = "vfat";
+            properties: {
+                        subtype = "initrd";
+            };
     });
 }

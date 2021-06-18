@@ -17,14 +17,22 @@ BUILD_DEB_DEPENDS = " \
     zlib1g-dev, debhelper, libconfig-dev, libarchive-dev, \
     python-sphinx:native, dh-systemd, libsystemd-dev, libssl-dev, pkg-config"
 
+SRC_URI += " ${@ 'git://gitlab.com/cip-project/cip-sw-updates/swupdate-handler-roundrobin.git;protocol=https;destsuffix=swupdate-handler-roundrobin;name=swupdate-handler-roundrobin;nobranch=1' \
+    if d.getVar('SWUPDATE_USE_ROUND_ROBIN_HANDLER_REPO') == '1' else '' \
+    }"
+SRCREV_swupdate-handler-roundrobin ?= "6f561f136fdbe51d2e9066b934dfcb06b94c6624"
+
+SWUPDATE_USE_ROUND_ROBIN_HANDLER_REPO ?= "1"
+SWUPDATE_LUASCRIPT ?= "swupdate-handler-roundrobin/swupdate_handlers_roundrobin.lua"
+
 KFEATURE_lua = ""
 KFEATURE_lua[BUILD_DEB_DEPENDS] = "liblua5.3-dev"
 KFEATURE_lua[KCONFIG_SNIPPETS] = "file://swupdate_defconfig_lua.snippet"
 
 KFEATURE_luahandler = ""
 KFEATURE_luahandler[KCONFIG_SNIPPETS] = "file://swupdate_defconfig_luahandler.snippet"
-KFEATURE_luahandler[SRC_URI] = "file://${SWUPDATE_LUASCRIPT}"
-
+KFEATURE_luahandler[SRC_URI] = "${@ 'file://${SWUPDATE_LUASCRIPT}' \
+                                  if d.getVar('SWUPDATE_USE_ROUND_ROBIN_HANDLER_REPO') == '0' else '' }"
 KFEATURE_DEPS = ""
 KFEATURE_DEPS[luahandler] = "lua"
 
@@ -58,8 +66,6 @@ KFEATURE_u-boot[DEPENDS] = "${@ 'libubootenv u-boot-${MACHINE}-config' \
                                           if d.getVar("U_BOOT_CONFIG_PACKAGE", True) == "1" \
                                           else 'libubootenv'}"
 KFEATURE_u-boot[KCONFIG_SNIPPETS] = "file://swupdate_defconfig_u-boot.snippet"
-
-SWUPDATE_LUASCRIPT ?= "swupdate_handlers.lua"
 
 def get_bootloader_featureset(d):
     bootloader = d.getVar("SWUPDATE_BOOTLOADER", True) or ""

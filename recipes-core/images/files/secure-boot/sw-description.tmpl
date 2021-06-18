@@ -14,16 +14,22 @@ software =
     name = "secure boot update"
     images: ({
             filename = "${ROOTFS_PARTITION_NAME}";
-            device = "fedcba98-7654-3210-cafe-5e0710000001,fedcba98-7654-3210-cafe-5e0710000002";
+            device = "sda4,sda5";
             type = "roundrobin";
-            compressed = "true";
+            compressed = "zlib";
             filesystem = "ext4";
+            properties: {
+                        subtype = "image";
+            };
     });
     files: ({
             filename = "linux.signed.efi";
             path = "linux.signed.efi";
-            type = "kernelfile";
-            device = "sda2,sda3";
+            type = "roundrobin";
+            device = "sda4->sda2,sda5->sda3";
             filesystem = "vfat";
+            properties: {
+                        subtype = "kernel";
+            };
     })
 }
