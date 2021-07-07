@@ -8,6 +8,7 @@ variables:
   wic_targz: enable
   targz: disable
   dtb: none
+  bullseye: disable
   deploy: enable
 
 stages:
@@ -34,6 +35,7 @@ default:
     - if [ "${extention}" != "base" ]; then base_yaml="${base_yaml}:kas/opt/${extention}.yml"; fi;
     - if [ "${wic_targz}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/wic-targz-img.yml"; fi;
     - if [ "${targz}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/targz-img.yml"; fi;
+    - if [ "${bullseye}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/bullseye.yml"; fi;
     - kas build ${base_yaml}
     - if [ "${deploy}" = "enable" ]; then scripts/deploy-cip-core.sh ${release} ${target} ${extention} ${dtb}; fi
 
@@ -154,6 +156,7 @@ build:qemu-arm-test:
     wic_targz: disable
     targz: enable
 
+# secure boot images
 build:qemu-amd64-secure-boot:
   extends:
     - .build_base
@@ -186,3 +189,35 @@ build:qemu-amd64-secure-boot-swu:
     wic_targz: disable
     targz: disable
     deploy: disable
+
+# bullseye images
+build:simatic-ipc227e-bullseye:
+  extends:
+    - .build_base
+  variables:
+    target: simatic-ipc227e
+    bullseye: enable
+
+build:bbb-bullseye:
+  extends:
+    - .build_base
+  variables:
+    target: bbb
+    dtb: am335x-boneblack.dtb
+    bullseye: enable
+
+build:iwg20m-bullseye:
+  extends:
+    - .build_base
+  variables:
+    target: iwg20m
+    dtb: r8a7743-iwg20d-q7-dbcm-ca.dtb
+    bullseye: enable
+
+build:hihope-rzg2m-bullseye:
+  extends:
+    - .build_base
+  variables:
+    target: hihope-rzg2m
+    dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
+    bullseye: enable
