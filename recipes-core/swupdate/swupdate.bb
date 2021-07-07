@@ -30,7 +30,7 @@ inherit dpkg
 inherit swupdate-config
 
 SWUPDATE_ROUND_ROBIN_HANDLER_CONFIG ?= "swupdate.handler.${SWUPDATE_BOOTLOADER}.ini"
-SRC_URI += "file://${SWUPDATE_ROUND_ROBIN_HANDLER_CONFIG}"
+SRC_URI += "${@('file://' + d.getVar('SWUPDATE_ROUND_ROBIN_HANDLER_CONFIG')) if d.getVar('SWUPDATE_BOOTLOADER') else ''}"
 KFEATURES += "luahandler"
 
 S = "${WORKDIR}/git"
