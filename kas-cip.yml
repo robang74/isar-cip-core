@@ -22,7 +22,7 @@ repos:
 
   isar:
     url: https://github.com/ilbers/isar.git
-    refspec: cd1327a47a7b00df98eded582aaf5b1ebdd45628
+    refspec: 03124cca669f50b682336a0bdf4ede5a4238e144
     layers:
       meta:
     patches:
