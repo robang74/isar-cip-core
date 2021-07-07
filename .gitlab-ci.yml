@@ -24,6 +24,8 @@ default:
 
 .build_base:
   stage: build
+  tags:
+    - large
   variables:
     base_yaml: "kas-cip.yml:kas/board/${target}.yml"
   script:
