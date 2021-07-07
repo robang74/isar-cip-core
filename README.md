@@ -12,7 +12,7 @@ from scratch.
 
 Install `kas-container` from the [kas project](https://github.com/siemens/kas):
 
-    wget https://raw.githubusercontent.com/siemens/kas/2.3.3/kas-container
+    wget https://raw.githubusercontent.com/siemens/kas/2.5/kas-container
     chmod a+x kas-container
 
 Furthermore, install docker and make sure you have required permissions to
