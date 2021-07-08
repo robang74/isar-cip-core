@@ -25,10 +25,6 @@ repos:
     refspec: 03124cca669f50b682336a0bdf4ede5a4238e144
     layers:
       meta:
-    patches:
-      02-initramfs:
-        path: isar-patches/v7-0001-meta-support-Generate-a-custom-initramfs.patch
-        repo: cip-core
 
 bblayers_conf_header:
   standard: |

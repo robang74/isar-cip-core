@@ -8,24 +8,21 @@
 #
 # SPDX-License-Identifier: MIT
 
-require recipes-support/initramfs-config/initramfs-config.inc
+
+inherit dpkg-raw
 
 DEBIAN_DEPENDS += ", busybox, patch"
 
-SRC_URI += "file://postinst.ext \
+SRC_URI += "file://postinst \
             file://initramfs.lsblk.hook \
             file://initramfs.image_uuid.hook \
             file://secure-boot-debian-local-patch"
-
-INITRAMFS_BUSYBOX = "y"
 
 do_install() {
     # add patch for local to /usr/share/secure boot
     TARGET=${D}/usr/share/secureboot
     install -m 0755 -d ${TARGET}
     install -m 0644 ${WORKDIR}/secure-boot-debian-local-patch ${TARGET}/secure-boot-debian-local.patch
-    # patch postinst
-    sed -i -e '/configure)/r ${WORKDIR}/postinst.ext' ${WORKDIR}/postinst
 
     # add hooks for secure boot
     HOOKS=${D}/etc/initramfs-tools/hooks
