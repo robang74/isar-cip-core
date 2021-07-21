@@ -8,7 +8,6 @@ variables:
   wic_targz: enable
   targz: disable
   dtb: none
-  bullseye: disable
   deploy: enable
 
 stages:
@@ -35,7 +34,7 @@ default:
     - if [ "${extention}" != "base" ]; then base_yaml="${base_yaml}:kas/opt/${extention}.yml"; fi;
     - if [ "${wic_targz}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/wic-targz-img.yml"; fi;
     - if [ "${targz}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/targz-img.yml"; fi;
-    - if [ "${bullseye}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/bullseye.yml"; fi;
+    - if [ "${release}" = "bullseye" ]; then base_yaml="${base_yaml}:kas/opt/bullseye.yml"; fi;
     - kas build ${base_yaml}
     - if [ "${deploy}" = "enable" ]; then scripts/deploy-cip-core.sh ${release} ${target} ${extention} ${dtb}; fi
 
@@ -196,7 +195,7 @@ build:simatic-ipc227e-bullseye:
     - .build_base
   variables:
     target: simatic-ipc227e
-    bullseye: enable
+    release: bullseye
 
 build:bbb-bullseye:
   extends:
@@ -204,7 +203,7 @@ build:bbb-bullseye:
   variables:
     target: bbb
     dtb: am335x-boneblack.dtb
-    bullseye: enable
+    release: bullseye
 
 build:iwg20m-bullseye:
   extends:
@@ -212,7 +211,7 @@ build:iwg20m-bullseye:
   variables:
     target: iwg20m
     dtb: r8a7743-iwg20d-q7-dbcm-ca.dtb
-    bullseye: enable
+    release: bullseye
 
 build:hihope-rzg2m-bullseye:
   extends:
@@ -220,4 +219,4 @@ build:hihope-rzg2m-bullseye:
   variables:
     target: hihope-rzg2m
     dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
-    bullseye: enable
+    release: bullseye
