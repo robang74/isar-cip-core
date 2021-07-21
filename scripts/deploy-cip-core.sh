@@ -43,7 +43,7 @@ if [ -f $BASE_PATH.tar.gz ]; then
 	aws s3 cp --no-progress $BASE_PATH.tar.gz s3://download.cip-project.org/cip-core/$TARGET/
 fi
 
-KERNEL_IMAGE=$BASE_PATH-vmlinuz
+KERNEL_IMAGE="$BASE_PATH-vmlinu[xz]"
 # iwg20m workaround
 if [ -f build/tmp/deploy/images/$TARGET/zImage ]; then
 	KERNEL_IMAGE=build/tmp/deploy/images/$TARGET/zImage
