@@ -9,6 +9,8 @@
 # SPDX-License-Identifier: MIT
 #
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+
 EXTRACT_PARTITIONS = "img4"
 ROOTFS_PARTITION_NAME="img4.gz"
 
