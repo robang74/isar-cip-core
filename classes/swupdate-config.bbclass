@@ -38,7 +38,7 @@ KFEATURE_DEPS[luahandler] = "lua"
 
 KFEATURE_efibootguard = ""
 KFEATURE_efibootguard[BUILD_DEB_DEPENDS] = "efibootguard-dev"
-KFEATURE_efibootguard[DEBIAN_DEPENDS] = "efibootguard-dev"
+KFEATURE_efibootguard[DEBIAN_DEPENDS] = ""
 KFEATURE_efibootguard[DEPENDS] = "efibootguard-dev"
 KFEATURE_efibootguard[KCONFIG_SNIPPETS] = "file://swupdate_defconfig_efibootguard.snippet"
 
