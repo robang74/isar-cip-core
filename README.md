@@ -18,16 +18,30 @@ Install `kas-container` from the [kas project](https://github.com/siemens/kas):
 Furthermore, install docker and make sure you have required permissions to
 start containers.
 
-To build, e.g., the QEMU AMD64 target inside Docker, invoke kas-container like
-this:
+Open up the image configuration menu and select the desired target and its
+options:
 
-    ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml
+    ./kas-container menu
 
-This image can be run using `start-qemu.sh x86`.
+You can direct start the build from the menu.
 
-The BeagleBone Black target is selected by `... kas-cip.yml:kas/board/bbb.yml`. In
-order to build the image with the PREEMPT-RT kernel, append `:kas/opt/rt.yml` to
-the above. Append `:kas/opt/4.4.yml` to use the kernel version 4.4 instead of 4.19.
+If you prefer selecting the configuration via the command line, this builds
+the BeagleBone Black target image with real-time kernel, e.g.:
+
+    ./kas-container build kas-cip.yml:kas/board/bbb.yml:kas/opt/rt.yml
+
+
+## Running Target Images
+
+When having built a virtual QEMU target image, this can be started directly.
+Run, e.g.,
+
+    ./start-qemu.sh x86
+
+when having built a QEMU AMD64 image. A security image for QEMU can be started
+like this:
+
+    TARGET_IMAGE=cip-core-image-security ./start-qemu.sh x86
 
 Physical targets will generate ready-to-boot images under
 `build/tmp/deploy/images/`. To flash, e.g., the BeagleBone Black image to an SD
@@ -36,14 +50,9 @@ card, run
     dd if=build/tmp/deploy/images/bbb/cip-core-image-cip-core-buster-bbb.wic.img \
        of=/dev/<medium-device> bs=1M status=progress
 
-## Building Security target images
-Building images for QEMU x86-64bit machine
+or via bmap-tools
 
-    ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/security.yml
-
-Run the generated securiy images on QEMU (x86-64bit)
-
-    TARGET_IMAGE=cip-core-image-security ./start-qemu.sh amd64
+    bmaptool copy build/tmp/deploy/images/bbb/cip-core-image-cip-core-buster-bbb.wic.img /dev/<medium-device>
 
 
 ## Community Resources

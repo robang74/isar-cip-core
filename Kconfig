@@ -1,0 +1,147 @@
+mainmenu "Isar core layer of the Civil Infrastructure Platform project"
+
+config KAS_INCLUDE_MAIN
+	string
+	default "kas-cip.yml"
+
+config KAS_BUILD_SYSTEM
+	string
+	default "isar"
+
+choice
+	prompt "Target board"
+	default TARGET_QEMU_AMD64
+
+config TARGET_QEMU_AMD64
+	bool "QEMU AMD64 (x86-64)"
+
+config TARGET_SIMATIC_IPC227E
+	bool "Siemens SIMATIC IPC227E"
+
+config TARGET_QEMU_ARM64
+	bool "QEMU ARM64 (aarch64)"
+
+config TARGET_HIHOPE_RZG2M
+	bool "HopeRun HiHope-RZ/G2M"
+
+config TARGET_QEMU_ARM
+	bool "QEMU ARM (armhf)"
+
+config TARGET_BBB
+	bool "BeagleBone Black"
+
+config TARGET_IWG20D
+	bool "iWave Systems RainboW-G20D-Qseven"
+
+endchoice
+
+config KAS_INCLUDE_BOARD
+	string
+	default "kas/board/qemu-amd64.yml" if TARGET_QEMU_AMD64
+	default "kas/board/simatic-ipc227e.yml" if TARGET_SIMATIC_IPC227E
+	default "kas/board/qemu-arm64.yml" if TARGET_QEMU_ARM64
+	default "kas/board/hihope-rzg2m.yml" if TARGET_HIHOPE_RZG2M
+	default "kas/board/qemu-arm.yml" if TARGET_QEMU_ARM
+	default "kas/board/bbb.yml" if TARGET_BBB
+	default "kas/board/iwg20m.yml" if TARGET_IWG20D
+
+comment "Kernel options"
+
+choice
+	prompt "CIP kernel version"
+	default KERNEL_4_19
+
+config KERNEL_4_4
+	bool "Kernel 4.4.x-cip"
+
+config KERNEL_4_19
+	bool "Kernel 4.19.x-cip"
+
+endchoice
+
+config KAS_INCLUDE_KERNEL
+	string
+	default "kas/opt/4.4.yml"
+	depends on KERNEL_4_4
+
+config KERNEL_RT
+	bool "Real-time CIP kernel"
+
+config KAS_INCLUDE_KERNEL_RT
+	string
+	default "kas/opt/rt.yml"
+	depends on KERNEL_RT
+
+comment "Debian distribution options"
+
+choice
+	prompt "Debian Release"
+	default DEBIAN_BUSTER
+
+config DEBIAN_STRETCH
+	bool "stretch (9)"
+
+config DEBIAN_BUSTER
+	bool "buster (10)"
+
+config DEBIAN_BULLSEYE
+	bool "bullseye (11)"
+
+endchoice
+
+config KAS_INCLUDE_DEBIAN
+	string
+	default "kas/opt/stretch.yml" if DEBIAN_STRETCH
+	default "kas/opt/bullseye.yml" if DEBIAN_BULLSEYE
+
+comment "Image features"
+
+choice
+	prompt "Image formats"
+	default IMAGE_FLASH
+
+config IMAGE_FLASH
+	bool "Flashable image"
+
+config IMAGE_ARTIFACTS
+	bool "Separate artifacts for NFS boot"
+
+endchoice
+
+config KAS_INCLUDE_IMAGE_FORMAT
+	string
+	default "kas/opt/targz.yml" if IMAGE_ARTIFACTS && (TARGET_QEMU_AMD64 || TARGET_QEMU_ARM64 || TARGET_QEMU_ARM)
+	default "kas/opt/wic-targz.yml" if IMAGE_ARTIFACTS && !(TARGET_QEMU_AMD64 || TARGET_QEMU_ARM64 || TARGET_QEMU_ARM)
+
+config IMAGE_SECURITY
+	bool "Security extensions"
+	depends on DEBIAN_BUSTER
+
+config KAS_INCLUDE_SECURITY
+	string
+	default "kas/opt/security.yml" if IMAGE_SECURITY
+
+config IMAGE_TESTING
+	bool "Test extensions"
+
+config KAS_INCLUDE_TESTING
+	string
+	default "kas/opt/test.yml" if IMAGE_TESTING
+
+if IMAGE_FLASH
+
+config IMAGE_SWUPDATE
+	bool "SWUpdate support for root partition"
+	depends on TARGET_QEMU_AMD64 || TARGET_SIMATIC_IPC227E
+
+config IMAGE_SECURE_BOOT
+	bool "Secure boot support"
+	depends on TARGET_QEMU_AMD64
+
+config KAS_INCLUDE_SWUPDATE_SECBOOT
+	string
+	default "kas/opt/ebg-swu.yml" if IMAGE_SWUPDATE && !IMAGE_SECURE_BOOT
+	default "kas/opt/ebg-secure-boot-snakeoil.yml" if !IMAGE_SWUPDATE && IMAGE_SECURE_BOOT
+	default "kas/opt/ebg-snakeoil-swu.yml" if IMAGE_SWUPDATE && IMAGE_SECURE_BOOT
+
+endif

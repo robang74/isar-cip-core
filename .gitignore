@@ -3,3 +3,4 @@ isar/
 kas-docker
 kas-container
 __pycache__
+.config.yaml*
