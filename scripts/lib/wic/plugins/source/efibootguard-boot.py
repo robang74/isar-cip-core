@@ -99,7 +99,7 @@ class EfibootguardBootPlugin(SourcePlugin):
                 exit(1)
             root_dev = root_dev.replace(":", "=")
 
-            cmdline += " root=%s rw" % root_dev
+            cmdline += " root=%s rw " % root_dev
             boot_files.append(kernel_image)
             boot_files.append(initrd_image)
             cmdline += "initrd=%s" % initrd_image if initrd_image else ""
