@@ -19,5 +19,5 @@ local_conf_header:
     IMAGE_INSTALL_append = " swupdate"
 
   wic-swu: |
-    IMAGE_TYPE ?= "wic-swu-img"
+    IMAGE_TYPE = "wic-swu-img"
     WKS_FILE ?= "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks"
