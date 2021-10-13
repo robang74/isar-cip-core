@@ -1,0 +1,30 @@
+From 0200687ad67d6e5a0e9bbdf2e8c86e3f8e717c5e Mon Sep 17 00:00:00 2001
+From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+Date: Wed, 29 Sep 2021 11:32:41 +0200
+Subject: [PATCH 5/6] debian/rules: Add Embedded Lua handler option
+
+Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+---
+ debian/rules | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/debian/rules b/debian/rules
+index 69fd790..9ace348 100755
+--- a/debian/rules
++++ b/debian/rules
+@@ -52,7 +52,12 @@ ifneq (,$(LUA_VERSION))
+ 	echo CONFIG_LUAPKG=\"lua$(LUA_VERSION)\" >> configs/debian_defconfig
+ 	echo CONFIG_LUASCRIPTHANDLER=y           >> configs/debian_defconfig
+ 	echo CONFIG_HANDLER_IN_LUA=y             >> configs/debian_defconfig
++ifneq (,$(filter pkg.swupdate.embeddedlua,$(DEB_BUILD_PROFILES)))
++	echo CONFIG_EMBEDDED_LUA_HANDLER=y                              >> configs/debian_defconfig
++	echo CONFIG_EMBEDDED_LUA_HANDLER_SOURCE=\"/usr/share/lua/$(LUA_VERSION)/swupdate_handlers.lua\" >> configs/debian_defconfig
+ endif
++endif
++
+ 	echo CONFIG_EXTRA_CFLAGS=\"$(CFLAGS) $(CPPFLAGS)\" >> configs/debian_defconfig
+ 	echo CONFIG_EXTRA_LDFLAGS=\"$(LDFLAGS)\"           >> configs/debian_defconfig
+ 	echo CONFIG_EXTRA_LDLIBS=\"$(LDLIBS)\"             >> configs/debian_defconfig
+-- 
+2.30.2
+

@@ -1,0 +1,42 @@
+From 9caabe416aca7ca2bf1cd2d8be89cfc89cedf6cd Mon Sep 17 00:00:00 2001
+From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+Date: Mon, 4 Oct 2021 17:27:11 +0200
+Subject: [PATCH 6/9] debian/rules: Add option to disable webserver
+
+Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+---
+ debian/configs/defconfig | 2 --
+ debian/rules             | 4 ++++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/debian/configs/defconfig b/debian/configs/defconfig
+index d011deb..337fcce 100644
+--- a/debian/configs/defconfig
++++ b/debian/configs/defconfig
+@@ -6,8 +6,6 @@ CONFIG_SIGALG_CMS=y
+ CONFIG_SURICATTA=y
+ CONFIG_SURICATTA_SSL=y
+ CONFIG_UPDATE_STATE_CHOICE_BOOTLOADER=y
+-CONFIG_WEBSERVER=y
+-CONFIG_MONGOOSESSL=y
+ CONFIG_ZSTD=y
+ CONFIG_UNIQUEUUID=y
+ CONFIG_RAW=y
+diff --git a/debian/rules b/debian/rules
+index 9349c22..4574b18 100755
+--- a/debian/rules
++++ b/debian/rules
+@@ -39,6 +39,10 @@ else ifneq (,$(filter pkg.swupdate.efibootguard,$(DEB_BUILD_PROFILES)))
+ else
+ 	echo CONFIG_BOOTLOADER_NONE=y                   >> configs/debian_defconfig
+ endif
++ifeq (,$(filter pkg.swupdate.nowebserver,$(DEB_BUILD_PROFILES)))
++	echo CONFIG_WEBSERVER=y   >> configs/debian_defconfig
++	echo CONFIG_MONGOOSESSL=y >> configs/debian_defconfig
++endif
+ ifeq (,$(filter pkg.swupdate.nosigning,$(DEB_BUILD_PROFILES)))
+ 	echo CONFIG_SIGNED_IMAGES=y >> configs/debian_defconfig
+ endif
+-- 
+2.30.2
+

@@ -1,0 +1,40 @@
+From 37f9afeeac5483f677b5be41b3d31e6557fcc146 Mon Sep 17 00:00:00 2001
+From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+Date: Wed, 29 Sep 2021 15:27:51 +0200
+Subject: [PATCH 3/9] debian/config: Make signing optional
+
+Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+---
+ debian/configs/defconfig | 1 -
+ debian/rules             | 3 +++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/debian/configs/defconfig b/debian/configs/defconfig
+index b38aa62..f959e44 100644
+--- a/debian/configs/defconfig
++++ b/debian/configs/defconfig
+@@ -2,7 +2,6 @@ CONFIG_SYSTEMD=y
+ CONFIG_HW_COMPATIBILITY=y
+ CONFIG_DOWNLOAD=y
+ CONFIG_DOWNLOAD_SSL=y
+-CONFIG_SIGNED_IMAGES=y
+ CONFIG_SIGALG_CMS=y
+ CONFIG_ENCRYPTED_IMAGES=y
+ CONFIG_SURICATTA=y
+diff --git a/debian/rules b/debian/rules
+index 292133b..4793c84 100755
+--- a/debian/rules
++++ b/debian/rules
+@@ -39,6 +39,9 @@ else ifneq (,$(filter pkg.swupdate.efibootguard,$(DEB_BUILD_PROFILES)))
+ else
+ 	echo CONFIG_BOOTLOADER_NONE=y                   >> configs/debian_defconfig
+ endif
++ifeq (,$(filter pkg.swupdate.nosigning,$(DEB_BUILD_PROFILES)))
++	echo CONFIG_SIGNED_IMAGES=y >> configs/debian_defconfig
++endif
+ ifneq (,$(filter pkg.swupdate.p11,$(DEB_BUILD_PROFILES)))
+ 	echo CONFIG_PKCS11=y >> configs/debian_defconfig
+ endif
+-- 
+2.30.2
+

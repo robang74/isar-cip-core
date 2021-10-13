@@ -1,0 +1,72 @@
+From 16dd48c2282aba91f8fc1f458f7b0c06504cac19 Mon Sep 17 00:00:00 2001
+From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+Date: Wed, 29 Sep 2021 16:17:03 +0200
+Subject: [PATCH 9/9] debian: prepare build for isar debian buster
+
+Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+---
+ debian/compat  |  1 +
+ debian/control | 10 +++++-----
+ debian/rules   |  4 +++-
+ 3 files changed, 9 insertions(+), 6 deletions(-)
+ create mode 100644 debian/compat
+
+diff --git a/debian/compat b/debian/compat
+new file mode 100644
+index 0000000..f599e28
+--- /dev/null
++++ b/debian/compat
+@@ -0,0 +1 @@
++10
+diff --git a/debian/control b/debian/control
+index 6031537..710cb2d 100644
+--- a/debian/control
++++ b/debian/control
+@@ -4,7 +4,7 @@ Priority: optional
+ Maintainer: Stefano Babic <sbabic@denx.de>
+ Uploaders: SZ Lin (林上智) <szlin@debian.org>,
+            Nobuhiro Iwamatsu <iwamatsu@debian.org>
+-Build-Depends: debhelper-compat (= 13),
++Build-Depends: debhelper,
+                dh-lua:native <!nolua>,
+                liblua5.2-dev <!nolua>,
+                libfdisk-dev,
+@@ -23,10 +23,10 @@ Build-Depends: debhelper-compat (= 13),
+                libzstd-dev,
+                libp11-kit-dev <pkg.swupdate.p11>,
+                libwolfssl-dev <pkg.swupdate.p11>,
+-               libmtd-dev <!pkg.swupdate.bpo>,
+-               libubi-dev <!pkg.swupdate.bpo>,
+-               libwebsockets-dev (>= 3.2.0) <!pkg.swupdate.bpo>,
+-               liburiparser-dev <!pkg.swupdate.bpo>,
++               libmtd-dev <pkg.swupdate.mtd> <pkg.swupdate.ubi>,
++               libubi-dev <pkg.swupdate.ubi>,
++               libwebsockets-dev,
++               liburiparser-dev,
+                libubootenv-dev <pkg.swupdate.uboot>,
+                efibootguard-dev <pkg.swupdate.efibootguard>,
+                libcmocka-dev,
+diff --git a/debian/rules b/debian/rules
+index a1f73fd..a2ae1ac 100755
+--- a/debian/rules
++++ b/debian/rules
+@@ -19,13 +19,15 @@ endif
+ 
+ override_dh_auto_configure:
+ 	cp debian/configs/defconfig  configs/debian_defconfig
+-ifeq (,$(filter pkg.swupdate.bpo,$(DEB_BUILD_PROFILES)))
++ifneq (,$(filter pkg.swupdate.mtd,$(DEB_BUILD_PROFILES)))
+ 	echo CONFIG_MTD=y                  >> configs/debian_defconfig
++ifneq (,$(filter pkg.swupdate.ubi,$(DEB_BUILD_PROFILES)))
+ 	echo CONFIG_SWUFORWARDER_HANDLER=y >> configs/debian_defconfig
+ 	echo CONFIG_CFI=y                  >> configs/debian_defconfig
+ 	echo CONFIG_CFIHAMMING1=y          >> configs/debian_defconfig
+ 	echo CONFIG_UBIVOL=y               >> configs/debian_defconfig
+ 	echo CONFIG_SSBLSWITCH=y           >> configs/debian_defconfig
++endif
+ else
+ 	echo "# CONFIG_MTD is not set"     >> configs/debian_defconfig
+ endif
+-- 
+2.30.2
+

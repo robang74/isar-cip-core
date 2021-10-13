@@ -1,0 +1,27 @@
+From 43365f98d70d83dac42913ff907a8a9dd25a4333 Mon Sep 17 00:00:00 2001
+From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+Date: Wed, 29 Sep 2021 11:29:57 +0200
+Subject: [PATCH 2/9] debian/rules: Add CONFIG_MTD
+
+if pkg.swupdate.bpo is set CONFIG_MTD is disable but not enabled.
+
+Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+---
+ debian/rules | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/debian/rules b/debian/rules
+index c076839..292133b 100755
+--- a/debian/rules
++++ b/debian/rules
+@@ -20,6 +20,7 @@ endif
+ override_dh_auto_configure:
+ 	cp debian/configs/defconfig  configs/debian_defconfig
+ ifeq (,$(filter pkg.swupdate.bpo,$(DEB_BUILD_PROFILES)))
++	echo CONFIG_MTD=y                  >> configs/debian_defconfig
+ 	echo CONFIG_SWUFORWARDER_HANDLER=y >> configs/debian_defconfig
+ 	echo CONFIG_CFI=y                  >> configs/debian_defconfig
+ 	echo CONFIG_CFIHAMMING1=y          >> configs/debian_defconfig
+-- 
+2.30.2
+
