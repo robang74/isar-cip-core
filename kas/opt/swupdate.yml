@@ -17,6 +17,7 @@ header:
 local_conf_header:
   swupdate: |
     IMAGE_INSTALL_append = " swupdate"
+    IMAGE_INSTALL_append = " swupdate-handler-roundrobin"
 
   wic-swu: |
     IMAGE_TYPE = "wic-swu-img"
