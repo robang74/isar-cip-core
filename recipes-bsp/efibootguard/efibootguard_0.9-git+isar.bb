@@ -22,7 +22,7 @@ SRC_URI = "git://github.com/siemens/efibootguard.git;branch=master;protocol=http
 
 S = "${WORKDIR}/git"
 
-SRCREV = "ac1685aea75fb3e3d16c0c0e4f8261a2edb63536"
+SRCREV = "c01324d0da202727eb0744c0f67a78f9c9b65c46"
 
 PROVIDES = "${PN}"
 PROVIDES += "${PN}-dev"
