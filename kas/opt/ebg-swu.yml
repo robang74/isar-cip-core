@@ -12,5 +12,5 @@
 header:
   version: 10
   includes:
-   - efibootguard.yml
-   - swupdate.yml
+   - kas/opt/efibootguard.yml
+   - kas/opt/swupdate.yml

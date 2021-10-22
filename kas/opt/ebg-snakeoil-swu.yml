@@ -12,5 +12,5 @@
 header:
   version: 10
   includes:
-   - ebg-secure-boot-snakeoil.yml
-   - swupdate.yml
+   - kas/opt/ebg-secure-boot-snakeoil.yml
+   - kas/opt/swupdate.yml

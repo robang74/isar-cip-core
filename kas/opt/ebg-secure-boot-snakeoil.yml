@@ -12,7 +12,7 @@
 header:
   version: 10
   includes:
-   - ebg-secure-boot-base.yml
+   - kas/opt/ebg-secure-boot-base.yml
 
 
 local_conf_header:
