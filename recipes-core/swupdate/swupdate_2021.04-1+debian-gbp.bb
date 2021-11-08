@@ -28,6 +28,8 @@ SRC_URI += "file://0001-debian-Add-option-to-build-with-efibootguard.patch \
 # deactivate signing and encryption for simple a/b rootfs update
 SWUPDATE_BUILD_PROFILES += "pkg.swupdate.nosigning pkg.swupdate.noencryption"
 
+# add cross build and deactivate testing for arm based builds
+SWUPDATE_BUILD_PROFILES += "cross nocheck"
 # If the luahandler shall be embedded into the swupdate binary
 # include the following lines.
 # DEPENDS += "swupdate-handlers"
