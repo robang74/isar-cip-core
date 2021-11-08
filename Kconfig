@@ -110,8 +110,8 @@ endchoice
 
 config KAS_INCLUDE_IMAGE_FORMAT
 	string
-	default "kas/opt/targz.yml" if IMAGE_ARTIFACTS && (TARGET_QEMU_AMD64 || TARGET_QEMU_ARM64 || TARGET_QEMU_ARM)
-	default "kas/opt/wic-targz.yml" if IMAGE_ARTIFACTS && !(TARGET_QEMU_AMD64 || TARGET_QEMU_ARM64 || TARGET_QEMU_ARM)
+	default "kas/opt/targz-img.yml" if IMAGE_ARTIFACTS && (TARGET_QEMU_AMD64 || TARGET_QEMU_ARM64 || TARGET_QEMU_ARM)
+	default "kas/opt/wic-targz-img.yml" if IMAGE_ARTIFACTS && !(TARGET_QEMU_AMD64 || TARGET_QEMU_ARM64 || TARGET_QEMU_ARM)
 
 config IMAGE_SECURITY
 	bool "Security extensions"
