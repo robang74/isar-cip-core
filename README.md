@@ -23,7 +23,7 @@ options:
 
     ./kas-container menu
 
-You can direct start the build from the menu.
+You can directly start the build from the menu.
 
 If you prefer selecting the configuration via the command line, this builds
 the BeagleBone Black target image with real-time kernel, e.g.:
