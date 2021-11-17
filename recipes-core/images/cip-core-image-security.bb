@@ -17,20 +17,20 @@ IMAGE_INSTALL += "security-customizations"
 
 # Debian packages that provide security features
 IMAGE_PREINSTALL += " \
-	openssl libssl1.1 \
+	openssl \
 	fail2ban \
 	openssh-server openssh-sftp-server openssh-client \
 	syslog-ng-core syslog-ng-mod-journal \
-	aide aide-common \
-	libnftables0 nftables \
+	aide \
+	nftables \
 	libpam-pkcs11 \
 	chrony \
 	tpm2-tools \
 	tpm2-abrmd \
-	libtss2-esys0 libtss2-udev \
+	libtss2-esys0 \
 	libpam-cracklib \
 	acl \
-	libauparse0 audispd-plugins auditd \
+	audispd-plugins auditd \
 	uuid-runtime \
 	sudo \
 "
