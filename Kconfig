@@ -115,7 +115,6 @@ config KAS_INCLUDE_IMAGE_FORMAT
 
 config IMAGE_SECURITY
 	bool "Security extensions"
-	depends on DEBIAN_BUSTER
 
 config KAS_INCLUDE_SECURITY
 	string
