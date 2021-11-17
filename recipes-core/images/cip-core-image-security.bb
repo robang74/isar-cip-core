@@ -27,10 +27,15 @@ IMAGE_PREINSTALL += " \
 	chrony \
 	tpm2-tools \
 	tpm2-abrmd \
-	libtss2-esys0 \
 	libpam-cracklib \
 	acl \
 	audispd-plugins auditd \
 	uuid-runtime \
 	sudo \
 "
+
+OVERRIDES_append = ":${BASE_DISTRO_CODENAME}"
+
+# Package names based on the distro version
+IMAGE_PREINSTALL_append_buster = " libtss2-esys0"
+IMAGE_PREINSTALL_append_bullseye = " libtss2-esys-3.0.2-0"
