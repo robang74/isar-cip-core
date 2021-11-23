@@ -18,10 +18,15 @@ SRC_URI = " \
     file://ethernet \
     file://99-silent-printk.conf"
 
+WIRELESS_FIRMWARE_PACKAGE ?= ""
+INSTALL_WIRELESS_TOOLS ??= "0"
+
 DEPENDS += "sshd-regen-keys"
 
 DEBIAN_DEPENDS = " \
-    ifupdown, isc-dhcp-client, net-tools, iputils-ping, ssh, sshd-regen-keys"
+    ifupdown, isc-dhcp-client, net-tools, iputils-ping, ssh, sshd-regen-keys \
+    ${@(', iw, wireless-regdb, ' + d.getVar('WIRELESS_FIRMWARE_PACKAGE')) \
+	if d.getVar('INSTALL_WIRELESS_TOOLS') == '1' else ''}"
 
 do_install() {
 	install -v -d ${D}/etc/network/interfaces.d
