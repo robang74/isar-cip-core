@@ -120,18 +120,16 @@ if [ -n "${SECURE_BOOT}" ]; then
 		BOOT_FILES="-drive if=pflash,format=raw,unit=0,readonly=on,file=${ovmf_code} \
 			-drive if=pflash,format=raw,file=${ovmf_vars} \
 			-drive file=${IMAGE_PREFIX}.wic.img,discard=unmap,if=none,id=disk,format=raw"
-		${QEMU_PATH}${QEMU} \
-			-m 1G -serial mon:stdio -netdev user,id=net \
-			${BOOT_FILES} ${QEMU_EXTRA_ARGS} "$@"
 else
 		IMAGE_FILE=$(ls ${IMAGE_PREFIX}.ext4.img)
 
 		KERNEL_FILE=$(ls ${IMAGE_PREFIX}-vmlinu* | tail -1)
 		INITRD_FILE=$(ls ${IMAGE_PREFIX}-initrd.img* | tail -1)
 
-		${QEMU_PATH}${QEMU} \
-			-m 1G -serial mon:stdio -netdev user,id=net \
-			-drive file=${IMAGE_FILE},discard=unmap,if=none,id=disk,format=raw \
+		BOOT_FILES="-drive file=${IMAGE_FILE},discard=unmap,if=none,id=disk,format=raw \
 			-kernel ${KERNEL_FILE} -append "${KERNEL_CMDLINE}" \
-			-initrd ${INITRD_FILE} ${QEMU_EXTRA_ARGS} "$@"
+			-initrd ${INITRD_FILE}"
 fi
+${QEMU_PATH}${QEMU} \
+			-m 1G -serial mon:stdio -netdev user,id=net \
+			${BOOT_FILES} ${QEMU_EXTRA_ARGS} "$@"
