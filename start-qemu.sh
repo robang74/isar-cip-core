@@ -20,13 +20,24 @@ usage()
 	exit 1
 }
 
+if grep -s -q "IMAGE_SECURE_BOOT: true" .config.yaml; then
+	SECURE_BOOT="true"
+fi
+
 if [ -n "${QEMU_PATH}" ]; then
 	QEMU_PATH="${QEMU_PATH}/"
 fi
 
 if [ -z "${DISTRO_RELEASE}" ]; then
-  DISTRO_RELEASE="buster"
+	if grep -s -q "DEBIAN_BULLSEYE: true" .config.yaml; then
+		DISTRO_RELEASE="bullseye"
+	elif grep -s -q "DEBIAN_STRETCH: true" .config.yaml; then
+		DISTRO_RELEASE="stretch"
+	else
+		DISTRO_RELEASE="buster"
+	fi
 fi
+
 if [ -z "${TARGET_IMAGE}" ];then
 	TARGET_IMAGE="cip-core-image"
 fi
