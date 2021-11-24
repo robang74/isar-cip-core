@@ -181,6 +181,13 @@ SECURE_BOOT=y \
 ./start-qemu.sh amd64
 ```
 
+The image configuration menu will set default values for start-qemu.sh for secureboot
+and the following command is sufficient:
+
+```
+./start-qemu.sh amd64
+```
+
 The default `OVMF_VARS.snakeoil_4M.fd` boot to the EFI shell. To boot Linux enter the following command:
 ```
 FS0:\EFI\BOOT\bootx64.efi

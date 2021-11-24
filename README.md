@@ -38,8 +38,9 @@ Run, e.g.,
 
     ./start-qemu.sh x86
 
-when having built a QEMU AMD64 image. A security image for QEMU can be started
-like this:
+when having built a QEMU AMD64 image. Using the image configuration menu will
+initialize variables used by start-qemu.sh with fitting defaults. Otherwise, a
+security image for QEMU can be started like this:
 
     TARGET_IMAGE=cip-core-image-security ./start-qemu.sh x86
 
