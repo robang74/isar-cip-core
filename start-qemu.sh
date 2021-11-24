@@ -39,8 +39,14 @@ case "$1" in
 			-cpu qemu64 \
 			-smp 4 \
 			-machine q35,accel=kvm:tcg \
-			-device ide-hd,drive=disk \
 			-device virtio-net-pci,netdev=net"
+		if [ -n "${SECURE_BOOT}" ]; then
+			QEMU_EXTRA_ARGS=" \
+			${QEMU_EXTRA_ARGS} -device ide-hd,drive=disk,bootindex=0"
+		else
+			QEMU_EXTRA_ARGS=" \
+			${QEMU_EXTRA_ARGS} -device ide-hd,drive=disk"
+		fi
 		KERNEL_CMDLINE=" \
 			root=/dev/sda"
 		;;
