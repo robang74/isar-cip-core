@@ -40,6 +40,9 @@ fi
 
 if [ -z "${TARGET_IMAGE}" ];then
 	TARGET_IMAGE="cip-core-image"
+	if grep -s -q "IMAGE_SECURITY: true" .config.yaml; then
+		TARGET_IMAGE="cip-core-image-security"
+	fi
 fi
 
 case "$1" in
