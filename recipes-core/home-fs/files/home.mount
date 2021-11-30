@@ -1,0 +1,12 @@
+[Unit]
+Description=Mount /home partition
+Before=local-fs.target
+
+[Mount]
+What=/dev/disk/by-partlabel/home
+Where=/home
+Type=auto
+Options=defaults
+
+[Install]
+WantedBy=local-fs.target
