@@ -29,18 +29,19 @@ if [ "${EXTENSION}" != "base" ] ; then
 fi
 
 BASE_PATH=build/tmp/deploy/images/$TARGET/$BASE_FILENAME
+S3_TARGET=s3://download2.cip-project.org/cip-core/$TARGET/
 
 if [ -f $BASE_PATH.wic.img ] ; then
 	echo "Compressing $BASE_FILENAME.wic.img..."
 	xz -9 -k $BASE_PATH.wic.img
 
 	echo "Uploading artifacts..."
-	aws s3 cp --no-progress $BASE_PATH.wic.img.xz s3://download.cip-project.org/cip-core/$TARGET/
+	aws s3 cp --no-progress $BASE_PATH.wic.img.xz ${S3_TARGET}
 fi
 
 if [ -f $BASE_PATH.tar.gz ]; then
 	echo "Uploading artifacts..."
-	aws s3 cp --no-progress $BASE_PATH.tar.gz s3://download.cip-project.org/cip-core/$TARGET/
+	aws s3 cp --no-progress $BASE_PATH.tar.gz ${S3_TARGET}
 fi
 
 KERNEL_IMAGE="$BASE_PATH-vmlinu[xz]"
@@ -48,9 +49,9 @@ KERNEL_IMAGE="$BASE_PATH-vmlinu[xz]"
 if [ -f build/tmp/deploy/images/$TARGET/zImage ]; then
 	KERNEL_IMAGE=build/tmp/deploy/images/$TARGET/zImage
 fi
-aws s3 cp --no-progress $KERNEL_IMAGE s3://download.cip-project.org/cip-core/$TARGET/
-aws s3 cp --no-progress $BASE_PATH-initrd.img s3://download.cip-project.org/cip-core/$TARGET/
+aws s3 cp --no-progress $KERNEL_IMAGE ${S3_TARGET}
+aws s3 cp --no-progress $BASE_PATH-initrd.img ${S3_TARGET}
 
 if [ "$DTB" != "none" ]; then
-	aws s3 cp --no-progress build/tmp/work/cip-core-*/linux-cip*/*/linux-cip-*/debian/linux-image-cip*/usr/lib/linux-image-*/$DTB s3://download.cip-project.org/cip-core/$TARGET/
+	aws s3 cp --no-progress build/tmp/work/cip-core-*/linux-cip*/*/linux-cip-*/debian/linux-image-cip*/usr/lib/linux-image-*/$DTB ${S3_TARGET}
 fi
