@@ -1,0 +1,14 @@
+[Unit]
+Description=set hostname /etc overlay-aware
+Before=network-pre.target
+Wants=network-pre.target
+Requires=etc.mount
+After=etc.mount
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/hostname --boot --file /etc/hostname
+
+[Install]
+WantedBy=basic.target

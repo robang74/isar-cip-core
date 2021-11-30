@@ -2,6 +2,7 @@ require cip-core-image.bb
 
 SQUASHFS_EXCLUDE_DIRS += "home var"
 
+IMAGE_INSTALL += "etc-overlay-fs"
 IMAGE_INSTALL += "tmp-fs"
 IMAGE_INSTALL_remove += "initramfs-abrootfs-secureboot"
 
