@@ -2,10 +2,6 @@
 
 set -e
 
-if [ "$CI_COMMIT_REF_NAME" != "master" ]; then
-	exit 0
-fi
-
 PATH=$PATH:~/.local/bin
 
 if ! which aws 2>&1 >/dev/null; then
@@ -18,6 +14,7 @@ RELEASE=$1
 TARGET=$2
 EXTENSION=$3
 DTB=$4
+REF=$5
 
 BASE_FILENAME=cip-core-image-cip-core-$RELEASE-$TARGET
 if [ "${EXTENSION}" != "base" ] ; then
@@ -29,7 +26,7 @@ if [ "${EXTENSION}" != "base" ] ; then
 fi
 
 BASE_PATH=build/tmp/deploy/images/$TARGET/$BASE_FILENAME
-S3_TARGET=s3://download2.cip-project.org/cip-core/$TARGET/
+S3_TARGET=s3://download2.cip-project.org/cip-core/$REF/$TARGET/
 
 if [ -f $BASE_PATH.wic.img ] ; then
 	echo "Compressing $BASE_FILENAME.wic.img..."
