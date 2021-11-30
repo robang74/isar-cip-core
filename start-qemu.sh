@@ -42,6 +42,9 @@ if [ -z "${TARGET_IMAGE}" ];then
 	TARGET_IMAGE="cip-core-image"
 	if grep -s -q "IMAGE_SECURITY: true" .config.yaml; then
 		TARGET_IMAGE="cip-core-image-security"
+    fi
+	if [ -n "${SECURE_BOOT}" ]; then
+		TARGET_IMAGE="cip-core-image-read-only"
 	fi
 fi
 
@@ -55,6 +58,7 @@ case "$1" in
 			-machine q35,accel=kvm:tcg \
 			-device virtio-net-pci,netdev=net"
 		if [ -n "${SECURE_BOOT}" ]; then
+            # set bootindex=0 to boot disk instead of EFI-shell
 			QEMU_EXTRA_ARGS=" \
 			${QEMU_EXTRA_ARGS} -device ide-hd,drive=disk,bootindex=0"
 		else

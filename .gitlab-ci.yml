@@ -179,17 +179,6 @@ build:qemu-amd64-swupdate:
     targz: disable
     deploy: disable
 
-build:qemu-amd64-secure-boot-swu:
-  extends:
-    - .build_base
-  variables:
-    target: qemu-amd64
-    extention: ebg-snakeoil-swu
-    use_rt: disable
-    wic_targz: disable
-    targz: disable
-    deploy: disable
-
 # bullseye images
 build:simatic-ipc227e-bullseye:
   extends:

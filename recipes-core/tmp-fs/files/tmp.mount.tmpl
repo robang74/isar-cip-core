@@ -1,0 +1,11 @@
+[Unit]
+Description=Create /tmp
+
+[Mount]
+What=tmpfs
+Where=/tmp
+Type=tmpfs
+Options=${TMP_OPTIONS}
+
+[Install]
+WantedBy=local-fs.target
