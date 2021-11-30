@@ -25,6 +25,11 @@ SRC_URI += "file://0001-debian-Add-option-to-build-with-efibootguard.patch \
             file://0007-debian-Make-CONFIG_HW_COMPATIBILTY-optional.patch \
             file://0008-debian-rules-Add-Embedded-Lua-handler-option.patch"
 
+# Patch for dm-verity based images - can be removed with next SWUpdate release
+SRC_URI += "file://0001-debian-patches-add-patches-for-dm-verity.patch"
+
+# end patching for dm-verity based images
+
 # deactivate signing and encryption for simple a/b rootfs update
 SWUPDATE_BUILD_PROFILES += "pkg.swupdate.nosigning pkg.swupdate.noencryption"
 
