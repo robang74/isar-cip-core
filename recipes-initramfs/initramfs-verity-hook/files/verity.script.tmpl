@@ -1,0 +1,70 @@
+#!/bin/sh
+prereqs()
+{
+    # Make sure that this script is run last in local-top
+    # If the script cryptroot is installed this script
+    # should be second to last
+    local req
+    for req in "${0%/*}"/*; do
+        script="${req##*/}"
+        if [ "$script" != "${0##*/}" ] && [ "$script" != "cryptroot" ]; then
+            printf '%s\n' "$script"
+        fi
+    done
+}
+case $1 in
+prereqs)
+    prereqs
+    exit 0
+    ;;
+esac
+
+. /scripts/functions
+. /lib/cryptsetup/functions
+. /usr/share/verity-env/verity.env
+# Even if this script fails horribly, make sure there won't be a chance the
+# current $ROOT will be attempted.  As this device most likely contains a
+# perfectly valid filesystem, it would be mounted successfully, leading to a
+# broken trust chain.
+echo "ROOT=/dev/null" >/conf/param.conf
+wait_for_udev 10
+case "$ROOT" in
+    PART*)
+        # root was given as PARTUUID= or PARTLABEL=. Use blkid to find the matching
+        # partition
+        ROOT=$(blkid --list-one --output device --match-token "$ROOT")
+        ;;
+    "")
+        # No Root device was given. Use veritysetup verify to search matching roots
+        partitions=$(blkid -o device)
+        for part in $partitions; do
+            if [ "$(blkid -p ${part} --match-types novfat -s USAGE -o value)" = "filesystem" ]; then
+                if veritysetup verify \
+                   "$part" "$part" "${ROOT_HASH}" \
+                   --hash-offset "${HASH_OFFSET}";then
+                    ROOT="$part"
+                    break
+                fi
+            fi
+        done
+        ;;
+esac
+set -- "$ROOT" verityroot
+if ! veritysetup open \
+     ${VERITY_BEHAVIOR_ON_CORRUPTION} \
+     --data-block-size "${DATA_BLOCK_SIZE}" \
+     --hash-block-size "${HASH_BLOCK_SIZE}" \
+     --data-blocks "${DATA_BLOCKS}" \
+     --hash-offset "${HASH_OFFSET}" \
+     --salt "${SALT}" \
+     "$1" "$2" "$1" "${ROOT_HASH}"; then
+    panic "Can't open verity rootfs - continuing will lead to a broken trust chain!"
+fi
+
+wait_for_udev 10
+
+if ! ROOT="$(dm_blkdevname verityroot)"; then
+    panic "Can't find the verity root device!"
+fi
+
+echo "ROOT=${ROOT}" >/conf/param.conf

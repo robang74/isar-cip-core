@@ -1,0 +1,23 @@
+#!/bin/sh
+PREREQ=""
+prereqs()
+{
+    echo "$PREREQ"
+}
+case $1 in
+prereqs)
+    prereqs
+    exit 0
+    ;;
+esac
+
+. /usr/share/initramfs-tools/hook-functions
+# Begin real processing below this line
+
+manual_add_modules dm_mod
+manual_add_modules dm_verity
+
+copy_exec /sbin/veritysetup
+copy_exec /sbin/dmsetup
+copy_file library /lib/cryptsetup/functions /lib/cryptsetup/functions
+copy_file library /usr/share/verity-env/verity.env /usr/share/verity-env/verity.env
