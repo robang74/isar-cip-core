@@ -1,0 +1,35 @@
+From 34b37fccd5e454d29d6d4d002d48a9619782b1bb Mon Sep 17 00:00:00 2001
+From: Felix Moessbauer <felix.moessbauer@siemens.com>
+Date: Wed, 3 Nov 2021 13:53:00 +0100
+Subject: [PATCH] Fix permissions when splitting rootfs folders across
+ partitions.
+
+This patches ensures that the file database containing the file and
+folder usernames and permissions is always located relative to the
+source and not to the appended rootfs-dir.
+
+Prior to this patch, the database was not found when using
+-rootfs-dir in the WIC script, leading to erronous file
+permissions and ownership.
+
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+---
+ scripts/lib/wic/plugins/source/rootfs.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/lib/wic/plugins/source/rootfs.py b/scripts/lib/wic/plugins/source/rootfs.py
+index 96d940a9..5ab771e5 100644
+--- a/scripts/lib/wic/plugins/source/rootfs.py
++++ b/scripts/lib/wic/plugins/source/rootfs.py
+@@ -95,7 +95,7 @@ class RootfsPlugin(SourcePlugin):
+ 
+         part.rootfs_dir = cls.__get_rootfs_dir(rootfs_dir)
+         part.has_fstab = os.path.exists(os.path.join(part.rootfs_dir, "etc/fstab"))
+-        pseudo_dir = os.path.join(part.rootfs_dir, "../pseudo")
++        pseudo_dir = os.path.join(krootfs_dir['ROOTFS_DIR'], "../pseudo")
+         if not os.path.lexists(pseudo_dir):
+             logger.warn("%s folder does not exist. "
+                         "Usernames and permissions will be invalid " % pseudo_dir)
+-- 
+2.30.2
+

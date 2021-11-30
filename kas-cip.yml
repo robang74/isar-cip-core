@@ -25,6 +25,10 @@ repos:
     refspec: ceb7e21154fc4862f704bb5c7739e87a26db6eb3
     layers:
       meta:
+    patches:
+      fix-pseudo:
+        repo: cip-core
+        path: patches/isar/0001-Fix-permissions-when-splitting-rootfs-folders-across.patch
 
 bblayers_conf_header:
   standard: |
