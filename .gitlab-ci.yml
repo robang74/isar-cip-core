@@ -3,7 +3,7 @@ image: ghcr.io/siemens/kas/kas-isar:2.6.2
 variables:
   GIT_STRATEGY: clone
   release: buster
-  extention: base
+  extension: base
   use_rt: enable
   wic_targz: enable
   targz: disable
@@ -31,13 +31,13 @@ default:
   script:
     - sudo rm -rf build/tmp
     - if [ "${use_rt}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/rt.yml"; fi;
-    - if [ "${extention}" != "base" ]; then base_yaml="${base_yaml}:kas/opt/${extention}.yml"; fi;
+    - if [ "${extension}" != "base" ]; then base_yaml="${base_yaml}:kas/opt/${extension}.yml"; fi;
     - if [ "${wic_targz}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/wic-targz-img.yml"; fi;
     - if [ "${targz}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/targz-img.yml"; fi;
     - if [ "${release}" = "bullseye" ]; then base_yaml="${base_yaml}:kas/opt/bullseye.yml"; fi;
     - echo "Building ${base_yaml}"
     - kas build ${base_yaml}
-    - if [ "${deploy}" = "enable" ]; then scripts/deploy-cip-core.sh ${release} ${target} ${extention} ${dtb} ${CI_COMMIT_REF_SLUG}; fi
+    - if [ "${deploy}" = "enable" ]; then scripts/deploy-cip-core.sh ${release} ${target} ${extension} ${dtb} ${CI_COMMIT_REF_SLUG}; fi
 
 # base image
 build:simatic-ipc227e-base:
@@ -72,7 +72,7 @@ build:qemu-amd64-base:
     - .build_base
   variables:
     target: qemu-amd64
-    extention: security
+    extension: security
     use_rt: disable
     wic_targz: disable
     targz: enable
@@ -82,7 +82,7 @@ build:qemu-arm64-base:
     - .build_base
   variables:
     target: qemu-arm64
-    extention: security
+    extension: security
     use_rt: disable
     wic_targz: disable
     targz: enable
@@ -92,7 +92,7 @@ build:qemu-arm-base:
     - .build_base
   variables:
     target: qemu-arm
-    extention: security
+    extension: security
     use_rt: disable
     wic_targz: disable
     targz: enable
@@ -103,14 +103,14 @@ build:simatic-ipc227e-test:
     - .build_base
   variables:
     target: simatic-ipc227e
-    extention: test
+    extension: test
 
 build:bbb-test:
   extends:
     - .build_base
   variables:
     target: bbb
-    extention: test
+    extension: test
     dtb: am335x-boneblack.dtb
 
 build:iwg20m-test:
@@ -118,7 +118,7 @@ build:iwg20m-test:
     - .build_base
   variables:
     target: iwg20m
-    extention: test
+    extension: test
     dtb: r8a7743-iwg20d-q7-dbcm-ca.dtb
 
 build:hihope-rzg2m-test:
@@ -126,7 +126,7 @@ build:hihope-rzg2m-test:
     - .build_base
   variables:
     target: hihope-rzg2m
-    extention: test
+    extension: test
     dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
 
 build:qemu-amd64-test:
@@ -134,7 +134,7 @@ build:qemu-amd64-test:
     - .build_base
   variables:
     target:  qemu-amd64
-    extention: test
+    extension: test
     wic_targz: disable
     targz: enable
 
@@ -143,7 +143,7 @@ build:qemu-arm64-test:
     - .build_base
   variables:
     target:  qemu-arm64
-    extention: test
+    extension: test
     wic_targz: disable
     targz: enable
 
@@ -152,7 +152,7 @@ build:qemu-arm-test:
     - .build_base
   variables:
     target:  qemu-arm
-    extention: test
+    extension: test
     wic_targz: disable
     targz: enable
 
@@ -162,7 +162,7 @@ build:qemu-amd64-secure-boot:
     - .build_base
   variables:
     target: qemu-amd64
-    extention: ebg-secure-boot-snakeoil
+    extension: ebg-secure-boot-snakeoil
     use_rt: disable
     wic_targz: disable
     targz: disable
@@ -173,7 +173,7 @@ build:qemu-amd64-swupdate:
     - .build_base
   variables:
     target: qemu-amd64
-    extention: ebg-swu
+    extension: ebg-swu
     use_rt: disable
     wic_targz: disable
     targz: disable
