@@ -33,12 +33,12 @@ if [ -f $BASE_PATH.wic.img ] ; then
 	xz -9 -k $BASE_PATH.wic.img
 
 	echo "Uploading artifacts..."
-	aws s3 cp --no-progress $BASE_PATH.wic.img.xz ${S3_TARGET}
+	aws s3 cp --no-progress --acl public-read $BASE_PATH.wic.img.xz ${S3_TARGET}
 fi
 
 if [ -f $BASE_PATH.tar.gz ]; then
 	echo "Uploading artifacts..."
-	aws s3 cp --no-progress $BASE_PATH.tar.gz ${S3_TARGET}
+	aws s3 cp --no-progress --acl public-read $BASE_PATH.tar.gz ${S3_TARGET}
 fi
 
 KERNEL_IMAGE="$BASE_PATH-vmlinu[xz]"
@@ -46,9 +46,9 @@ KERNEL_IMAGE="$BASE_PATH-vmlinu[xz]"
 if [ -f build/tmp/deploy/images/$TARGET/zImage ]; then
 	KERNEL_IMAGE=build/tmp/deploy/images/$TARGET/zImage
 fi
-aws s3 cp --no-progress $KERNEL_IMAGE ${S3_TARGET}
-aws s3 cp --no-progress $BASE_PATH-initrd.img ${S3_TARGET}
+aws s3 cp --no-progress --acl public-read $KERNEL_IMAGE ${S3_TARGET}
+aws s3 cp --no-progress --acl public-read $BASE_PATH-initrd.img ${S3_TARGET}
 
 if [ "$DTB" != "none" ]; then
-	aws s3 cp --no-progress build/tmp/work/cip-core-*/linux-cip*/*/linux-cip-*/debian/linux-image-cip*/usr/lib/linux-image-*/$DTB ${S3_TARGET}
+	aws s3 cp --no-progress --acl public-read build/tmp/work/cip-core-*/linux-cip*/*/linux-cip-*/debian/linux-image-cip*/usr/lib/linux-image-*/$DTB ${S3_TARGET}
 fi
