@@ -61,8 +61,8 @@ endchoice
 
 config KAS_INCLUDE_KERNEL
 	string
-	default "kas/opt/4.4.yml"
-	depends on KERNEL_4_4
+	default "kas/opt/4.4.yml" if KERNEL_4_4
+	default "kas/opt/4.19.yml" if KERNEL_4_19
 
 config KERNEL_RT
 	bool "Real-time CIP kernel"
