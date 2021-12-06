@@ -49,7 +49,7 @@ comment "Kernel options"
 
 choice
 	prompt "CIP kernel version"
-	default KERNEL_4_19
+	default KERNEL_5_10
 
 config KERNEL_4_4
 	bool "Kernel 4.4.x-cip"
@@ -57,15 +57,20 @@ config KERNEL_4_4
 config KERNEL_4_19
 	bool "Kernel 4.19.x-cip"
 
+config KERNEL_5_10
+	bool "Kernel 5.10.x-cip"
+
 endchoice
 
 config KAS_INCLUDE_KERNEL
 	string
 	default "kas/opt/4.4.yml" if KERNEL_4_4
 	default "kas/opt/4.19.yml" if KERNEL_4_19
+	default "kas/opt/5.10.yml" if KERNEL_5_10
 
 config KERNEL_RT
 	bool "Real-time CIP kernel"
+	depends on !KERNEL_5_10
 
 config KAS_INCLUDE_KERNEL_RT
 	string

@@ -9,8 +9,6 @@
 # SPDX-License-Identifier: MIT
 #
 
-require conf/distro/debian-bullseye.conf
-require cip-core-common.inc
+require linux-cip-common.inc
 
-PREFERRED_VERSION_linux-cip ?= "5.10.%"
-PREFERRED_VERSION_linux-cip-rt ?= "4.19.%"
+SRC_URI[sha256sum] = "85af8f809b2505c6434266d6658d977d62d383889b3a4f9968b2764794108d4f"

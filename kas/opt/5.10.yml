@@ -9,8 +9,10 @@
 # SPDX-License-Identifier: MIT
 #
 
-require conf/distro/debian-bullseye.conf
-require cip-core-common.inc
+header:
+  version: 10
 
-PREFERRED_VERSION_linux-cip ?= "5.10.%"
-PREFERRED_VERSION_linux-cip-rt ?= "4.19.%"
+local_conf_header:
+  kernel-version: |
+    PREFERRED_VERSION_linux-cip = "5.10.%"
+    PREFERRED_VERSION_linux-cip-rt = "5.10.%"
