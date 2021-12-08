@@ -26,7 +26,7 @@ software =
             filename = "${KERNEL_IMAGE}";
             path = "vmlinuz";
             type = "roundrobin";
-            device = "fedcba98-7654-3210-cafe-5e0710000001->sda2,fedcba98-7654-3210-cafe-5e0710000002->sda3";
+            device = "fedcba98-7654-3210-cafe-5e0710000001->BOOT0,fedcba98-7654-3210-cafe-5e0710000002->BOOT1";
             filesystem = "vfat";
             properties: {
                         subtype = "kernel";
@@ -36,7 +36,7 @@ software =
             filename = "${INITRD_IMAGE}";
             path = "${INITRD_IMAGE}";
             type = "roundrobin";
-            device = "fedcba98-7654-3210-cafe-5e0710000001->sda2,fedcba98-7654-3210-cafe-5e0710000002->sda3";
+            device = "fedcba98-7654-3210-cafe-5e0710000001->BOOT0,fedcba98-7654-3210-cafe-5e0710000002->BOOT1";
             filesystem = "vfat";
             properties: {
                         subtype = "initrd";

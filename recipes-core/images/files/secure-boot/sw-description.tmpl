@@ -26,7 +26,7 @@ software =
             filename = "linux.signed.efi";
             path = "linux.signed.efi";
             type = "roundrobin";
-            device = "sda4->sda2,sda5->sda3";
+            device = "sda4->BOOT0,sda5->BOOT1";
             filesystem = "vfat";
             properties: {
                         subtype = "kernel";
