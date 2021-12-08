@@ -22,6 +22,8 @@ usage()
 
 if grep -s -q "IMAGE_SECURE_BOOT: true" .config.yaml; then
 	SECURE_BOOT="true"
+elif grep -s -q "IMAGE_SWUPDATE: true" .config.yaml; then
+	SWUPDATE_BOOT="true"
 fi
 
 if [ -n "${QEMU_PATH}" ]; then
@@ -42,7 +44,7 @@ if [ -z "${TARGET_IMAGE}" ];then
 	TARGET_IMAGE="cip-core-image"
 	if grep -s -q "IMAGE_SECURITY: true" .config.yaml; then
 		TARGET_IMAGE="cip-core-image-security"
-    fi
+	fi
 	if [ -n "${SECURE_BOOT}" ]; then
 		TARGET_IMAGE="cip-core-image-read-only"
 	fi
@@ -58,7 +60,7 @@ case "$1" in
 			-machine q35,accel=kvm:tcg \
 			-device virtio-net-pci,netdev=net"
 		if [ -n "${SECURE_BOOT}" ]; then
-            # set bootindex=0 to boot disk instead of EFI-shell
+			# set bootindex=0 to boot disk instead of EFI-shell
 			QEMU_EXTRA_ARGS=" \
 			${QEMU_EXTRA_ARGS} -device ide-hd,drive=disk,bootindex=0"
 		else
@@ -127,6 +129,9 @@ if [ -n "${SECURE_BOOT}" ]; then
 		BOOT_FILES="-drive if=pflash,format=raw,unit=0,readonly=on,file=${ovmf_code} \
 			-drive if=pflash,format=raw,file=${ovmf_vars} \
 			-drive file=${IMAGE_PREFIX}.wic.img,discard=unmap,if=none,id=disk,format=raw"
+elif [ -n "${SWUPDATE_BOOT}" ]; then
+		BOOT_FILES="-drive file=${IMAGE_PREFIX}.wic.img,discard=unmap,if=none,id=disk,format=raw \
+			-bios OVMF.fd "
 else
 		IMAGE_FILE=$(ls ${IMAGE_PREFIX}.ext4.img)
 
