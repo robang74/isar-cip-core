@@ -70,7 +70,6 @@ config KAS_INCLUDE_KERNEL
 
 config KERNEL_RT
 	bool "Real-time CIP kernel"
-	depends on !KERNEL_5_10
 
 config KAS_INCLUDE_KERNEL_RT
 	string
