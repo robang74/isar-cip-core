@@ -11,4 +11,6 @@
 
 require linux-cip-common.inc
 
+KERNEL_DEFCONFIG_VERSION ?= "4.4.y-cip"
+
 SRC_URI[sha256sum] = "9ed7782c067793e684691e99388608ff746f04121cc35dbbbfc2fa5ed6f9e88e"
