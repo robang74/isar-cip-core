@@ -82,9 +82,6 @@ choice
 	prompt "Debian Release"
 	default DEBIAN_BUSTER
 
-config DEBIAN_STRETCH
-	bool "stretch (9)"
-
 config DEBIAN_BUSTER
 	bool "buster (10)"
 
@@ -95,7 +92,6 @@ endchoice
 
 config KAS_INCLUDE_DEBIAN
 	string
-	default "kas/opt/stretch.yml" if DEBIAN_STRETCH
 	default "kas/opt/bullseye.yml" if DEBIAN_BULLSEYE
 
 comment "Image features"

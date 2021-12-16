@@ -33,8 +33,6 @@ fi
 if [ -z "${DISTRO_RELEASE}" ]; then
 	if grep -s -q "DEBIAN_BULLSEYE: true" .config.yaml; then
 		DISTRO_RELEASE="bullseye"
-	elif grep -s -q "DEBIAN_STRETCH: true" .config.yaml; then
-		DISTRO_RELEASE="stretch"
 	else
 		DISTRO_RELEASE="buster"
 	fi
