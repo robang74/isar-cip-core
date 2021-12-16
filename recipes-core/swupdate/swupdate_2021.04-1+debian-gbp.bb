@@ -44,12 +44,14 @@ SWUPDATE_BUILD_PROFILES += "cross nocheck"
 # modify for debian buster build
 SRC_URI_append_buster = " file://0009-debian-prepare-build-for-isar-debian-buster.patch"
 
-# disable documentation due to missing packages in debian buster
+# disable documentation due to missing packages
+SWUPDATE_BUILD_PROFILES_append = " nodoc "
+
 # disable create filesystem due to missing symbols in debian buster
 # disable webserver due to missing symbols in debian buster
-SWUPDATE_BUILD_PROFILES_append_buster = " nodoc \
-                                          pkg.swupdate.nocreatefs \
-                                          pkg.swupdate.nowebserver "
+SWUPDATE_BUILD_PROFILES_append_buster = " \
+                                   pkg.swupdate.nocreatefs \
+                                   pkg.swupdate.nowebserver "
 # In debian buster the git-compression defaults to gz and does not detect other
 # compression formats.
 GBP_EXTRA_OPTIONS += "--git-compression=xz"
