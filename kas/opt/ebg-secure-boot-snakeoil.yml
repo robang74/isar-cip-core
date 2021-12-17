@@ -33,6 +33,7 @@ local_conf_header:
     IMAGER_INSTALL += "ebg-secure-boot-snakeoil"
 
   ovmf: |
-    # snakeoil certs are only part of backports
-    DISTRO_APT_SOURCES_append = " conf/distro/debian-buster-backports.list"
-    DISTRO_APT_PREFERENCES_append = " conf/distro/preferences.ovmf-snakeoil.conf"
+    # snakeoil certs are only part of backports, for Debian 11 and later the are not necessary
+    OVERRIDES_append = ":${BASE_DISTRO_CODENAME}"
+    DISTRO_APT_SOURCES_append_buster = " conf/distro/debian-buster-backports.list"
+    DISTRO_APT_PREFERENCES_append_buster = " conf/distro/preferences.ovmf-snakeoil.conf"
