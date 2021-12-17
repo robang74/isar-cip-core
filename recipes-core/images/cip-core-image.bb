@@ -18,4 +18,5 @@ IMAGE_INSTALL += "customizations"
 
 # for swupdate
 SWU_DESCRIPTION ??= "swupdate"
-include ${SWU_DESCRIPTION}.inc
+CIP_IMAGE_OPTIONS ?= "${SWU_DESCRIPTION}.inc"
+include ${CIP_IMAGE_OPTIONS}

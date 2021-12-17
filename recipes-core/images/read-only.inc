@@ -1,4 +1,13 @@
-require cip-core-image.bb
+#
+# CIP Core, generic profile
+#
+# Copyright (c) Siemens AG, 2021
+#
+# Authors:
+#  Quirin Gylstorff <Quriin.Gylstorff@siemens.com>
+#
+# SPDX-License-Identifier: MIT
+#
 
 SQUASHFS_EXCLUDE_DIRS += "home var"
 

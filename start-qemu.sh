@@ -43,9 +43,6 @@ if [ -z "${TARGET_IMAGE}" ];then
 	if grep -s -q "IMAGE_SECURITY: true" .config.yaml; then
 		TARGET_IMAGE="cip-core-image-security"
 	fi
-	if [ -n "${SECURE_BOOT}" ]; then
-		TARGET_IMAGE="cip-core-image-read-only"
-	fi
 fi
 
 case "$1" in

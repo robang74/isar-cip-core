@@ -24,7 +24,7 @@ TEMPLATE_VARS += "VERITY_BEHAVIOR_ON_CORRUPTION"
 
 DEBIAN_DEPENDS = "initramfs-tools, cryptsetup"
 
-VERITY_IMAGE_RECIPE ?= "cip-core-image-read-only"
+VERITY_IMAGE_RECIPE ?= "cip-core-image"
 
 VERITY_ENV_FILE = "${DEPLOY_DIR_IMAGE}/${VERITY_IMAGE_RECIPE}-${DISTRO}-${MACHINE}.verity.env"
 
