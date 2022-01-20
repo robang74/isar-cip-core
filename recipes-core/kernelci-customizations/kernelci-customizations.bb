@@ -18,6 +18,7 @@ DESCRIPTION = "CIP Core image demo & customizations"
 SRC_URI = " \
     file://postinst \
     file://ethernet \
+    file://dmesg.sh \
     file://99-silent-printk.conf"
 
 DEPENDS += "sshd-regen-keys"
@@ -31,4 +32,7 @@ do_install() {
 
   install -v -d ${D}/etc/sysctl.d
   install -v -m 644 ${WORKDIR}/99-silent-printk.conf ${D}/etc/sysctl.d/
+
+  install -v -d ${D}/opt/kernelci
+  install -v -m 744 ${WORKDIR}/dmesg.sh ${D}/opt/kernelci/
 }
