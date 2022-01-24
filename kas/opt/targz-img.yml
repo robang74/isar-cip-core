@@ -14,4 +14,4 @@ header:
 
 local_conf_header:
   image-type: |
-    IMAGE_TYPE = "targz-img"
+    IMAGE_FSTYPES = "targz-img"

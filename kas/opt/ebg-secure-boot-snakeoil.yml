@@ -24,7 +24,7 @@ local_conf_header:
 
   verity-img: |
     SECURE_IMAGE_FSTYPE = "squashfs"
-    IMAGE_TYPE = "secure-swupdate-img"
+    IMAGE_FSTYPES = "secure-swupdate-img"
     WKS_FILE = "${MACHINE}-efibootguard-secureboot.wks.in"
 
   secure-boot: |

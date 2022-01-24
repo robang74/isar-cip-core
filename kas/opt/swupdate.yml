@@ -20,5 +20,5 @@ local_conf_header:
     IMAGE_INSTALL_append = " swupdate-handler-roundrobin"
 
   wic-swu: |
-    IMAGE_TYPE = "wic-swu-img"
+    IMAGE_FSTYPES = "wic-swu-img"
     WKS_FILE ?= "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks"
