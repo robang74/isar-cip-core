@@ -1,47 +1,51 @@
-From 22a96e95676123c6ce8800b9d911402704dce9e2 Mon Sep 17 00:00:00 2001
+From 8b6f01b6126933723963497d0db0c256e5251c5b Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Mon, 4 Oct 2021 17:15:56 +0200
-Subject: [PATCH 5/9] debian/rules: Add option to disable fs creation
+Subject: [PATCH 3/7] debian/rules: Add option to disable fs creation
 
 Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---
- debian/configs/defconfig | 4 ----
- debian/rules             | 7 +++++++
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ debian/configs/defconfig | 6 ------
+ debian/rules             | 9 +++++++++
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/debian/configs/defconfig b/debian/configs/defconfig
-index 8e1a810..d011deb 100644
+index b34168e3..d011deb1 100644
 --- a/debian/configs/defconfig
 +++ b/debian/configs/defconfig
-@@ -9,10 +9,6 @@ CONFIG_UPDATE_STATE_CHOICE_BOOTLOADER=y
+@@ -9,12 +9,6 @@ CONFIG_UPDATE_STATE_CHOICE_BOOTLOADER=y
  CONFIG_WEBSERVER=y
  CONFIG_MONGOOSESSL=y
  CONFIG_ZSTD=y
 -CONFIG_DISKPART=y
+-CONFIG_DISKPART_FORMAT=y
 -CONFIG_DISKFORMAT=y
+-CONFIG_DISKFORMAT_HANDLER=y
 -CONFIG_FAT_FILESYSTEM=y
 -CONFIG_EXT_FILESYSTEM=y
  CONFIG_UNIQUEUUID=y
  CONFIG_RAW=y
  CONFIG_RDIFFHANDLER=y
 diff --git a/debian/rules b/debian/rules
-index 6d32d50..9349c22 100755
+index 6705140b..983e122f 100755
 --- a/debian/rules
 +++ b/debian/rules
-@@ -45,6 +45,13 @@ endif
+@@ -45,6 +45,15 @@ endif
  ifeq (,$(filter pkg.swupdate.noencryption,$(DEB_BUILD_PROFILES)))
  	echo CONFIG_ENCRYPTED_IMAGES=y >> configs/debian_defconfig
  endif
 +ifeq (,$(filter pkg.swupdate.nocreatefs,$(DEB_BUILD_PROFILES)))
-+	echo CONFIG_DISKPART=y       >> configs/debian_defconfig
-+	echo CONFIG_DISKFORMAT=y     >> configs/debian_defconfig
-+	echo CONFIG_FAT_FILESYSTEM=y >> configs/debian_defconfig
-+	echo CONFIG_EXT_FILESYSTEM=y >> configs/debian_defconfig
++	echo CONFIG_DISKPART=y            >> configs/debian_defconfig
++	echo CONFIG_DISKPART_FORMAT=y     >> configs/debian_defconfig
++	echo CONFIG_DISKFORMAT=y          >> configs/debian_defconfig
++	echo CONFIG_DISKFORMAT_HANDLER=y  >> configs/debian_defconfig
++	echo CONFIG_FAT_FILESYSTEM=y      >> configs/debian_defconfig
++	echo CONFIG_EXT_FILESYSTEM=y      >> configs/debian_defconfig
 +endif
 +
  ifneq (,$(filter pkg.swupdate.p11,$(DEB_BUILD_PROFILES)))
  	echo CONFIG_PKCS11=y >> configs/debian_defconfig
  endif
 -- 
-2.30.2
+2.34.1
 

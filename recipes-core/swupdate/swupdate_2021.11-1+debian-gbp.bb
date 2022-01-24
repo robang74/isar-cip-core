@@ -13,20 +13,15 @@ inherit dpkg-gbp
 include swupdate.inc
 
 SRC_URI = "git://salsa.debian.org/debian/swupdate.git;protocol=https;branch=debian/master"
-SRCREV ="debian/2021.04-1"
+SRCREV ="debian/2021.11-1"
 
 # add options to DEB_BUILD_PROFILES
-SRC_URI += "file://0001-debian-Add-option-to-build-with-efibootguard.patch \
+SRC_URI += "file://0001-debian-config-Make-image-encryption-optional.patch \
             file://0002-debian-rules-Add-CONFIG_MTD.patch \
-            file://0003-debian-config-Make-signing-optional.patch \
-            file://0004-debian-config-Make-image-encryption-optional.patch \
-            file://0005-debian-rules-Add-option-to-disable-fs-creation.patch \
-            file://0006-debian-rules-Add-option-to-disable-webserver.patch \
-            file://0007-debian-Make-CONFIG_HW_COMPATIBILTY-optional.patch \
-            file://0008-debian-rules-Add-Embedded-Lua-handler-option.patch"
-
-# Patch for dm-verity based images - can be removed with next SWUpdate release
-SRC_URI += "file://0001-debian-patches-add-patches-for-dm-verity.patch"
+            file://0003-debian-rules-Add-option-to-disable-fs-creation.patch \
+            file://0004-debian-rules-Add-option-to-disable-webserver.patch \
+            file://0005-debian-Make-CONFIG_HW_COMPATIBILTY-optional.patch \
+            file://0006-debian-rules-Add-Embedded-Lua-handler-option.patch"
 
 # end patching for dm-verity based images
 
@@ -42,7 +37,7 @@ SWUPDATE_BUILD_PROFILES += "cross nocheck"
 # SWUPDATE_BUILD_PROFILES += "pkg.swupdate.embeddedlua"
 
 # modify for debian buster build
-SRC_URI_append_buster = " file://0009-debian-prepare-build-for-isar-debian-buster.patch"
+SRC_URI_append_buster = " file://0007-debian-prepare-build-for-isar-debian-buster.patch"
 
 # disable documentation due to missing packages
 SWUPDATE_BUILD_PROFILES_append = " nodoc "
