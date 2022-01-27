@@ -74,6 +74,8 @@ Continuous integration:
 
   - https://gitlab.com/cip-project/cip-core/isar-cip-core/-/pipelines
 
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution process.
+
  
 ## License
 
