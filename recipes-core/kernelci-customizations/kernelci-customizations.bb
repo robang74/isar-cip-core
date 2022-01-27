@@ -11,28 +11,13 @@
 # SPDX-License-Identifier: MIT
 #
 
-inherit dpkg-raw
+require recipes-core/customizations/common.inc
 
-DESCRIPTION = "CIP Core image demo & customizations"
+DESCRIPTION = "CIP Core KernelCI image customizations"
 
-SRC_URI = " \
-    file://postinst \
-    file://ethernet \
-    file://dmesg.sh \
-    file://99-silent-printk.conf"
+SRC_URI += "file://dmesg.sh"
 
-DEPENDS += "sshd-regen-keys"
-
-DEBIAN_DEPENDS = " \
-    ifupdown, isc-dhcp-client, net-tools, iputils-ping, ssh, sshd-regen-keys"
-
-do_install() {
-  install -v -d ${D}/etc/network/interfaces.d
-  install -v -m 644 ${WORKDIR}/ethernet ${D}/etc/network/interfaces.d/
-
-  install -v -d ${D}/etc/sysctl.d
-  install -v -m 644 ${WORKDIR}/99-silent-printk.conf ${D}/etc/sysctl.d/
-
+do_install_append() {
   install -v -d ${D}/opt/kernelci
   install -v -m 744 ${WORKDIR}/dmesg.sh ${D}/opt/kernelci/
 }
