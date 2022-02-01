@@ -1,0 +1,18 @@
+#
+# CIP Core, generic profile
+#
+# Copyright (c) Toshiba Corporation, 2022
+#
+# Authors:
+#  Shivanand Kunijadar <Shivanand.Kunijadar@toshiba-tsip.com>
+#
+# SPDX-License-Identifier: MIT
+#
+# This kas file adds systemd service file to cause kernel panic during system boot.
+
+header:
+  version: 10
+
+local_conf_header:
+  kernel-panic: |
+    IMAGE_INSTALL_append = " kernel-panic"

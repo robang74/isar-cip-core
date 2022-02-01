@@ -1,0 +1,9 @@
+[Unit]
+Description=sysrq panic
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "echo c > /proc/sysrq-trigger"
+
+[Install]
+WantedBy=default.target
