@@ -1,7 +1,7 @@
 #
 # CIP Core, generic profile
 #
-# Copyright (c) Siemens AG, 2019
+# Copyright (c) Siemens AG, 2022
 #
 # Authors:
 #  Jan Kiszka <jan.kiszka@siemens.com>
@@ -25,6 +25,6 @@ SRC_URI_append = " ${@ "git://gitlab.com/cip-project/cip-kernel/cip-kernel-confi
 
 SRC_URI_append_bbb = "file://${KERNEL_DEFCONFIG}"
 
-SRCREV_cip-kernel-config ?= "4f80764b80a81f9590e927fb202f358465b322a6"
+SRCREV_cip-kernel-config ?= "3f527304fdadd163e20b7a5a9cfabaca7506c716"
 
 S = "${WORKDIR}/linux-cip-v${PV}"
