@@ -1,7 +1,7 @@
 From ccc6f5d04aba0f1270f7d6b6de298b2084ad3bfd Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Tue, 5 Oct 2021 10:56:25 +0200
-Subject: [PATCH 5/7] debian: Make CONFIG_HW_COMPATIBILTY optional
+Subject: [PATCH 5/8] debian: Make CONFIG_HW_COMPATIBILTY optional
 
 Add option for qemu.
 

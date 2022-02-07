@@ -1,7 +1,7 @@
 From c1f46ecb2ac3aed3a711dec767321afa92b600d8 Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Mon, 4 Oct 2021 17:27:11 +0200
-Subject: [PATCH 4/7] debian/rules: Add option to disable webserver
+Subject: [PATCH 4/8] debian/rules: Add option to disable webserver
 
 Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---

@@ -1,7 +1,7 @@
 From 123190b2aa72818186ba12a04d793ff7d4244828 Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Wed, 29 Sep 2021 16:17:03 +0200
-Subject: [PATCH 7/7] debian: prepare build for isar debian buster
+Subject: [PATCH 7/8] debian: prepare build for isar debian buster
 
 Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---

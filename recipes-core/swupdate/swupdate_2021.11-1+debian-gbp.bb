@@ -21,7 +21,8 @@ SRC_URI += "file://0001-debian-config-Make-image-encryption-optional.patch \
             file://0003-debian-rules-Add-option-to-disable-fs-creation.patch \
             file://0004-debian-rules-Add-option-to-disable-webserver.patch \
             file://0005-debian-Make-CONFIG_HW_COMPATIBILTY-optional.patch \
-            file://0006-debian-rules-Add-Embedded-Lua-handler-option.patch"
+            file://0006-debian-rules-Add-Embedded-Lua-handler-option.patch \
+            file://0008-debian-Remove-SWUpdate-USB-service-and-Udev-rules.patch"
 
 # end patching for dm-verity based images
 
