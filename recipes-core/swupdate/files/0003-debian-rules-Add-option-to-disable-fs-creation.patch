@@ -1,7 +1,7 @@
 From 8b6f01b6126933723963497d0db0c256e5251c5b Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Mon, 4 Oct 2021 17:15:56 +0200
-Subject: [PATCH 3/8] debian/rules: Add option to disable fs creation
+Subject: [PATCH 3/9] debian/rules: Add option to disable fs creation
 
 Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---

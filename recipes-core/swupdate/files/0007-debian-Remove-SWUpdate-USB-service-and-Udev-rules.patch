@@ -1,7 +1,7 @@
-From 93b9a179119394395c72e62e59a73d29e9bba735 Mon Sep 17 00:00:00 2001
+From 625db939a1dec7d1aa6fbcb01c2c4cbd699bfe7b Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Mon, 7 Feb 2022 09:28:39 +0100
-Subject: [PATCH 8/8] debian: Remove SWUpdate USB service and Udev rules
+Subject: [PATCH 7/9] debian: Remove SWUpdate USB service and Udev rules
 
 The current implementation will install an abitrary SWUpdate binary
 from a plug-in USB stick. This is a major security risk for devices
@@ -19,10 +19,10 @@ Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
  delete mode 100644 debian/swupdate.udev
 
 diff --git a/debian/rules b/debian/rules
-index e1c4a921..84ed55d4 100755
+index 12eb0ba5..76fce010 100755
 --- a/debian/rules
 +++ b/debian/rules
-@@ -103,7 +103,6 @@ override_dh_auto_install:
+@@ -101,7 +101,6 @@ override_dh_auto_install:
  override_dh_installsystemd:
  	dh_installsystemd --no-start
  	dh_installsystemd --name=swupdate-progress

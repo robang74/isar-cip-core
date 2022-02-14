@@ -1,7 +1,7 @@
 From 7107052e6aa1a35a2900070797ac013d49814f0b Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Wed, 29 Sep 2021 11:32:41 +0200
-Subject: [PATCH 6/8] debian/rules: Add Embedded Lua handler option
+Subject: [PATCH 6/9] debian/rules: Add Embedded Lua handler option
 
 Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---

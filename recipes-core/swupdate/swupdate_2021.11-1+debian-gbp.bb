@@ -22,7 +22,8 @@ SRC_URI += "file://0001-debian-config-Make-image-encryption-optional.patch \
             file://0004-debian-rules-Add-option-to-disable-webserver.patch \
             file://0005-debian-Make-CONFIG_HW_COMPATIBILTY-optional.patch \
             file://0006-debian-rules-Add-Embedded-Lua-handler-option.patch \
-            file://0008-debian-Remove-SWUpdate-USB-service-and-Udev-rules.patch"
+            file://0007-debian-Remove-SWUpdate-USB-service-and-Udev-rules.patch \
+            file://0008-Add-Profile-option-to-disable-CONFIG_HASH_VERIFY.patch"
 
 # end patching for dm-verity based images
 
@@ -38,7 +39,7 @@ SWUPDATE_BUILD_PROFILES += "cross nocheck"
 # SWUPDATE_BUILD_PROFILES += "pkg.swupdate.embeddedlua"
 
 # modify for debian buster build
-SRC_URI_append_buster = " file://0007-debian-prepare-build-for-isar-debian-buster.patch"
+SRC_URI_append_buster = " file://0009-debian-prepare-build-for-isar-debian-buster.patch"
 
 # disable documentation due to missing packages
 SWUPDATE_BUILD_PROFILES_append = " nodoc "

@@ -1,0 +1,29 @@
+From cddd3472aad2d8e48d557705b82ffcc0c7d14a02 Mon Sep 17 00:00:00 2001
+From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+Date: Mon, 14 Feb 2022 12:27:43 +0100
+Subject: [PATCH 8/9] Add Profile option to disable CONFIG_HASH_VERIFY
+
+This change also enables CONFIG_HASH_VERIFY by default.
+
+Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
+---
+ debian/rules | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/debian/rules b/debian/rules
+index 76fce010..4dc9e170 100755
+--- a/debian/rules
++++ b/debian/rules
+@@ -42,6 +42,9 @@ endif
+ ifneq (,$(filter pkg.swupdate.hwcompatibility,$(DEB_BUILD_PROFILES)))
+ 	echo CONFIG_HW_COMPATIBILITY=y                   >> configs/debian_defconfig
+ endif
++ifeq (,$(filter pkg.swupdate.nohashverify,$(DEB_BUILD_PROFILES)))
++	echo CONFIG_HASH_VERIFY=y                   >> configs/debian_defconfig
++endif
+ ifeq (,$(filter pkg.swupdate.nowebserver,$(DEB_BUILD_PROFILES)))
+ 	echo CONFIG_WEBSERVER=y   >> configs/debian_defconfig
+ 	echo CONFIG_MONGOOSESSL=y >> configs/debian_defconfig
+-- 
+2.34.1
+
