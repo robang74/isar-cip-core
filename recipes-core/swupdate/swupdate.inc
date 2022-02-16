@@ -23,7 +23,7 @@ def get_bootloader_build_profile(d):
         return "pkg.swupdate.uboot"
     return ""
 
-SWUPDATE_BUILD_PROFILES += "${@get_bootloader_build_profile(d)}"
+DEB_BUILD_PROFILES += "${@get_bootloader_build_profile(d)}"
 
 def get_bootloader_dependencies(d):
     bootloader = d.getVar("SWUPDATE_BOOTLOADER") or ""
@@ -37,15 +37,7 @@ def get_bootloader_dependencies(d):
     return ""
 
 DEPENDS += "${@get_bootloader_dependencies(d)}"
-DEPENDS += "${@bb.utils.contains('SWUPDATE_BUILD_PROFILES', 'mtd', 'mtd-utils', '', d)}"
-
-do_install_builddeps_prepend() {
-    export DEB_BUILD_PROFILES="${SWUPDATE_BUILD_PROFILES}"
-}
-
-dpkg_runbuild_prepend() {
-    export DEB_BUILD_PROFILES="${SWUPDATE_BUILD_PROFILES}"
-}
+DEPENDS += "${@bb.utils.contains('DEB_BUILD_PROFILES', 'mtd', 'mtd-utils', '', d)}"
 
 python do_check_bootloader () {
     bootloader = d.getVar("SWUPDATE_BOOTLOADER") or "None"
