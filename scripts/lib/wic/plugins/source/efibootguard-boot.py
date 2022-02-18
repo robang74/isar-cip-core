@@ -111,9 +111,8 @@ class EfibootguardBootPlugin(SourcePlugin):
 
         cwd = os.getcwd()
         os.chdir(part_rootfs_dir)
-        config_cmd = '%s/bg_setenv -f . -k "C:%s:%s" %s -r %s -w %s' \
+        config_cmd = '/usr/bin/bg_setenv -f . -k "C:%s:%s" %s -r %s -w %s' \
             % (
-                deploy_dir,
                 part.label.upper(),
                 boot_image,
                 '-a "%s"' % cmdline if cmdline else "",

@@ -51,31 +51,32 @@ class EfibootguardEFIPlugin(SourcePlugin):
         populate an EFI boot partition containing the EFI Boot Guard
         bootloader binary.
         """
-        deploy_dir = get_bitbake_var("DEPLOY_DIR_IMAGE")
-        creator.deploy_dir = deploy_dir
-        bootloader_files = source_params.get("bootloader")
-        if not bootloader_files:
-            bootloader_files = "bootx64.efi"
-        bootloader_files = bootloader_files.split(' ')
+        # we need to map the distro_arch to uefi values
+        distro_to_efi_arch = {
+            "amd64": "x64",
+            "arm64": "aarch64",
+            "i386": "ia32"
+        }
+
+        distro_arch = get_bitbake_var("DISTRO_ARCH")
+        bootloader = "/usr/share/efibootguard/boot{}.efi".format(
+            distro_to_efi_arch[distro_arch])
         part_rootfs_dir = "%s/disk/%s.%s" % (cr_workdir,
                                              part.label,
                                              part.lineno)
         create_dir_cmd = "install -d %s/EFI/BOOT" % part_rootfs_dir
         exec_cmd(create_dir_cmd)
 
-        for bootloader in bootloader_files:
-            signed_bootloader = cls._sign_file(bootloader,
-                                               "{}/{}".format(deploy_dir,
-                                                              bootloader
-                                                              ),
-                                               cr_workdir,
-                                               source_params)
-            # important the bootloader in deploy_dir is no longer signed
-            cp_cmd = "cp %s/%s %s/EFI/BOOT/%s" % (cr_workdir,
-                                                signed_bootloader,
-                                                part_rootfs_dir,
-                                                bootloader)
-            exec_cmd(cp_cmd, True)
+        name = os.path.basename(bootloader)
+        signed_bootloader = cls._sign_file(name,
+                                           bootloader,
+                                           cr_workdir,
+                                           source_params)
+        cp_cmd = "cp %s/%s %s/EFI/BOOT/%s" % (cr_workdir,
+                                              signed_bootloader,
+                                              part_rootfs_dir,
+                                              name)
+        exec_cmd(cp_cmd, True)
         du_cmd = "du --apparent-size -ks %s" % part_rootfs_dir
         blocks = int(exec_cmd(du_cmd).split()[0])
 

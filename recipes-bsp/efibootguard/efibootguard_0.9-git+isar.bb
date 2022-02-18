@@ -39,8 +39,3 @@ do_prepare_build() {
     deb_add_changelog
 }
 
-dpkg_runbuild_append() {
-    install -m 0755 -d ${DEPLOY_DIR_IMAGE}
-    install -m 0755 ${S}/efibootguardx64.efi ${DEPLOY_DIR_IMAGE}/bootx64.efi
-    install -m 0755 ${S}/bg_setenv ${DEPLOY_DIR_IMAGE}/bg_setenv
-}

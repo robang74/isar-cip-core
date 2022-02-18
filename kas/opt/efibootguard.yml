@@ -21,6 +21,7 @@ local_conf_header:
     SWUPDATE_BOOTLOADER = "efibootguard"
 
   efibootguard-wic: |
+    WIC_IMAGER_INSTALL_append = " efibootguard"
     WDOG_TIMEOUT ?= "60"
     WICVARS += "WDOG_TIMEOUT KERNEL_IMAGE INITRD_IMAGE"
     IMAGE_FSTYPES ?= "wic-img"
