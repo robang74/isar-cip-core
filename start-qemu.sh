@@ -117,24 +117,26 @@ shift 1
 QEMU_COMMON_OPTIONS=" \
 	-m 1G \
 	-serial mon:stdio \
-	-netdev user,id=net"
+	-netdev user,id=net \
+	${QEMU_EXTRA_ARGS}"
 
 if [ -n "${SECURE_BOOT}" ]; then
 		ovmf_code=${OVMF_CODE:-./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_CODE_4M.secboot.fd}
 		ovmf_vars=${OVMF_VARS:-./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_VARS_4M.snakeoil.fd}
-		QEMU_EXTRA_ARGS=" ${QEMU_EXTRA_ARGS} \
-			-global ICH9-LPC.disable_s3=1 \
-			-global isa-fdc.driveA= "
 
 		${QEMU_PATH}${QEMU} \
+			-global ICH9-LPC.disable_s3=1 \
+			-global isa-fdc.driveA= \
 			-drive if=pflash,format=raw,unit=0,readonly=on,file=${ovmf_code} \
 			-drive if=pflash,format=raw,file=${ovmf_vars} \
-			-drive file=${IMAGE_PREFIX}.wic.img,discard=unmap,if=none,id=disk,format=raw ${QEMU_COMMON_OPTIONS} ${QEMU_EXTRA_ARGS} "$@"
+			-drive file=${IMAGE_PREFIX}.wic.img,discard=unmap,if=none,id=disk,format=raw \
+			${QEMU_COMMON_OPTIONS} "$@"
 
 elif [ -n "${SWUPDATE_BOOT}" ]; then
 		${QEMU_PATH}${QEMU} \
 			-drive file=${IMAGE_PREFIX}.wic.img,discard=unmap,if=none,id=disk,format=raw \
-			-bios OVMF.fd ${QEMU_COMMON_OPTIONS} ${QEMU_EXTRA_ARGS} "$@"
+			-bios OVMF.fd \
+			${QEMU_COMMON_OPTIONS} "$@"
 
 else
 		IMAGE_FILE=$(ls ${IMAGE_PREFIX}.ext4.img)
@@ -145,5 +147,6 @@ else
 		${QEMU_PATH}${QEMU} \
 			-drive file=${IMAGE_FILE},discard=unmap,if=none,id=disk,format=raw \
 			-kernel ${KERNEL_FILE} -append "${KERNEL_CMDLINE}" \
-			-initrd ${INITRD_FILE} ${QEMU_COMMON_OPTIONS} ${QEMU_EXTRA_ARGS} "$@"
+			-initrd ${INITRD_FILE} \
+			${QEMU_COMMON_OPTIONS} "$@"
 fi
