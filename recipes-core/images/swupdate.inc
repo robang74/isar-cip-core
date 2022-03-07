@@ -11,8 +11,8 @@
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-EXTRACT_PARTITIONS = "img4"
-ROOTFS_PARTITION_NAME="img4.gz"
+EXTRACT_PARTITIONS = "${IMAGE_FULLNAME}.wic.img.p4"
+ROOTFS_PARTITION_NAME="${IMAGE_FULLNAME}.wic.img.p4.gz"
 
 SRC_URI += "file://sw-description.tmpl"
 TEMPLATE_FILES += "sw-description.tmpl"
