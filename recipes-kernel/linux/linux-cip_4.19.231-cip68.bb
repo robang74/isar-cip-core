@@ -9,8 +9,8 @@
 # SPDX-License-Identifier: MIT
 #
 
-require linux-cip-rt-common.inc
+require linux-cip-common.inc
 
-KERNEL_DEFCONFIG_VERSION ?= "4.4.y-cip"
+KERNEL_DEFCONFIG_VERSION ?= "4.19.y-cip"
 
-SRC_URI[sha256sum] = "c2fe6bcf44fc7a8ee9785adc4dc41d07c50d803883add859648cbbb0461854fa"
+SRC_URI[sha256sum] = "f39146555dcee1e9f76c4b6e000e0d6f42d4a6a56d95d415ac1442b1f99d0465"
