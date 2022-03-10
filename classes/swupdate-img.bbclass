@@ -33,7 +33,11 @@ do_swupdate_image() {
         for uncompressed in "${WORKDIR}/$basefile" "${DEPLOY_DIR_IMAGE}/$basefile"; do
             if [ -e "$uncompressed" ]; then
                 rm  -f "$uncompressed.gz"
-                gzip "$uncompressed"
+                if [ -x "$(command -v pigz)" ]; then
+                    pigz "$uncompressed"
+                else
+                    gzip "$uncompressed"
+                fi
                 break
             fi
         done
