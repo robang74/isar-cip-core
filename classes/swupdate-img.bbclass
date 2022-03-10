@@ -24,6 +24,21 @@ do_swupdate_image() {
     rm -f '${SWU_IMAGE_FILE}'
     cp '${WORKDIR}/${SWU_DESCRIPTION_FILE}' '${WORKDIR}/swu/${SWU_DESCRIPTION_FILE}'
 
+    # Compress files if requested
+    for file in ${SWU_ADDITIONAL_FILES}; do
+        basefile=$(basename "$file" .gz)
+        if [ "$basefile" = "$file" ]; then
+            continue
+        fi
+        for uncompressed in "${WORKDIR}/$basefile" "${DEPLOY_DIR_IMAGE}/$basefile"; do
+            if [ -e "$uncompressed" ]; then
+                rm  -f "$uncompressed.gz"
+                gzip "$uncompressed"
+                break
+            fi
+        done
+    done
+
     # Create symlinks for files used in the update image
     for file in ${SWU_ADDITIONAL_FILES}; do
         if [ -e "${WORKDIR}/$file" ]; then

@@ -11,8 +11,7 @@
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files/secure-boot:"
 
-EXTRACT_PARTITIONS = "${IMAGE_FULLNAME}.wic.img.p4"
-ROOTFS_PARTITION_NAME="${IMAGE_FULLNAME}.wic.img.p4.gz"
+ROOTFS_PARTITION_NAME = "${IMAGE_FULLNAME}.wic.img.p4.gz"
 
 SRC_URI += "file://sw-description.tmpl"
 TEMPLATE_FILES += "sw-description.tmpl"
