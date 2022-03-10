@@ -19,5 +19,4 @@ TEMPLATE_FILES += "sw-description.tmpl"
 
 TEMPLATE_VARS += "PN ROOTFS_PARTITION_NAME"
 
-SWU_DESCRIPTION_FILE = "sw-description"
 SWU_ADDITIONAL_FILES += "linux.signed.efi ${ROOTFS_PARTITION_NAME}"
