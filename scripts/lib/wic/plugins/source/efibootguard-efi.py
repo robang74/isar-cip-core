@@ -59,7 +59,7 @@ class EfibootguardEFIPlugin(SourcePlugin):
         }
 
         distro_arch = get_bitbake_var("DISTRO_ARCH")
-        bootloader = "/usr/share/efibootguard/boot{}.efi".format(
+        bootloader = "/usr/share/efibootguard/efibootguard{}.efi".format(
             distro_to_efi_arch[distro_arch])
         part_rootfs_dir = "%s/disk/%s.%s" % (cr_workdir,
                                              part.label,
@@ -67,7 +67,9 @@ class EfibootguardEFIPlugin(SourcePlugin):
         create_dir_cmd = "install -d %s/EFI/BOOT" % part_rootfs_dir
         exec_cmd(create_dir_cmd)
 
-        name = os.path.basename(bootloader)
+        name = "boot{}.efi".format(
+            distro_to_efi_arch[distro_arch])
+
         signed_bootloader = cls._sign_file(name,
                                            bootloader,
                                            cr_workdir,

@@ -1,3 +1,3 @@
 bg_setenv usr/bin
 bg_printenv usr/bin
-efibootguardx64.efi usr/share/efibootguard
+efibootguard*.efi usr/share/efibootguard
