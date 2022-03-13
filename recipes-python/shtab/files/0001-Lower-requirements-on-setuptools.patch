@@ -1,0 +1,28 @@
+From d347695c4b173c94c4d8a678a67947de3ee5f186 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 14 Mar 2022 08:17:00 +0100
+Subject: [PATCH] Lower requirements on setuptools
+
+Allows to build against Debian buster.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ setup.cfg | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/setup.cfg b/setup.cfg
+index 55eecd4..186aad6 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -66,7 +66,7 @@ classifiers=
+     Topic :: Terminals
+     Topic :: Utilities
+ [options]
+-setup_requires=setuptools>=42; setuptools_scm[toml]>=3.4
++setup_requires=setuptools>=40; setuptools_scm>=3.2
+ install_requires=
+     argparse; python_version < "2.7" or ("3.0" <= python_version and python_version < "3.2")
+ python_requires= >=2.7, !=3.0.*, !=3.1.*
+-- 
+2.34.1
+
