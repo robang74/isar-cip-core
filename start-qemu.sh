@@ -133,9 +133,11 @@ if [ -n "${SECURE_BOOT}" ]; then
 			${QEMU_COMMON_OPTIONS} "$@"
 
 elif [ -n "${SWUPDATE_BOOT}" ]; then
+		ovmf_code=${OVMF_CODE:-./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_CODE_4M.fd}
+
 		${QEMU_PATH}${QEMU} \
 			-drive file=${IMAGE_PREFIX}.wic.img,discard=unmap,if=none,id=disk,format=raw \
-			-bios OVMF.fd \
+			-drive if=pflash,format=raw,unit=0,readonly=on,file=${ovmf_code} \
 			${QEMU_COMMON_OPTIONS} "$@"
 
 else

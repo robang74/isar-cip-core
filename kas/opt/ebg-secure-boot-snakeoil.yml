@@ -28,8 +28,8 @@ local_conf_header:
     WKS_FILE = "${MACHINE}-efibootguard-secureboot.wks.in"
 
   secure-boot: |
-    # Add snakeoil and ovmf binaries for qemu
-    IMAGER_BUILD_DEPS += "ebg-secure-boot-snakeoil ovmf-binaries"
+    # Add snakeoil binaries for qemu
+    IMAGER_BUILD_DEPS += "ebg-secure-boot-snakeoil"
     IMAGER_INSTALL += "ebg-secure-boot-snakeoil"
 
   ovmf: |

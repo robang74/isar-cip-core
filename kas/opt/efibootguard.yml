@@ -27,3 +27,6 @@ local_conf_header:
     IMAGE_FSTYPES ?= "wic-img"
     WKS_FILE ?= "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks"
 
+  ovmf-binaries: |
+    # Add ovmf binaries for qemu
+    IMAGER_BUILD_DEPS += "ovmf-binaries"
