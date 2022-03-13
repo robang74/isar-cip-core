@@ -15,8 +15,8 @@ usage()
 	echo "Usage: $0 ARCHITECTURE [QEMU_OPTIONS]"
 	echo -e "\nSet QEMU_PATH environment variable to use a locally " \
 		"built QEMU version"
-	echo -e "\nSet SECURE_BOOT environment variable to boot a secure boot environment " \
-		"This environment also needs the variables OVMF_VARS and OVMF_CODE set"
+	echo -e "\nSet SWUPDATE_BOOT environment variable to boot swupdate image." \
+	echo -e "\nSet SECURE_BOOT environment variable to boot a secure boot environment."
 	exit 1
 }
 
