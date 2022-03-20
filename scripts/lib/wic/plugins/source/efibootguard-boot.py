@@ -176,10 +176,17 @@ class EfibootguardBootPlugin(SourcePlugin):
     def _create_unified_kernel_image(cls, rootfs_dir, cr_workdir, cmdline,
                                      uefi_kernel, deploy_dir, kernel_image,
                                      initrd_image, source_params):
+        # we need to map the distro_arch to uefi values
+        distro_to_efi_arch = {
+            "amd64": "x64",
+            "arm64": "aa64",
+            "i386": "ia32"
+        }
         rootfs_path = rootfs_dir.get('ROOTFS_DIR')
         os_release_file = "{root}/etc/os-release".format(root=rootfs_path)
-        efistub = "{rootfs_path}/usr/lib/systemd/boot/efi/linuxx64.efi.stub"\
-            .format(rootfs_path=rootfs_path)
+        efistub = "{rootfs_path}/usr/lib/systemd/boot/efi/linux{efiarch}.efi.stub"\
+            .format(rootfs_path=rootfs_path,
+                    efiarch=distro_to_efi_arch[get_bitbake_var("DISTRO_ARCH")])
         msger.debug("osrelease path: %s", os_release_file)
         kernel_cmdline_file = "{cr_workdir}/kernel-command-line-file.txt"\
             .format(cr_workdir=cr_workdir)

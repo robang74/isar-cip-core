@@ -1,0 +1,28 @@
+From 3f11612fbcbd1c17988d634ecdaecf1ec241f6e0 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Mon, 21 Mar 2022 07:02:28 +0100
+Subject: [PATCH] configure: Fix aarch64 EFI arch
+
+It's aa64 here according to the UEFI spec.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index a1a83e9..09d06d7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -102,7 +102,7 @@ AM_COND_IF(ARCH_X86_64, [
+ 	   MACHINE_TYPE_NAME=x64])
+ 
+ AM_COND_IF(ARCH_AARCH64, [
+-	   MACHINE_TYPE_NAME=aarch64])
++	   MACHINE_TYPE_NAME=aa64])
+ 
+ AC_SUBST([ARCH])
+ AC_SUBST([MACHINE_TYPE_NAME])
+-- 
+2.34.1
+

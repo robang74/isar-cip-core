@@ -54,7 +54,7 @@ class EfibootguardEFIPlugin(SourcePlugin):
         # we need to map the distro_arch to uefi values
         distro_to_efi_arch = {
             "amd64": "x64",
-            "arm64": "aarch64",
+            "arm64": "aa64",
             "i386": "ia32"
         }
 
