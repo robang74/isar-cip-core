@@ -11,7 +11,7 @@
 
 export DH_VERBOSE=1
 export PYBUILD_VERBOSE=1
-export PYBUILD_NAME=pasta
+export PYBUILD_NAME=shtab
 
 ifneq ($(filter nocheck,$(DEB_BUILD_PROFILES)),)
 export PYBUILD_DISABLE=test
