@@ -26,12 +26,22 @@ PROVIDES = "${PN}"
 PROVIDES += "${PN}-dev"
 
 DEPENDS = "python3-shtab"
-BUILD_DEB_DEPENDS = "dh-exec,gnu-efi,libpci-dev,check,pkg-config,libc6-dev-i386,python3-shtab"
+BUILD_DEB_DEPENDS = "dh-exec,gnu-efi,libpci-dev,check,pkg-config,python3-shtab"
+BUILD_DEB_DEPENDS_append_amd64 = ",libc6-dev-i386"
+BUILD_DEB_DEPENDS_append_i386 = ",libc6-dev-i386"
 
 inherit dpkg
 
-TEMPLATE_FILES = "debian/control.tmpl"
-TEMPLATE_VARS += "DESCRIPTION_DEV BUILD_DEB_DEPENDS"
+# needed for buster, bullseye could use compat >= 13
+python() {
+    arch = d.getVar('DISTRO_ARCH')
+    cmd = 'dpkg-architecture -a {} -q DEB_HOST_MULTIARCH'.format(arch)
+    with os.popen(cmd) as proc:
+        d.setVar('DEB_HOST_MULTIARCH', proc.read())
+}
+
+TEMPLATE_FILES = "debian/control.tmpl debian/efibootguard-dev.install.tmpl"
+TEMPLATE_VARS += "DESCRIPTION_DEV BUILD_DEB_DEPENDS DEB_HOST_MULTIARCH"
 
 do_prepare_build() {
     cp -R ${WORKDIR}/debian ${S}
