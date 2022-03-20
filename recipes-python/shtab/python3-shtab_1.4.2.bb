@@ -24,7 +24,7 @@ DEBIAN_BUILD_DEPENDS = " \
     dh-python, \
     python3-all, \
     python3-setuptools, \
-    python3-setuptools-scm, \
+    python3-setuptools-scm:native, \
     "
 
 DEB_BUILD_PROFILES = "nocheck"
