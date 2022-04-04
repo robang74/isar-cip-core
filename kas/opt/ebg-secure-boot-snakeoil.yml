@@ -14,7 +14,6 @@ header:
   includes:
    - kas/opt/ebg-secure-boot-base.yml
 
-
 local_conf_header:
   image-options: |
     CIP_IMAGE_OPTIONS_append = " read-only.inc"
@@ -24,7 +23,7 @@ local_conf_header:
 
   verity-img: |
     SECURE_IMAGE_FSTYPE = "squashfs"
-    IMAGE_FSTYPES = "secure-swupdate-img"
+    IMAGE_FSTYPES = "secure-wic-swu-img"
     WKS_FILE = "${MACHINE}-efibootguard-secureboot.wks.in"
 
   secure-boot: |
