@@ -30,3 +30,7 @@ local_conf_header:
   ovmf-binaries: |
     # Add ovmf binaries for qemu
     IMAGER_BUILD_DEPS += "ovmf-binaries"
+    # not needed Debian 11 and later
+    OVERRIDES_append = ":${BASE_DISTRO_CODENAME}"
+    DISTRO_APT_SOURCES_append_buster = " conf/distro/debian-buster-backports.list"
+    DISTRO_APT_PREFERENCES_append_buster = " conf/distro/preferences.ovmf-snakeoil.conf"
