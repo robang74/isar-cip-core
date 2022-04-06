@@ -78,15 +78,13 @@ class EfibootguardBootPlugin(SourcePlugin):
             efibootguard in local.conf with WDOG_TIMEOUT=")
             exit(1)
 
-
         boot_files = source_params.get("files", "").split(' ')
-        uefi_kernel = source_params.get("unified-kernel")
+        unified_kernel = source_params.get("unified-kernel") or 'y'
         cmdline = bootloader.append
-        if uefi_kernel:
+        if unified_kernel == 'y':
             boot_image = cls._create_unified_kernel_image(rootfs_dir,
                                                           cr_workdir,
                                                           cmdline,
-                                                          uefi_kernel,
                                                           deploy_dir,
                                                           kernel_image,
                                                           initrd_image,
@@ -174,8 +172,8 @@ class EfibootguardBootPlugin(SourcePlugin):
 
     @classmethod
     def _create_unified_kernel_image(cls, rootfs_dir, cr_workdir, cmdline,
-                                     uefi_kernel, deploy_dir, kernel_image,
-                                     initrd_image, source_params):
+                                     deploy_dir, kernel_image, initrd_image,
+                                     source_params):
         # we need to map the distro_arch to uefi values
         distro_to_efi_arch = {
             "amd64": "x64",

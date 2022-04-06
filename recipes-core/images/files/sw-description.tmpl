@@ -11,10 +11,10 @@
 software =
 {
     version = "0.2";
-    name = "cip software update"
+    name = "cip software update";
     images: ({
             filename = "${ROOTFS_PARTITION_NAME}";
-            device = "fedcba98-7654-3210-cafe-5e0710000001,fedcba98-7654-3210-cafe-5e0710000002";
+            device = "sda4,sda5";
             type = "roundrobin";
             compressed = "zlib";
             filesystem = "ext4";
@@ -23,23 +23,13 @@ software =
             };
     });
     files: ({
-            filename = "${KERNEL_IMAGE}";
-            path = "vmlinuz";
+            filename = "linux.efi";
+            path = "linux.efi";
             type = "roundrobin";
-            device = "fedcba98-7654-3210-cafe-5e0710000001->BOOT0,fedcba98-7654-3210-cafe-5e0710000002->BOOT1";
+            device = "sda4->BOOT0,sda5->BOOT1";
             filesystem = "vfat";
             properties: {
                         subtype = "kernel";
-            };
-    },
-    {
-            filename = "${INITRD_IMAGE}";
-            path = "${INITRD_IMAGE}";
-            type = "roundrobin";
-            device = "fedcba98-7654-3210-cafe-5e0710000001->BOOT0,fedcba98-7654-3210-cafe-5e0710000002->BOOT1";
-            filesystem = "vfat";
-            properties: {
-                        subtype = "initrd";
             };
     });
 }

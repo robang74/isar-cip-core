@@ -14,3 +14,7 @@ header:
   includes:
    - kas/opt/efibootguard.yml
    - kas/opt/swupdate.yml
+
+local_conf_header:
+  initramfs: |
+    IMAGE_INSTALL += "initramfs-abrootfs-hook"
