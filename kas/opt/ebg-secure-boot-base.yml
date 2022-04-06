@@ -15,7 +15,6 @@ header:
    - kas/opt/efibootguard.yml
 
 local_conf_header:
-  initramfs: |
-    IMAGE_INSTALL += "initramfs-abrootfs-secureboot"
+  secure_swu: |
     SWU_DESCRIPTION = "secureboot"
     SWUPDATE_ROUND_ROBIN_HANDLER_CONFIG = "secureboot/swupdate.handler.${SWUPDATE_BOOTLOADER}.ini"

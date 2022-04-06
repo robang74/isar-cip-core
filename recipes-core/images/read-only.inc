@@ -14,7 +14,6 @@ SQUASHFS_EXCLUDE_DIRS += "home var"
 IMAGE_INSTALL += "etc-overlay-fs"
 IMAGE_INSTALL += "home-fs"
 IMAGE_INSTALL += "tmp-fs"
-IMAGE_INSTALL_remove += "initramfs-abrootfs-secureboot"
 
 image_configure_fstab() {
     sudo tee '${IMAGE_ROOTFS}/etc/fstab' << EOF
