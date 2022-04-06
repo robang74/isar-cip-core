@@ -16,13 +16,13 @@ DEBIAN_DEPENDS += ", busybox, patch"
 SRC_URI += "file://postinst \
             file://initramfs.lsblk.hook \
             file://initramfs.image_uuid.hook \
-            file://secure-boot-debian-local-patch"
+            file://debian-local-patch"
 
 do_install() {
-    # add patch for local to /usr/share/secure boot
-    TARGET=${D}/usr/share/secureboot
+    # add patch for local to /usr/share/initramfs-abrootfs-hook
+    TARGET=${D}/usr/share/initramfs-abrootfs-hook
     install -m 0755 -d ${TARGET}
-    install -m 0644 ${WORKDIR}/secure-boot-debian-local-patch ${TARGET}/secure-boot-debian-local.patch
+    install -m 0644 ${WORKDIR}/debian-local-patch ${TARGET}/debian-local.patch
 
     # add hooks for secure boot
     HOOKS=${D}/etc/initramfs-tools/hooks

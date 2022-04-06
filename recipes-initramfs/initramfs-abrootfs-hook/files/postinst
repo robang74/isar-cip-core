@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# patch local script
+patch -s -p0 /usr/share/initramfs-tools/scripts/local /usr/share/initramfs-abrootfs-hook/debian-local.patch
+
+update-initramfs -v -u
