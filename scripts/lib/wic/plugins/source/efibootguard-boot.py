@@ -113,7 +113,7 @@ class EfibootguardBootPlugin(SourcePlugin):
             % (
                 part.label.upper(),
                 boot_image,
-                '-a "%s"' % cmdline,
+                '-a "%s"' % cmdline if unified_kernel != 'y' else '',
                 source_params.get("revision", 1),
                 wdog_timeout
             )
@@ -181,15 +181,9 @@ class EfibootguardBootPlugin(SourcePlugin):
             "i386": "ia32"
         }
         rootfs_path = rootfs_dir.get('ROOTFS_DIR')
-        os_release_file = "{root}/etc/os-release".format(root=rootfs_path)
-        efistub = "{rootfs_path}/usr/lib/systemd/boot/efi/linux{efiarch}.efi.stub"\
+        efistub = "{rootfs_path}/usr/share/efibootguard/kernel-stub{efiarch}.efi"\
             .format(rootfs_path=rootfs_path,
                     efiarch=distro_to_efi_arch[get_bitbake_var("DISTRO_ARCH")])
-        msger.debug("osrelease path: %s", os_release_file)
-        kernel_cmdline_file = "{cr_workdir}/kernel-command-line-file.txt"\
-            .format(cr_workdir=cr_workdir)
-        with open(kernel_cmdline_file, "w") as cmd_fd:
-            cmd_fd.write(cmdline)
         uefi_kernel_name = "linux.efi"
         uefi_kernel_file = "{deploy_dir}/{uefi_kernel_name}"\
             .format(deploy_dir=deploy_dir, uefi_kernel_name=uefi_kernel_name)
@@ -197,23 +191,14 @@ class EfibootguardBootPlugin(SourcePlugin):
             .format(deploy_dir=deploy_dir, kernel_image=kernel_image)
         initrd = "{deploy_dir}/{initrd_image}"\
             .format(deploy_dir=deploy_dir, initrd_image=initrd_image)
-        objcopy_cmd = 'objcopy \
-            --add-section .osrel={os_release_file} \
-            --change-section-vma .osrel=0x20000 \
-            --add-section .cmdline={kernel_cmdline_file} \
-            --change-section-vma .cmdline=0x30000 \
-            --add-section .linux={kernel} \
-            --change-section-vma .linux=0x2000000 \
-            --add-section .initrd={initrd} \
-            --change-section-vma .initrd=0x3000000 \
-            {efistub} {uefi_kernel_file}'.format(
-                os_release_file=os_release_file,
-                kernel_cmdline_file=kernel_cmdline_file,
+        cmd = 'bg_gen_unified_kernel {efistub} {kernel} {uefi_kernel_file} \
+            -c "{cmdline}" -i {initrd}'.format(
+                cmdline=cmdline,
                 kernel=kernel,
                 initrd=initrd,
                 efistub=efistub,
                 uefi_kernel_file=uefi_kernel_file)
-        exec_cmd(objcopy_cmd)
+        exec_cmd(cmd, as_shell=True)
 
         cls._sign_file(signee=uefi_kernel_file, source_params=source_params)
 
