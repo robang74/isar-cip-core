@@ -66,10 +66,12 @@ class EfibootguardBootPlugin(SourcePlugin):
             initrd_image = "initrd.img"
         bootloader = creator.ks.bootloader
 
+        dtb_files = (get_bitbake_var("DTB_FILES") or '').split()
+
         deploy_dir = get_bitbake_var("DEPLOY_DIR_IMAGE")
         if not deploy_dir:
             msger.error("DEPLOY_DIR_IMAGE not set, exiting\n")
-            sys.exit(1)
+            exit(1)
         creator.deploy_dir = deploy_dir
 
         wdog_timeout = get_bitbake_var("WDOG_TIMEOUT")
@@ -88,9 +90,13 @@ class EfibootguardBootPlugin(SourcePlugin):
                                                           deploy_dir,
                                                           kernel_image,
                                                           initrd_image,
+                                                          dtb_files,
                                                           source_params)
             boot_files.append(boot_image)
         else:
+            if dtb_files:
+                msger.error("DTB_FILES specified while unified kernel is disabled\n")
+                exit(1)
             root_dev = source_params.get("root", None)
             if not root_dev:
                 msger.error("Specify root in source params")
@@ -173,7 +179,7 @@ class EfibootguardBootPlugin(SourcePlugin):
     @classmethod
     def _create_unified_kernel_image(cls, rootfs_dir, cr_workdir, cmdline,
                                      deploy_dir, kernel_image, initrd_image,
-                                     source_params):
+                                     dtb_files, source_params):
         # we need to map the distro_arch to uefi values
         distro_to_efi_arch = {
             "amd64": "x64",
@@ -198,6 +204,11 @@ class EfibootguardBootPlugin(SourcePlugin):
                 initrd=initrd,
                 efistub=efistub,
                 uefi_kernel_file=uefi_kernel_file)
+        if dtb_files:
+            for dtb in dtb_files:
+                cmd += ' -d {deploy_dir}/{dtb_file}'.format(
+                    deploy_dir=deploy_dir,
+                    dtb_file=os.path.basename(dtb))
         exec_cmd(cmd, as_shell=True)
 
         cls._sign_file(signee=uefi_kernel_file, source_params=source_params)
