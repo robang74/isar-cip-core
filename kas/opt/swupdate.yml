@@ -19,6 +19,9 @@ local_conf_header:
     IMAGE_INSTALL_append = " swupdate"
     IMAGE_INSTALL_append = " swupdate-handler-roundrobin"
 
+  image-option-swupdate: |
+    CIP_IMAGE_OPTIONS_append = " swupdate.inc"
+
   wic-swu: |
     IMAGE_FSTYPES = "wic-swu-img"
     WKS_FILE ?= "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks"
