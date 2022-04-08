@@ -16,6 +16,6 @@ ROOTFS_PARTITION_NAME = "${IMAGE_FULLNAME}.wic.img.p4.gz"
 SRC_URI += "file://sw-description.tmpl"
 TEMPLATE_FILES += "sw-description.tmpl"
 
-TEMPLATE_VARS += "PN ROOTFS_PARTITION_NAME"
+TEMPLATE_VARS += "ROOTFS_PARTITION_NAME"
 
 SWU_ADDITIONAL_FILES += "linux.signed.efi ${ROOTFS_PARTITION_NAME}"
