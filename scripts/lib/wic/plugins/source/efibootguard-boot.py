@@ -215,23 +215,21 @@ class EfibootguardBootPlugin(SourcePlugin):
                 uefi_kernel_file=uefi_kernel_file)
         exec_cmd(objcopy_cmd)
 
-        return cls._sign_file(name=uefi_kernel_name,
-                              signee=uefi_kernel_file,
-                              deploy_dir=deploy_dir,
-                              source_params=source_params)
+        cls._sign_file(signee=uefi_kernel_file, source_params=source_params)
+
+        return uefi_kernel_name
 
     @classmethod
-    def _sign_file(cls, name, signee, deploy_dir, source_params):
+    def _sign_file(cls, signee, source_params):
         sign_script = source_params.get("signwith")
         if sign_script and os.path.exists(sign_script):
             msger.info("sign with script %s", sign_script)
-            name = name.replace(".efi", ".signed.efi")
-            sign_cmd = "{sign_script} {signee} {deploy_dir}/{name}"\
-                .format(sign_script=sign_script, signee=signee,
-                        deploy_dir=deploy_dir, name=name)
+            orig_signee = signee + ".unsigned"
+            os.rename(signee, orig_signee)
+            sign_cmd = "{sign_script} {orig_signee} {signee}"\
+                .format(sign_script=sign_script, orig_signee=orig_signee,
+                        signee=signee)
             exec_cmd(sign_cmd)
         elif sign_script and not os.path.exists(sign_script):
             msger.error("Could not find script %s", sign_script)
             exit(1)
-
-        return name
