@@ -12,7 +12,7 @@
 header:
   version: 10
   includes:
-   - kas/opt/ebg-secure-boot-base.yml
+   - kas/opt/efibootguard.yml
 
 local_conf_header:
   image-options: |
