@@ -14,7 +14,7 @@ software =
     name = "cip software update";
     images: ({
             filename = "${ROOTFS_PARTITION_NAME}";
-            device = "sda4,sda5";
+            device = "C:BOOT0:linux.efi->fedcba98-7654-3210-cafe-5e0710000001,C:BOOT1:linux.efi->fedcba98-7654-3210-cafe-5e0710000002";
             type = "roundrobin";
             compressed = "zlib";
             filesystem = "ext4";
@@ -26,7 +26,7 @@ software =
             filename = "linux.efi";
             path = "linux.efi";
             type = "roundrobin";
-            device = "sda4->BOOT0,sda5->BOOT1";
+            device = "C:BOOT0:linux.efi->BOOT0,C:BOOT1:linux.efi->BOOT1";
             filesystem = "vfat";
             properties: {
                         subtype = "kernel";
