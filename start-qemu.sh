@@ -117,7 +117,7 @@ shift 1
 QEMU_COMMON_OPTIONS=" \
 	-m 1G \
 	-serial mon:stdio \
-	-netdev user,id=net \
+	-netdev user,id=net,hostfwd=tcp:127.0.0.1:22222-:22 \
 	${QEMU_EXTRA_ARGS}"
 
 if [ -n "${SECURE_BOOT}" ]; then
