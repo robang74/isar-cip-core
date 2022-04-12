@@ -1,31 +1,38 @@
+# SWUpdate support for the CIP core image
 
-Clone the isar-cip-core repository
+This document describes how to build and test the SWUpdate pre-integration for
+isar-cip-core, targeting a QEMU x86 virtual machine.
+
+Start with cloning the isar-cip-core repository:
 ```
 host$ git clone https://gitlab.com/cip-project/cip-core/isar-cip-core.git
 ```
 
-Build the CIP Core image
+# Building and testing the CIP Core image
 
 Set up `kas-container` as described in the [top-level README](../README.md).
-Then build the image:
+Then build the image which will later serve as update package:
 ```
 host$ ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml
 ```
-- save the generated swu build/tmp/deploy/images/qemu-amd64/cip-core-image-cip-core-buster-qemu-amd64.swu in a separate folder (ex: tmp)
-- modify the image for example add a new version to the image by adding PV=2.0.0 to cip-core-image.bb
-- rebuild the image using above command and start the new target
+Save the generated swu `build/tmp/deploy/images/qemu-amd64/cip-core-image-cip-core-buster-qemu-amd64.swu` into a separate folder (ex: /tmp).
+
+Next, rebuild the image, switching to the RT kernel as modification:
+```
+host$ ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml:kas/opt/rt.yml
+```
+
+Now start the image which will contain the RT kernel:
 ```
 host$ SWUPDATE_BOOT=y ./start-qemu.sh amd64
 ```
 
-Copy `cip-core-image-cip-core-buster-qemu-amd64.swu` file from `tmp` folder to the running system
-
+Copy `cip-core-image-cip-core-buster-qemu-amd64.swu` file from `tmp` folder into the running system:
 ```
-root@demo:~# scp <host-user>@10.0.2.2:<path-to-swu-file>/tmp/cip-core-image-cip-core-buster-qemu-amd64.swu .
+host$ scp -P 22222 /tmp/cip-core-image-cip-core-buster-qemu-amd64.swu root@localhost:
 ```
 
 Check which partition is booted, e.g. with lsblk:
-
 ```
 root@demo:~# lsblk
 NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
@@ -37,11 +44,22 @@ sda      8:0    0    2G  0 disk
 └─sda5   8:5    0 1000M  0 part
 ```
 
-Apply swupdate and reboot
+Also check that you are running the RT kernel:
+```
+root@demo:~# uname -a
+Linux demo 4.19.233-cip69-rt24 #1 SMP PREEMPT RT Tue Apr 12 09:23:51 UTC 2022 x86_64 GNU/Linux
+root@demo:~# ls /lib/modules
+4.19.233-cip69-rt24
+root@demo:~# cat /sys/kernel/realtime
+1
+```
+
+Now apply swupdate and reboot
 ```
 root@demo:~# swupdate -i cip-core-image-cip-core-buster-qemu-amd64.swu
 root@demo:~# reboot
 ```
+
 Check which partition is booted, e.g. with lsblk and the rootfs should have changed
 ```
 root@demo:~# lsblk
@@ -54,150 +72,146 @@ sda      8:0    0    2G  0 disk
 └─sda5   8:5    0 1000M  0 part /
 ```
 
+Check the active kernel:
+```
+root@demo:~# uname -a
+Linux demo 4.19.235-cip70 #1 SMP Tue Apr 12 09:08:39 UTC 2022 x86_64 GNU/Linux
+root@demo:~# ls /lib/modules
+4.19.235-cip70
+```
+
 Check bootloader ustate after swupdate
 ```
 root@demo:~# bg_printenv
-----------------------------
-Config Partition #0 Values:
-in_progress:      no
-revision:         2
-kernel:           C:BOOT0:cip-core-image-cip-core-buster-qemu-amd64-vmlinuz
-kernelargs:       console=tty0 console=ttyS0,115200 rootwait earlyprintk root=PARTUUID=fedcba98-7654-3210-cafe-5e0710000001 rw initrd=cip-core-image-cip-core-buster-qemu-amd64-initrd.img
-watchdog timeout: 60 seconds
-ustate:           0 (OK)
 
-user variables:
-
-----------------------------
- Config Partition #1 Values:
-in_progress:      no
-revision:         3
-kernel:           C:BOOT1:vmlinuz
-kernelargs:       root=PARTUUID=fedcba98-7654-3210-cafe-5e0710000002 console=tty0 console=ttyS0,115200 rootwait earlyprintk rw initrd=cip-core-image-cip-core-buster-qemu-amd64-initrd.img
-watchdog timeout: 60 seconds
-ustate:           2 (TESTING)
-```
-
-if Partition #1 usate is 2 (TESTING) then execute below command to confirm swupdate and the command will set ustate to "OK"
-```
-root@demo:~# bg_setenv -c
-```
-
-# swupdate rollback example
-
-Build the image for swupdate with service which causes kernel panic during system boot using below command.
-
-```
-host$ ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml:kas/opt/kernel-panic.yml
-```
-- save the generated swu build/tmp/deploy/images/qemu-amd64/cip-core-image-cip-core-buster-qemu-amd64.swu in a separate folder (ex: tmp)
-- build the image again without `kernel-panic.yml` recipe using below command
-```
-host$ ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml
-```
-
-Start the target on QEMU
-```
-host$ SWUPDATE_BOOT=y ./start-qemu.sh amd64
-```
-
-Copy `cip-core-image-cip-core-buster-qemu-amd64.swu` file from `tmp` folder to the running system
-
-```
-root@demo:~# scp <host-user>@10.0.2.2:<path-to-swu-file>/tmp/cip-core-image-cip-core-buster-qemu-amd64.swu .
-```
-
-Check which partition is booted, e.g. with lsblk:
-
-```
-root@demo:~# lsblk
-NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
-sda      8:0    0    2G  0 disk
-├─sda1   8:1    0 16.4M  0 part
-├─sda2   8:2    0   32M  0 part
-├─sda3   8:3    0   32M  0 part
-├─sda4   8:4    0 1000M  0 part /
-└─sda5   8:5    0 1000M  0 part
-```
-
-Check bootloader ustate before swupdate and should be as below
-```
-root@demo:~# bg_printenv
-----------------------------
-Config Partition #0 Values:
-in_progress:      no
-revision:         2
-kernel:           C:BOOT0:cip-core-image-cip-core-buster-qemu-amd64-vmlinuz
-kernelargs:       console=tty0 console=ttyS0,115200 rootwait earlyprintk root=PARTUUID=fedcba98-7654-3210-cafe-5e0710000001 rw initrd=cip-core-image-cip-core-buster-qemu-amd64-initrd.img
-watchdog timeout: 60 seconds
-ustate:           0 (OK)
-
-user variables:
-----------------------------
-Config Partition #1 Values:
-in_progress:      no
-revision:         1
-kernel:           C:BOOT1:cip-core-image-cip-core-buster-qemu-amd64-vmlinuz
-kernelargs:       console=tty0 console=ttyS0,115200 rootwait earlyprintk root=PARTUUID=fedcba98-7654-3210-cafe-5e0710000002 rw initrd=cip-core-image-cip-core-buster-qemu-amd64-initrd.img
-watchdog timeout: 60 seconds
-ustate:           0 (OK)
-```
-
-Apply swupdate as below
-```
-root@demo:~# swupdate -i cip-core-image-cip-core-buster-qemu-amd64.swu
-```
-
-check bootloader ustate after swupdate. if the swupdate is successful then **revision number** should increase to **3** and status should be changed to **INSTALLED** for Partition #1.
-```
-root@demo:~# bg_printenv
-----------------------------
-Config Partition #0 Values:
-in_progress:      no
-revision:         2
-kernel:           C:BOOT0:cip-core-image-cip-core-buster-qemu-amd64-vmlinuz
-kernelargs:       console=tty0 console=ttyS0,115200 rootwait earlyprintk root=PARTUUID=fedcba98-7654-3210-cafe-5e0710000001 rw initrd=cip-core-image-cip-core-buster-qemu-amd64-initrd.img
-watchdog timeout: 60 seconds
-ustate:           0 (OK)
-
-user variables:
-----------------------------
-Config Partition #1 Values:
-in_progress:      no
-revision:         3
-kernel:           C:BOOT1:vmlinuz
-kernelargs:       root=PARTUUID=fedcba98-7654-3210-cafe-5e0710000002 console=tty0 console=ttyS0,115200 rootwait earlyprintk rw initrd=cip-core-image-cip-core-buster-qemu-amd64-initrd.img
-watchdog timeout: 60 seconds
-ustate:           1 (INSTALLED)
-```
-
-Execute reboot command
-- reboot command should cause kernel panic error.
-- watchdog timer should expire and restart the qemu. bootloader should select previous partition to boot.
-```
-root@demo:~# reboot
-```
-
-Once the system is restarted, check the bootloader ustate
-- if update is failed then **revision number** should reduce to **0** and status should change to **FAILED** for Partition #1.
-```
-root@demo:~# bg_printenv
 ----------------------------
  Config Partition #0 Values:
 in_progress:      no
 revision:         2
-kernel:           C:BOOT0:cip-core-image-cip-core-buster-qemu-amd64-vmlinuz
-kernelargs:       console=tty0 console=ttyS0,115200 rootwait earlyprintk root=PARTUUID=fedcba98-7654-3210-cafe-5e0710000001 rw initrd=cip-core-image-cip-corg
+kernel:           C:BOOT0:linux.efi
+kernelargs:       console=tty0 console=ttyS0,115200 rootwait earlyprintk
 watchdog timeout: 60 seconds
 ustate:           0 (OK)
 
 user variables:
+
+
+
+----------------------------
+ Config Partition #1 Values:
+in_progress:      no
+revision:         3
+kernel:           C:BOOT1:linux.efi
+kernelargs:       console=tty0 console=ttyS0,115200 rootwait earlyprintk
+watchdog timeout: 60 seconds
+ustate:           2 (TESTING)
+
+user variables:
+
+
+```
+
+If Partition #1 ustate is 2 (TESTING) then execute below command to confirm swupdate and the command will set ustate to "OK".
+```
+root@demo:~# bg_setenv -c
+```
+
+## SWUpdate rollback example
+
+Build the image for swupdate with a service which causes kernel panic during system boot using below command:
+
+```
+host$ ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml:kas/opt/kernel-panic.yml
+```
+Save the generated swu `build/tmp/deploy/images/qemu-amd64/cip-core-image-cip-core-buster-qemu-amd64.swu` in a separate folder.
+Then build the image without `kernel-panic.yml` recipe using below command:
+```
+host$ ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml
+```
+
+Start the target on QEMU:
+```
+host$ SWUPDATE_BOOT=y ./start-qemu.sh amd64
+```
+
+Copy `cip-core-image-cip-core-buster-qemu-amd64.swu` file from `tmp` folder into the running system:
+```
+host$ scp -P 22222 /tmp/cip-core-image-cip-core-buster-qemu-amd64.swu root@localhost:
+```
+
+Apply swupdate as below:
+```
+root@demo:~# swupdate -i cip-core-image-cip-core-buster-qemu-amd64.swu
+```
+
+Check bootloader ustate after swupdate. If the swupdate is successful then **revision number** should be **3** and status should be changed to **INSTALLED** for Partition #1.
+```
+root@demo:~# bg_printenv
+
+----------------------------
+ Config Partition #0 Values:
+in_progress:      no
+revision:         2
+kernel:           C:BOOT0:linux.efi
+kernelargs:       console=tty0 console=ttyS0,115200 rootwait earlyprintk
+watchdog timeout: 60 seconds
+ustate:           0 (OK)
+
+user variables:
+
+
+
+----------------------------
+ Config Partition #1 Values:
+in_progress:      no
+revision:         3
+kernel:           C:BOOT1:linux.efi
+kernelargs:       console=tty0 console=ttyS0,115200 rootwait earlyprintk
+watchdog timeout: 60 seconds
+ustate:           1 (INSTALLED)
+
+user variables:
+
+
+```
+
+Execute the reboot command.
+```
+root@demo:~# reboot
+```
+
+The new kernel should cause a kernel panic error.
+The watchdog timer should expire and restart the VM (it will take 2 minutes due to an issue in.
+The bootloader will then select the previous, working partition and boot from it.
+
+Once the system is restarted, check the bootloader ustate.
+If update is failed then **revision number** should be reduced to **0** and status should have changed to **FAILED** for Partition #1.
+```
+root@demo:~# bg_printenv
+
+----------------------------
+ Config Partition #0 Values:
+in_progress:      no
+revision:         2
+kernel:           C:BOOT0:linux.efi
+kernelargs:       console=tty0 console=ttyS0,115200 rootwait earlyprintk
+watchdog timeout: 60 seconds
+ustate:           0 (OK)
+
+user variables:
+
+
+
 ----------------------------
  Config Partition #1 Values:
 in_progress:      no
 revision:         0
-kernel:           C:BOOT1:vmlinuz
-kernelargs:       root=PARTUUID=fedcba98-7654-3210-cafe-5e0710000002 console=tty0 console=ttyS0,115200 rootwait earlyprintk rw initrd=cip-core-image-cip-corg
+kernel:           C:BOOT1:linux.efi
+kernelargs:       console=tty0 console=ttyS0,115200 rootwait earlyprintk
 watchdog timeout: 60 seconds
 ustate:           3 (FAILED)
+
+user variables:
+
+
 ```
