@@ -16,7 +16,8 @@ FILESPATH_append := ":${FILE_DIRNAME}/files"
 SRC_URI = " \
     file://postinst \
     file://ethernet \
-    file://99-silent-printk.conf"
+    file://99-silent-printk.conf \
+    file://99-watchdog.conf"
 
 WIRELESS_FIRMWARE_PACKAGE ?= ""
 INSTALL_WIRELESS_TOOLS ??= "0"
@@ -34,4 +35,7 @@ do_install() {
 
 	install -v -d ${D}/etc/sysctl.d
 	install -v -m 644 ${WORKDIR}/99-silent-printk.conf ${D}/etc/sysctl.d/
+
+	install -v -d ${D}/etc/systemd/system.conf.d
+	install -v -m 644 ${WORKDIR}/99-watchdog.conf ${D}/etc/systemd/system.conf.d/
 }
