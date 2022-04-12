@@ -1,0 +1,66 @@
+From 09a736a651ae05378d9ef8018589c9f834b729a6 Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Tue, 12 Apr 2022 08:01:21 +0200
+Subject: [PATCH 09/10] debian: Add patch to fix bootloader_env_get for EBG
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ ...ix-do_env_get-for-anything-but-globa.patch | 38 +++++++++++++++++++
+ debian/patches/series                         |  1 +
+ 2 files changed, 39 insertions(+)
+ create mode 100644 debian/patches/0001-bootloader-EBG-fix-do_env_get-for-anything-but-globa.patch
+
+diff --git a/debian/patches/0001-bootloader-EBG-fix-do_env_get-for-anything-but-globa.patch b/debian/patches/0001-bootloader-EBG-fix-do_env_get-for-anything-but-globa.patch
+new file mode 100644
+index 0000000..f99f7ee
+--- /dev/null
++++ b/debian/patches/0001-bootloader-EBG-fix-do_env_get-for-anything-but-globa.patch
+@@ -0,0 +1,38 @@
++From 62cd7c93dc31e5ad8dccdd1db791892864fbbccf Mon Sep 17 00:00:00 2001
++From: Jan Kiszka <jan.kiszka@siemens.com>
++Date: Tue, 12 Apr 2022 07:49:14 +0200
++Subject: [PATCH] bootloader: EBG: fix do_env_get for anything but global state
++
++The return value conversion must only be applied on STATE_KEY. This
++fixes strangely broken strings for all other keys.
++
++Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
++---
++ bootloader/ebg.c | 4 ++--
++ 1 file changed, 2 insertions(+), 2 deletions(-)
++
++diff --git a/bootloader/ebg.c b/bootloader/ebg.c
++index 2aa9010..a0b45dc 100644
++--- a/bootloader/ebg.c
+++++ b/bootloader/ebg.c
++@@ -115,6 +115,8 @@ char *bootloader_env_get(const char *name)
++ 	if (strncmp(name, (char *)STATE_KEY, strlen((char *)STATE_KEY) + 1) == 0) {
++ 		value = (char *)malloc(sizeof(char));
++ 		*value = ebg_env_getglobalstate(&ebgenv);
+++		/* Map EFI Boot Guard's int return to update_state_t's char value */
+++		*value = *value + '0';
++ 	} else {
++ 		if ((size = ebg_env_get(&ebgenv, (char *)name, NULL)) != 0) {
++ 			value = malloc(size);
++@@ -133,8 +135,6 @@ char *bootloader_env_get(const char *name)
++ 		    name, strerror(errno));
++ 	}
++ 
++-	/* Map EFI Boot Guard's int return to update_state_t's char value */
++-	*value = *value + '0';
++ 	return value;
++ }
++ 
++-- 
++2.34.1
++
+diff --git a/debian/patches/series b/debian/patches/series
+index 8c5564a..98628a7 100644
+--- a/debian/patches/series
++++ b/debian/patches/series
+@@ -1 +1,2 @@
+ use-gcc-compiler.diff
++0001-bootloader-EBG-fix-do_env_get-for-anything-but-globa.patch
+-- 
+2.34.1
+

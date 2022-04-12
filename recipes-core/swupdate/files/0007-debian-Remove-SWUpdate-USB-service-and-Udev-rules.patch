@@ -1,7 +1,7 @@
-From 625db939a1dec7d1aa6fbcb01c2c4cbd699bfe7b Mon Sep 17 00:00:00 2001
+From db391d1dd34806ae6694205b08b4661318bef37b Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Mon, 7 Feb 2022 09:28:39 +0100
-Subject: [PATCH 7/9] debian: Remove SWUpdate USB service and Udev rules
+Subject: [PATCH 07/10] debian: Remove SWUpdate USB service and Udev rules
 
 The current implementation will install an abitrary SWUpdate binary
 from a plug-in USB stick. This is a major security risk for devices
@@ -19,7 +19,7 @@ Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
  delete mode 100644 debian/swupdate.udev
 
 diff --git a/debian/rules b/debian/rules
-index 12eb0ba5..76fce010 100755
+index 12eb0ba..76fce01 100755
 --- a/debian/rules
 +++ b/debian/rules
 @@ -101,7 +101,6 @@ override_dh_auto_install:
@@ -32,7 +32,7 @@ index 12eb0ba5..76fce010 100755
  override_dh_gencontrol:
 diff --git a/debian/swupdate.swupdate-usb@.service b/debian/swupdate.swupdate-usb@.service
 deleted file mode 100644
-index eda9d153..00000000
+index eda9d15..0000000
 --- a/debian/swupdate.swupdate-usb@.service
 +++ /dev/null
 @@ -1,8 +0,0 @@
@@ -46,7 +46,7 @@ index eda9d153..00000000
 -ExecStopPost=/bin/umount /mnt
 diff --git a/debian/swupdate.udev b/debian/swupdate.udev
 deleted file mode 100644
-index b4efd0b7..00000000
+index b4efd0b..0000000
 --- a/debian/swupdate.udev
 +++ /dev/null
 @@ -1,2 +0,0 @@

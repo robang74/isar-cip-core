@@ -1,7 +1,7 @@
-From ccc6f5d04aba0f1270f7d6b6de298b2084ad3bfd Mon Sep 17 00:00:00 2001
+From 8315d5ff8168fca1bd3752764e71f98e8b55f2ad Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Tue, 5 Oct 2021 10:56:25 +0200
-Subject: [PATCH 5/9] debian: Make CONFIG_HW_COMPATIBILTY optional
+Subject: [PATCH 05/10] debian: Make CONFIG_HW_COMPATIBILTY optional
 
 Add option for qemu.
 
@@ -12,7 +12,7 @@ Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
  2 files changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/debian/configs/defconfig b/debian/configs/defconfig
-index 337fcce0..6fc1137f 100644
+index 337fcce..6fc1137 100644
 --- a/debian/configs/defconfig
 +++ b/debian/configs/defconfig
 @@ -1,5 +1,4 @@
@@ -22,7 +22,7 @@ index 337fcce0..6fc1137f 100644
  CONFIG_DOWNLOAD_SSL=y
  CONFIG_SIGALG_CMS=y
 diff --git a/debian/rules b/debian/rules
-index 6078ed89..19870e98 100755
+index 6078ed8..19870e9 100755
 --- a/debian/rules
 +++ b/debian/rules
 @@ -39,6 +39,9 @@ else ifneq (,$(filter pkg.swupdate.efibootguard,$(DEB_BUILD_PROFILES)))

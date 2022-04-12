@@ -1,7 +1,7 @@
-From cddd3472aad2d8e48d557705b82ffcc0c7d14a02 Mon Sep 17 00:00:00 2001
+From 2776a4817eb91be3df001e04d548a702e9f5291a Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Mon, 14 Feb 2022 12:27:43 +0100
-Subject: [PATCH 8/9] Add Profile option to disable CONFIG_HASH_VERIFY
+Subject: [PATCH 08/10] Add Profile option to disable CONFIG_HASH_VERIFY
 
 This change also enables CONFIG_HASH_VERIFY by default.
 
@@ -11,7 +11,7 @@ Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
  1 file changed, 3 insertions(+)
 
 diff --git a/debian/rules b/debian/rules
-index 76fce010..4dc9e170 100755
+index 76fce01..4dc9e17 100755
 --- a/debian/rules
 +++ b/debian/rules
 @@ -42,6 +42,9 @@ endif

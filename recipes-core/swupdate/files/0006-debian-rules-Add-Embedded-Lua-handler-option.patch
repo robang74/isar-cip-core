@@ -1,7 +1,7 @@
-From 7107052e6aa1a35a2900070797ac013d49814f0b Mon Sep 17 00:00:00 2001
+From 19969a388e414db84e54a706e9227c301b0408a2 Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Wed, 29 Sep 2021 11:32:41 +0200
-Subject: [PATCH 6/9] debian/rules: Add Embedded Lua handler option
+Subject: [PATCH 06/10] debian/rules: Add Embedded Lua handler option
 
 Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
  1 file changed, 5 insertions(+)
 
 diff --git a/debian/rules b/debian/rules
-index 19870e98..12eb0ba5 100755
+index 19870e9..12eb0ba 100755
 --- a/debian/rules
 +++ b/debian/rules
 @@ -68,7 +68,12 @@ ifneq (,$(LUA_VERSION))

@@ -1,7 +1,7 @@
-From 8b6f01b6126933723963497d0db0c256e5251c5b Mon Sep 17 00:00:00 2001
+From 17d962a9b43f5debaed85affc6dccb2c471bffe9 Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Mon, 4 Oct 2021 17:15:56 +0200
-Subject: [PATCH 3/9] debian/rules: Add option to disable fs creation
+Subject: [PATCH 03/10] debian/rules: Add option to disable fs creation
 
 Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---
@@ -10,7 +10,7 @@ Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
  2 files changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/debian/configs/defconfig b/debian/configs/defconfig
-index b34168e3..d011deb1 100644
+index b34168e..d011deb 100644
 --- a/debian/configs/defconfig
 +++ b/debian/configs/defconfig
 @@ -9,12 +9,6 @@ CONFIG_UPDATE_STATE_CHOICE_BOOTLOADER=y
@@ -27,7 +27,7 @@ index b34168e3..d011deb1 100644
  CONFIG_RAW=y
  CONFIG_RDIFFHANDLER=y
 diff --git a/debian/rules b/debian/rules
-index 6705140b..983e122f 100755
+index 6705140..983e122 100755
 --- a/debian/rules
 +++ b/debian/rules
 @@ -45,6 +45,15 @@ endif

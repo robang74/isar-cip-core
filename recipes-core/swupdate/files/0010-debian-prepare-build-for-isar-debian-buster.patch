@@ -1,7 +1,7 @@
-From 5dda7f815dafdfbd1b187ccc912eca38e9aee7bb Mon Sep 17 00:00:00 2001
+From c9661853aea11f090b5936363b0bae10fe6ebed6 Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Wed, 29 Sep 2021 16:17:03 +0200
-Subject: [PATCH 9/9] debian: prepare build for isar debian buster
+Subject: [PATCH 10/10] debian: prepare build for isar debian buster
 
 Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---
@@ -13,13 +13,13 @@ Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 
 diff --git a/debian/compat b/debian/compat
 new file mode 100644
-index 00000000..f599e28b
+index 0000000..f599e28
 --- /dev/null
 +++ b/debian/compat
 @@ -0,0 +1 @@
 +10
 diff --git a/debian/control b/debian/control
-index 192c4a2a..9318fa12 100644
+index 192c4a2..9318fa1 100644
 --- a/debian/control
 +++ b/debian/control
 @@ -4,7 +4,7 @@ Priority: optional
@@ -47,7 +47,7 @@ index 192c4a2a..9318fa12 100644
                 libebgenv-dev <pkg.swupdate.efibootguard> | efibootguard-dev <pkg.swupdate.efibootguard>,
                 libcmocka-dev,
 diff --git a/debian/rules b/debian/rules
-index 4dc9e170..370ca3d8 100755
+index 4dc9e17..370ca3d 100755
 --- a/debian/rules
 +++ b/debian/rules
 @@ -19,13 +19,15 @@ endif

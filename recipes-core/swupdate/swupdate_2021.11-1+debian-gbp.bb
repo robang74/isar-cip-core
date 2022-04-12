@@ -23,7 +23,8 @@ SRC_URI += "file://0001-debian-config-Make-image-encryption-optional.patch \
             file://0005-debian-Make-CONFIG_HW_COMPATIBILTY-optional.patch \
             file://0006-debian-rules-Add-Embedded-Lua-handler-option.patch \
             file://0007-debian-Remove-SWUpdate-USB-service-and-Udev-rules.patch \
-            file://0008-Add-Profile-option-to-disable-CONFIG_HASH_VERIFY.patch"
+            file://0008-Add-Profile-option-to-disable-CONFIG_HASH_VERIFY.patch \
+            file://0009-debian-Add-patch-to-fix-bootloader_env_get-for-EBG.patch"
 
 # end patching for dm-verity based images
 
@@ -39,7 +40,7 @@ DEB_BUILD_PROFILES += "cross nocheck"
 # DEB_BUILD_PROFILES += "pkg.swupdate.embeddedlua"
 
 # modify for debian buster build
-SRC_URI_append_buster = " file://0009-debian-prepare-build-for-isar-debian-buster.patch"
+SRC_URI_append_buster = " file://0010-debian-prepare-build-for-isar-debian-buster.patch"
 
 # disable create filesystem due to missing symbols in debian buster
 # disable webserver due to missing symbols in debian buster
