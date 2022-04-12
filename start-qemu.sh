@@ -53,6 +53,7 @@ case "$1" in
 			-cpu qemu64 \
 			-smp 4 \
 			-machine q35,accel=kvm:tcg \
+			-global ICH9-LPC.noreboot=off \
 			-device virtio-net-pci,netdev=net"
 		if [ -n "${SECURE_BOOT}" ]; then
 			# set bootindex=0 to boot disk instead of EFI-shell
