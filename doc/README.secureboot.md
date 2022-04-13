@@ -1,11 +1,11 @@
-# Efibootguard Secure boot
+# EFI Boot Guard secure boot
 
 This document describes how to generate a secure boot capable image with
 [efibootguard](https://github.com/siemens/efibootguard).
 
 ## Description
 
-The image build signs the efibootguard bootloader (bootx64.efi) and generates
+The image build signs the EFI Boot Guard bootloader (bootx64.efi) and generates
 a signed [unified kernel image](https://systemd.io/BOOT_LOADER_SPECIFICATION/).
 A unified kernel image packs the kernel, initramfs and the kernel command-line
 in one binary object. As the kernel command-line is immutable after the build
@@ -19,12 +19,12 @@ If a match is found the rootfs is used for the boot.
 
 ## Adaptation for Images
 
-###  WIC
+### WIC
 The following elements must be present in a wks file to create a secure boot capable image.
 
 ```
 part --source efibootguard-efi  --sourceparams "signwith=<script or executable to sign the image>"
-part --source efibootguard-boot --sourceparams "uefikernel=<name of the unified kernel>,signwith=<script or executable to sign the image>"
+part --source efibootguard-boot --sourceparams "signwith=<script or executable to sign the image>"
 ```
 
 #### Script or executable to sign the image
@@ -42,7 +42,6 @@ executable or script with the following interface:
 
 Supply the script name and path to wic by adding
 `signwith=<path and name of the script to sign>"` to sourceparams of the partition.
-
 
 ### Existing packages to sign an image
 
@@ -63,7 +62,7 @@ The following variable and steps are necessary to build a secure boot capable im
 
 The files referred by SB_CERTDB and SB_VERIFY_CERT must be store in  `recipes-devtools/ebg-secure-boot-secrets/files/`
 
-## QEMU
+## Running in QEMU
 
 Set up a secure boot test environment with [QEMU](https://www.qemu.org/)
 
@@ -138,7 +137,7 @@ scripts/start-efishell.sh secureboot-tools
 
 ### Build image
 
-Build the image with a signed efibootguard and unified kernel image
+Build the image with a signed EFI Boot Guard and unified kernel image
 with the snakeoil keys by executing:
 
 ```
@@ -202,7 +201,8 @@ OVMF_CODE=./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_CODE_4M.secboot.fd \
 OVMF_VARS=<path to the modified OVMF_VARS.fd> \
 ./start-qemu.sh amd64
 ```
-# Example: Update the image
+
+## Example: Update the image
 
 For updating the image, the following steps are necessary:
 - [Build the image with snakeoil keys](### Build image)
