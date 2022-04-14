@@ -22,7 +22,8 @@ S = "${WORKDIR}/shtab-${PV}"
 
 DEBIAN_BUILD_DEPENDS = " \
     dh-python, \
-    python3-all, \
+    libpython3-all-dev, \
+    python3-all-dev:any, \
     python3-setuptools, \
     python3-setuptools-scm:native, \
     "
