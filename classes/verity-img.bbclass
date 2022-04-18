@@ -1,21 +1,25 @@
 #
 # CIP Core, generic profile
 #
-# Copyright (c) Siemens AG, 2021
+# Copyright (c) Siemens AG, 2021-2022
 #
 # Authors:
 #  Quirin Gylstorff <quirin.gylstorff@siemens.com>
 #
 # SPDX-License-Identifier: MIT
 #
-IMAGER_INSTALL += "cryptsetup"
 
 VERITY_IMAGE_TYPE ?= "squashfs"
+
+inherit ${VERITY_IMAGE_TYPE}-img
+
 VERITY_INPUT_IMAGE ?= "${IMAGE_FULLNAME}.${VERITY_IMAGE_TYPE}.img"
 VERITY_OUTPUT_IMAGE ?= "${IMAGE_FULLNAME}.${VERITY_IMAGE_TYPE}.verity.img"
 VERITY_IMAGE_METADATA = "${VERITY_OUTPUT_IMAGE}.metadata"
 VERITY_HASH_BLOCK_SIZE ?= "1024"
 VERITY_DATA_BLOCK_SIZE ?= "1024"
+
+IMAGER_INSTALL += "cryptsetup"
 
 create_verity_env_file() {
 
@@ -70,4 +74,4 @@ python do_verity_image() {
     bb.build.exec_func('verity_setup', d)
     bb.build.exec_func('create_verity_env_file', d)
 }
-addtask verity_image before do_image after do_image_tools
+addtask verity_image before do_image after do_${VERITY_IMAGE_TYPE}_image
