@@ -15,15 +15,14 @@ header:
    - kas/opt/efibootguard.yml
 
 local_conf_header:
-  image-options-swupdate-ro: |
-    CIP_IMAGE_OPTIONS_append = " swupdate.inc read-only.inc"
+  image-options-swupdate: |
+    CIP_IMAGE_OPTIONS_append = " swupdate.inc"
 
   swupdate: |
     IMAGE_INSTALL_append = " swupdate"
     IMAGE_INSTALL_append = " swupdate-handler-roundrobin"
 
-  verity-img: |
-    SECURE_IMAGE_FSTYPE = "squashfs"
+  secure-boot-image: |
     IMAGE_FSTYPES = "secure-wic-swu-img"
     WKS_FILE = "${MACHINE}-efibootguard-secureboot.wks.in"
 

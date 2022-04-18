@@ -25,7 +25,7 @@ local_conf_header:
     WDOG_TIMEOUT ?= "60"
     WICVARS += "WDOG_TIMEOUT KERNEL_IMAGE INITRD_IMAGE"
     IMAGE_FSTYPES ?= "wic-img"
-    WKS_FILE ?= "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks"
+    WKS_FILE ?= "${MACHINE}-efibootguard.wks.in"
 
   ovmf-binaries: |
     # Add ovmf binaries for qemu
