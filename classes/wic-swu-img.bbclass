@@ -16,6 +16,12 @@ inherit wic-img
 inherit swupdate-img
 
 IMAGE_INSTALL += "etc-overlay-fs"
+
+INITRAMFS_RECIPE ?= "cip-core-initramfs"
+INITRD_IMAGE = "${INITRAMFS_RECIPE}-${DISTRO}-${MACHINE}.initrd.img"
+
+do_wic_image[depends] += "${INITRAMFS_RECIPE}:do_build"
+
 IMAGE_INSTALL += "home-fs"
 IMAGE_INSTALL += "tmp-fs"
 

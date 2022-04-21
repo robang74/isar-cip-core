@@ -10,7 +10,3 @@
 #
 
 inherit initramfs
-
-INITRAMFS_INSTALL += " \
-    initramfs-verity-hook \
-    "

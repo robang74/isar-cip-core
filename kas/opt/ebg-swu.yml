@@ -17,7 +17,7 @@ header:
 
 local_conf_header:
   initramfs: |
-    IMAGE_INSTALL += "initramfs-abrootfs-hook"
+    INITRAMFS_INSTALL_append = " initramfs-abrootfs-hook"
 
   image-option-uuid: |
     CIP_IMAGE_OPTIONS_append = " image-uuid.inc"

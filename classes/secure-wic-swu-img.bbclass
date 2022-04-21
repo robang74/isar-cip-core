@@ -9,10 +9,6 @@
 # SPDX-License-Identifier: MIT
 #
 
-INITRAMFS_RECIPE ?= "cip-core-initramfs"
-do_wic_image[depends] += "${INITRAMFS_RECIPE}:do_build"
-INITRD_IMAGE = "${INITRAMFS_RECIPE}-${DISTRO}-${MACHINE}.initrd.img"
-
 inherit verity-img
 inherit wic-swu-img
 

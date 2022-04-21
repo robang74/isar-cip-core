@@ -1,0 +1,66 @@
+#!/bin/sh
+#
+# CIP Core, generic profile
+#
+# Copyright (c) Siemens AG, 2020-2022
+#
+# Authors:
+#  Jan Kiszka <jan.kiszka@siemens.com>
+#
+# SPDX-License-Identifier: MIT
+
+prereqs()
+{
+    # Make sure that this script is run last in local-top
+    local req
+    for req in "${0%/*}"/*; do
+        script="${req##*/}"
+        if [ "$script" != "${0##*/}" ]; then
+            printf '%s\n' "$script"
+        fi
+    done
+}
+case $1 in
+prereqs)
+    prereqs
+    exit 0
+    ;;
+esac
+
+. /scripts/functions
+. /usr/share/abrootfs/image-uuid.env
+
+# Even if this script fails horribly, make sure there won't be a chance the
+# current $ROOT will be attempted.  As this device most likely contains a
+# perfectly valid filesystem, it would be mounted successfully, leading to a
+# broken boot.
+echo "ROOT=/dev/null" >/conf/param.conf
+wait_for_udev 10
+case "$ROOT" in
+    PART*)
+        # root was given as PARTUUID= or PARTLABEL=. Use blkid to find the matching
+        # partition
+        ROOT=$(blkid --list-one --output device --match-token "$ROOT")
+        ;;
+    "")
+        # No Root device was given. Use find the matching IMAGE_UUID
+        partitions=$(blkid -o device)
+        for part in $partitions; do
+            if [ "$(blkid -p ${part} --match-types novfat -s USAGE -o value)" = "filesystem" ]; then
+                mount -o ro -t $(get_fstype $part) $part ${rootmnt}
+                . ${rootmnt}/etc/os-release
+                umount ${rootmnt}
+                if [ "${IMAGE_UUID}" = "${TARGET_IMAGE_UUID}" ]; then
+                    ROOT="$part"
+                    break
+                fi
+            fi
+        done
+        ;;
+esac
+
+if [ -z "${ROOT}" ]; then
+    panic "Can't find the root device with matching UUID!"
+fi
+
+echo "ROOT=${ROOT}" >/conf/param.conf

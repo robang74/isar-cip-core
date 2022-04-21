@@ -25,6 +25,7 @@ local_conf_header:
   secure-boot-image: |
     IMAGE_FSTYPES = "secure-wic-swu-img"
     WKS_FILE = "${MACHINE}-efibootguard-secureboot.wks.in"
+    INITRAMFS_INSTALL_append = " initramfs-verity-hook"
 
   secure-boot: |
     # Add snakeoil binaries for qemu
