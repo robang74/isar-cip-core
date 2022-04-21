@@ -15,8 +15,6 @@ inherit squashfs-img
 inherit wic-img
 inherit swupdate-img
 
-IMAGE_INSTALL += "etc-overlay-fs"
-
 INITRAMFS_RECIPE ?= "cip-core-initramfs"
 INITRD_IMAGE = "${INITRAMFS_RECIPE}-${DISTRO}-${MACHINE}.initrd.img"
 

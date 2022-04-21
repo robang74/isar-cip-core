@@ -10,3 +10,7 @@
 #
 
 inherit initramfs
+
+INITRAMFS_INSTALL += " \
+    initramfs-etc-overlay-hook \
+    "
