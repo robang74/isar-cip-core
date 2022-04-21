@@ -37,12 +37,20 @@ case "$ROOT" in
     "")
         # No Root device was given. Use veritysetup verify to search matching roots
         partitions=$(blkid -o device)
-        for part in $partitions; do
+        for part in ${partitions}; do
             if [ "$(blkid -p ${part} --match-types novfat -s USAGE -o value)" = "filesystem" ]; then
-                if veritysetup verify \
-                   "$part" "$part" "${ROOT_HASH}" \
-                   --hash-offset "${HASH_OFFSET}";then
-                    ROOT="$part"
+                verity_uuid=$(
+                    veritysetup dump "${part}" --hash-offset "${HASH_OFFSET}" | \
+                        while IFS=":" read key value; do
+                            if [ "${key}" = "UUID" ]; then
+                                # this pattern must use a real tab
+                                echo "${value##*	}"
+                                break
+                            fi
+                        done
+                    )
+                if [ "${UUID}" = "${verity_uuid}" ]; then
+                    ROOT="${part}"
                     break
                 fi
             fi
