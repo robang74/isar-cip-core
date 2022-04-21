@@ -17,3 +17,7 @@ echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 HOSTNAME=demo
 echo "$HOSTNAME" > /etc/hostname
 echo "127.0.0.1 $HOSTNAME" >> /etc/hosts
+
+# needed for read-only rootfs with writable /home
+mv /root /home/
+ln -s /home/root /root
