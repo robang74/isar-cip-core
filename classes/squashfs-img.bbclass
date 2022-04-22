@@ -29,6 +29,7 @@ python __anonymous() {
     d.appendVar('SQUASHFS_CREATION_ARGS', args)
 }
 
+do_squashfs_image[dirs] = "${DEPLOY_DIR_IMAGE}"
 do_squashfs_image() {
     rm -f '${DEPLOY_DIR_IMAGE}/${SQUASHFS_IMAGE_FILE}'
 
