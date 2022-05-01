@@ -31,4 +31,6 @@ fi
 
 mkdir -p ${rootmnt}/var/local/etc
 mkdir -p ${rootmnt}/var/local/.atomic
-mount -t overlay -o lowerdir=${rootmnt}/etc,upperdir=${rootmnt}/var/local/etc,workdir=${rootmnt}/var/local/.atomic overlay ${rootmnt}/etc
+if ! mount -t overlay -o lowerdir=${rootmnt}/etc,upperdir=${rootmnt}/var/local/etc,workdir=${rootmnt}/var/local/.atomic overlay ${rootmnt}/etc; then
+	panic "Can't mount overlay!"
+fi
