@@ -32,3 +32,6 @@ local_conf_header:
     IMAGER_INSTALL += "ebg-secure-boot-signer"
     # Use snakeoil keys
     PREFERRED_PROVIDER_secure-boot-secrets = "secure-boot-snakeoil"
+
+  secureboot_override: |
+    OVERRIDES .= ":secureboot"
