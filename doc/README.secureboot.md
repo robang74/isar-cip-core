@@ -43,24 +43,22 @@ executable or script with the following interface:
 Supply the script name and path to wic by adding
 `signwith=<path and name of the script to sign>"` to sourceparams of the partition.
 
-### Existing packages to sign an image
+### Existing key packages for signing an image
 
-#### ebg-secure-boot-snakeoil
+#### secure-boot-snakeoil
 
 This package uses the snakeoil key and certificate from the ovmf package(0.0~20200229-2)
-backported from Debian bullseye and signs the image.
+backported from Debian bullseye for signing the image.
 
-#### ebg-secure-boot-secrets
-This package takes a user-generated certificate and adds it to the build system.
+#### secure-boot-key
+
+This package takes a user-generated certificate and key adds them to the build system.
 The following variable and steps are necessary to build a secure boot capable image:
 - Set certification information to sign and verify the image with:
-    - SB_CERTDB: The directory containing the certificate database create with certutil
-    - SB_VERIFY_CERT: The certificate to verify the signing process
-    - SB_KEY_NAME: Name of the key in the certificate database
-- if necessary change the script to select the boot partition after an update
-    - recipes-support/initramfs-config/files/initramfs.selectrootfs.script
+    - SB_CERT: The certificate to verify the signing process
+    - SB_KEY: The private key of for the certificate
 
-The files referred by SB_CERTDB and SB_VERIFY_CERT must be store in  `recipes-devtools/ebg-secure-boot-secrets/files/`
+The files referred by SB_CERT and SB_KEY must be store in `recipes-devtools/secure-boot-secrets/files/`.
 
 ## Running in QEMU
 
@@ -96,7 +94,7 @@ scripts/generate-sb-db-from-existing-certificate.sh
 ```
 This will create the directory `SB_KEYDIR` and will store the `${SB_NAME}certdb` with the given name.
 
-Copy the used certificate and database to `recipes-devtools/ebg-secure-boot-secrets/files/`
+Copy the used certificate and private key to `recipes-devtools/secure-boot-secrets/files/`
 
 #### Generate keys
 

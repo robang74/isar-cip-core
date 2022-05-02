@@ -28,6 +28,7 @@ local_conf_header:
     INITRAMFS_INSTALL_append = " initramfs-verity-hook"
 
   secure-boot: |
-    # Add snakeoil binaries for qemu
-    IMAGER_BUILD_DEPS += "ebg-secure-boot-snakeoil"
-    IMAGER_INSTALL += "ebg-secure-boot-snakeoil"
+    IMAGER_BUILD_DEPS += "ebg-secure-boot-signer"
+    IMAGER_INSTALL += "ebg-secure-boot-signer"
+    # Use snakeoil keys
+    PREFERRED_PROVIDER_secure-boot-secrets = "secure-boot-snakeoil"
