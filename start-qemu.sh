@@ -45,7 +45,10 @@ if [ -z "${TARGET_IMAGE}" ];then
 	fi
 fi
 
-case "$1" in
+arch="$1"
+shift 1
+
+case "${arch}" in
 	x86|x86_64|amd64)
 		DISTRO_ARCH=amd64
 		QEMU=qemu-system-x86_64
@@ -98,7 +101,7 @@ case "$1" in
 		usage
 		;;
 	*)
-		echo "Unsupported architecture: $1"
+		echo "Unsupported architecture: ${arch}"
 		exit 1
 		;;
 esac
@@ -107,13 +110,11 @@ IMAGE_PREFIX="$(dirname $0)/build/tmp/deploy/images/qemu-${DISTRO_ARCH}/${TARGET
 
 if [ -z "${DISPLAY}" ]; then
 	QEMU_EXTRA_ARGS="${QEMU_EXTRA_ARGS} -nographic"
-	case "$1" in
+	case "${arch}" in
 		x86|x86_64|amd64)
 			KERNEL_CMDLINE="${KERNEL_CMDLINE} console=ttyS0"
 	esac
 fi
-
-shift 1
 
 QEMU_COMMON_OPTIONS=" \
 	-m 1G \
@@ -121,26 +122,42 @@ QEMU_COMMON_OPTIONS=" \
 	-netdev user,id=net,hostfwd=tcp:127.0.0.1:22222-:22 \
 	${QEMU_EXTRA_ARGS}"
 
-if [ -n "${SECURE_BOOT}" ]; then
-		ovmf_code=${OVMF_CODE:-./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_CODE_4M.secboot.fd}
-		ovmf_vars=${OVMF_VARS:-./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_VARS_4M.snakeoil.fd}
+if [ -n "${SECURE_BOOT}${SWUPDATE_BOOT}" ]; then
+	case "${arch}" in
+		x86|x86_64|amd64)
+			if [ -n "${SECURE_BOOT}" ]; then
+				ovmf_code=${OVMF_CODE:-./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_CODE_4M.secboot.fd}
+				ovmf_vars=${OVMF_VARS:-./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_VARS_4M.snakeoil.fd}
 
-		${QEMU_PATH}${QEMU} \
-			-global ICH9-LPC.disable_s3=1 \
-			-global isa-fdc.driveA= \
-			-drive if=pflash,format=raw,unit=0,readonly=on,file=${ovmf_code} \
-			-drive if=pflash,format=raw,file=${ovmf_vars} \
-			-drive file=${IMAGE_PREFIX}.wic.img,discard=unmap,if=none,id=disk,format=raw \
-			${QEMU_COMMON_OPTIONS} "$@"
+				${QEMU_PATH}${QEMU} \
+					-global ICH9-LPC.disable_s3=1 \
+					-global isa-fdc.driveA= \
+					-drive if=pflash,format=raw,unit=0,readonly=on,file=${ovmf_code} \
+					-drive if=pflash,format=raw,file=${ovmf_vars} \
+					-drive file=${IMAGE_PREFIX}.wic.img,discard=unmap,if=none,id=disk,format=raw \
+					${QEMU_COMMON_OPTIONS} "$@"
+			else
+				ovmf_code=${OVMF_CODE:-./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_CODE_4M.fd}
 
-elif [ -n "${SWUPDATE_BOOT}" ]; then
-		ovmf_code=${OVMF_CODE:-./build/tmp/deploy/images/qemu-amd64/OVMF/OVMF_CODE_4M.fd}
+				${QEMU_PATH}${QEMU} \
+					-drive file=${IMAGE_PREFIX}.wic.img,discard=unmap,if=none,id=disk,format=raw \
+					-drive if=pflash,format=raw,unit=0,readonly=on,file=${ovmf_code} \
+					${QEMU_COMMON_OPTIONS} "$@"
+			fi
+			;;
+		arm64|aarch64)
+			u_boot_bin=${FIRMWARE_BIN:-./build/tmp/deploy/images/qemu-arm64/firmware.bin}
 
-		${QEMU_PATH}${QEMU} \
-			-drive file=${IMAGE_PREFIX}.wic.img,discard=unmap,if=none,id=disk,format=raw \
-			-drive if=pflash,format=raw,unit=0,readonly=on,file=${ovmf_code} \
-			${QEMU_COMMON_OPTIONS} "$@"
-
+			${QEMU_PATH}${QEMU} \
+				-drive file=${IMAGE_PREFIX}.wic.img,discard=unmap,if=none,id=disk,format=raw \
+				-bios ${u_boot_bin} \
+				${QEMU_COMMON_OPTIONS} "$@"
+			;;
+		*)
+			echo "Unsupported architecture: ${arch}"
+			exit 1
+			;;
+	esac
 else
 		IMAGE_FILE=$(ls ${IMAGE_PREFIX}.ext4.img)
 
