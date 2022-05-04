@@ -1,0 +1,28 @@
+From daf4cb61bec56dac628be83b95a7072c184eabcd Mon Sep 17 00:00:00 2001
+From: Jan Kiszka <jan.kiszka@siemens.com>
+Date: Wed, 4 May 2022 11:52:53 +0200
+Subject: [PATCH] Makefile: Drop -nostdinc for EFI binaries
+
+Not needed, also systemd-boot does not use it, and it actually triggers
+a build failure on Debian 10, possibly on other distros as well.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+---
+ Makefile.am | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index f0daa15..7398b85 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -191,7 +191,6 @@ efi_cflags = \
+ 	-Wall \
+ 	-Wextra \
+ 	-std=gnu99 \
+-	-nostdinc \
+ 	-ggdb -O0 \
+ 	-fpic \
+ 	-fshort-wchar \
+-- 
+2.34.1
+

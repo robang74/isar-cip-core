@@ -19,9 +19,9 @@ MAINTAINER = "Jan Kiszka <jan.kiszka@siemens.com>"
 SRC_URI = " \
     https://github.com/siemens/efibootguard/archive/refs/tags/v${PV}.tar.gz;downloadfilename=efitbootguard-v${PV}.tar.gz \
     file://debian \
-    file://0001-configure-Fix-aarch64-EFI-arch.patch \
+    file://0001-Makefile-Drop-nostdinc-for-EFI-binaries.patch \
     "
-SRC_URI[sha256sum] = "4d58574a0bb8f1e56056ab0bcc2487d37e49fa147dc991e719c2ec8e20f88dd3"
+SRC_URI[sha256sum] = "12bd84ff63a34bef56e489b48d4f97955aa4d864eeff9ea2dea1d24a286d8ebe"
 
 PROVIDES = "${PN}"
 PROVIDES += "${PN}-dev"
