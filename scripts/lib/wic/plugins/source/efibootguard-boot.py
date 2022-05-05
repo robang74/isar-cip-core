@@ -80,7 +80,7 @@ class EfibootguardBootPlugin(SourcePlugin):
 
         boot_files = source_params.get("files", "").split(' ')
         unified_kernel = source_params.get("unified-kernel") or 'y'
-        cmdline = bootloader.append
+        cmdline = bootloader.append or ''
         if unified_kernel == 'y':
             boot_image = cls._create_unified_kernel_image(rootfs_dir,
                                                           cr_workdir,
@@ -113,7 +113,7 @@ class EfibootguardBootPlugin(SourcePlugin):
             % (
                 part.label.upper(),
                 boot_image,
-                '-a "%s"' % cmdline if cmdline else "",
+                '-a "%s"' % cmdline,
                 source_params.get("revision", 1),
                 wdog_timeout
             )
