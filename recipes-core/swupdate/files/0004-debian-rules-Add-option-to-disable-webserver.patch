@@ -1,7 +1,7 @@
-From a02a6d4385f314601ef5c7094ecb26f5b5c3f134 Mon Sep 17 00:00:00 2001
+From 9e5313a9fe784e55bcf25dc0b61573aeedcc11ee Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Mon, 4 Oct 2021 17:27:11 +0200
-Subject: [PATCH 04/10] debian/rules: Add option to disable webserver
+Subject: [PATCH 4/6] debian/rules: Add option to disable webserver
 
 Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---
@@ -10,10 +10,10 @@ Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
  2 files changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/debian/configs/defconfig b/debian/configs/defconfig
-index d011deb..337fcce 100644
+index d8e260b6..c365f9ce 100644
 --- a/debian/configs/defconfig
 +++ b/debian/configs/defconfig
-@@ -6,8 +6,6 @@ CONFIG_SIGALG_CMS=y
+@@ -6,8 +6,6 @@ CONFIG_ENCRYPTED_IMAGES=y
  CONFIG_SURICATTA=y
  CONFIG_SURICATTA_SSL=y
  CONFIG_UPDATE_STATE_CHOICE_BOOTLOADER=y
@@ -23,12 +23,12 @@ index d011deb..337fcce 100644
  CONFIG_UNIQUEUUID=y
  CONFIG_RAW=y
 diff --git a/debian/rules b/debian/rules
-index 983e122..6078ed8 100755
+index 2ed88ad2..58742a6b 100755
 --- a/debian/rules
 +++ b/debian/rules
-@@ -39,6 +39,10 @@ else ifneq (,$(filter pkg.swupdate.efibootguard,$(DEB_BUILD_PROFILES)))
- else
- 	echo CONFIG_BOOTLOADER_NONE=y                   >> configs/debian_defconfig
+@@ -41,6 +41,10 @@ endif
+ ifeq (,$(filter pkg.swupdate.nohwcompat,$(DEB_BUILD_PROFILES)))
+ 	echo CONFIG_HW_COMPATIBILITY=y                   >> configs/debian_defconfig
  endif
 +ifeq (,$(filter pkg.swupdate.nowebserver,$(DEB_BUILD_PROFILES)))
 +	echo CONFIG_WEBSERVER=y   >> configs/debian_defconfig
@@ -38,5 +38,5 @@ index 983e122..6078ed8 100755
  	echo CONFIG_SIGNED_IMAGES=y >> configs/debian_defconfig
  endif
 -- 
-2.34.1
+2.35.1
 

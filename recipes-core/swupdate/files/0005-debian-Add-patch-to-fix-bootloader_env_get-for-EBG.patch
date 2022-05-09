@@ -1,9 +1,10 @@
-From 09a736a651ae05378d9ef8018589c9f834b729a6 Mon Sep 17 00:00:00 2001
+From 962f4b81ac1202e536628bfac822a22b8d7b0b3a Mon Sep 17 00:00:00 2001
 From: Jan Kiszka <jan.kiszka@siemens.com>
 Date: Tue, 12 Apr 2022 08:01:21 +0200
-Subject: [PATCH 09/10] debian: Add patch to fix bootloader_env_get for EBG
+Subject: [PATCH 5/6] debian: Add patch to fix bootloader_env_get for EBG
 
 Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---
  ...ix-do_env_get-for-anything-but-globa.patch | 38 +++++++++++++++++++
  debian/patches/series                         |  1 +
@@ -12,7 +13,7 @@ Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
 
 diff --git a/debian/patches/0001-bootloader-EBG-fix-do_env_get-for-anything-but-globa.patch b/debian/patches/0001-bootloader-EBG-fix-do_env_get-for-anything-but-globa.patch
 new file mode 100644
-index 0000000..f99f7ee
+index 00000000..f99f7ee6
 --- /dev/null
 +++ b/debian/patches/0001-bootloader-EBG-fix-do_env_get-for-anything-but-globa.patch
 @@ -0,0 +1,38 @@
@@ -55,12 +56,12 @@ index 0000000..f99f7ee
 +2.34.1
 +
 diff --git a/debian/patches/series b/debian/patches/series
-index 8c5564a..98628a7 100644
+index 8c5564ae..98628a77 100644
 --- a/debian/patches/series
 +++ b/debian/patches/series
 @@ -1 +1,2 @@
  use-gcc-compiler.diff
 +0001-bootloader-EBG-fix-do_env_get-for-anything-but-globa.patch
 -- 
-2.34.1
+2.35.1
 

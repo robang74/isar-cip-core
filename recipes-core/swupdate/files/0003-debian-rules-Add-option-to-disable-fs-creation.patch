@@ -1,7 +1,7 @@
-From 17d962a9b43f5debaed85affc6dccb2c471bffe9 Mon Sep 17 00:00:00 2001
+From 404d1f73f791babf3dd4546fa5f671f7717d6179 Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Mon, 4 Oct 2021 17:15:56 +0200
-Subject: [PATCH 03/10] debian/rules: Add option to disable fs creation
+Subject: [PATCH 3/6] debian/rules: Add option to disable fs creation
 
 Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---
@@ -10,7 +10,7 @@ Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
  2 files changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/debian/configs/defconfig b/debian/configs/defconfig
-index b34168e..d011deb 100644
+index ad28854c..d8e260b6 100644
 --- a/debian/configs/defconfig
 +++ b/debian/configs/defconfig
 @@ -9,12 +9,6 @@ CONFIG_UPDATE_STATE_CHOICE_BOOTLOADER=y
@@ -27,12 +27,12 @@ index b34168e..d011deb 100644
  CONFIG_RAW=y
  CONFIG_RDIFFHANDLER=y
 diff --git a/debian/rules b/debian/rules
-index 6705140..983e122 100755
+index e1df4f06..2ed88ad2 100755
 --- a/debian/rules
 +++ b/debian/rules
-@@ -45,6 +45,15 @@ endif
- ifeq (,$(filter pkg.swupdate.noencryption,$(DEB_BUILD_PROFILES)))
- 	echo CONFIG_ENCRYPTED_IMAGES=y >> configs/debian_defconfig
+@@ -44,6 +44,15 @@ endif
+ ifeq (,$(filter pkg.swupdate.nosigning,$(DEB_BUILD_PROFILES)))
+ 	echo CONFIG_SIGNED_IMAGES=y >> configs/debian_defconfig
  endif
 +ifeq (,$(filter pkg.swupdate.nocreatefs,$(DEB_BUILD_PROFILES)))
 +	echo CONFIG_DISKPART=y            >> configs/debian_defconfig
@@ -47,5 +47,5 @@ index 6705140..983e122 100755
  	echo CONFIG_PKCS11=y >> configs/debian_defconfig
  endif
 -- 
-2.34.1
+2.35.1
 

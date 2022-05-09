@@ -13,23 +13,20 @@ inherit dpkg-gbp
 include swupdate.inc
 
 SRC_URI = "git://salsa.debian.org/debian/swupdate.git;protocol=https;branch=debian/master"
-SRCREV ="debian/2021.11-1"
+SRCREV ="344548c816b555c58ec199f31e45703897d23fb5"
 
 # add options to DEB_BUILD_PROFILES
-SRC_URI += "file://0001-debian-config-Make-image-encryption-optional.patch \
-            file://0002-debian-rules-Add-CONFIG_MTD.patch \
+SRC_URI += "file://0001-debian-Remove-SWUpdate-USB-service-and-Udev-rules.patch \
+            file://0002-debian-rules-Add-Embedded-Lua-handler-option.patch \
             file://0003-debian-rules-Add-option-to-disable-fs-creation.patch \
             file://0004-debian-rules-Add-option-to-disable-webserver.patch \
-            file://0005-debian-Make-CONFIG_HW_COMPATIBILTY-optional.patch \
-            file://0006-debian-rules-Add-Embedded-Lua-handler-option.patch \
-            file://0007-debian-Remove-SWUpdate-USB-service-and-Udev-rules.patch \
-            file://0008-Add-Profile-option-to-disable-CONFIG_HASH_VERIFY.patch \
-            file://0009-debian-Add-patch-to-fix-bootloader_env_get-for-EBG.patch"
+            file://0005-debian-Add-patch-to-fix-bootloader_env_get-for-EBG.patch"
 
 # end patching for dm-verity based images
 
-# deactivate signing and encryption for simple a/b rootfs update
-DEB_BUILD_PROFILES += "pkg.swupdate.nosigning pkg.swupdate.noencryption"
+# deactivate signing and hardware compability for simple a/b rootfs update
+DEB_BUILD_PROFILES += "pkg.swupdate.nosigning"
+DEB_BUILD_PROFILES += "pkg.swupdate.nohwcompat"
 
 # add cross build and deactivate testing for arm based builds
 DEB_BUILD_PROFILES += "cross nocheck"
@@ -40,11 +37,12 @@ DEB_BUILD_PROFILES += "cross nocheck"
 # DEB_BUILD_PROFILES += "pkg.swupdate.embeddedlua"
 
 # modify for debian buster build
-SRC_URI_append_buster = " file://0010-debian-prepare-build-for-isar-debian-buster.patch"
+SRC_URI_append_buster = " file://0006-debian-prepare-build-for-isar-debian-buster.patch"
 
 # disable create filesystem due to missing symbols in debian buster
 # disable webserver due to missing symbols in debian buster
 DEB_BUILD_PROFILES_append_buster = " \
+                                   pkg.swupdate.bpo \
                                    pkg.swupdate.nocreatefs \
                                    pkg.swupdate.nowebserver "
 # In debian buster the git-compression defaults to gz and does not detect other

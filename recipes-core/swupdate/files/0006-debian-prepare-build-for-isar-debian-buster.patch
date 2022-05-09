@@ -1,25 +1,24 @@
-From c9661853aea11f090b5936363b0bae10fe6ebed6 Mon Sep 17 00:00:00 2001
+From 33ce7123621f5da43cc8be730e916451abe84239 Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Wed, 29 Sep 2021 16:17:03 +0200
-Subject: [PATCH 10/10] debian: prepare build for isar debian buster
+Subject: [PATCH 6/6] debian: prepare build for isar debian buster
 
 Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---
  debian/compat  |  1 +
  debian/control | 10 +++++-----
- debian/rules   |  4 +++-
- 3 files changed, 9 insertions(+), 6 deletions(-)
+ 2 files changed, 6 insertions(+), 5 deletions(-)
  create mode 100644 debian/compat
 
 diff --git a/debian/compat b/debian/compat
 new file mode 100644
-index 0000000..f599e28
+index 00000000..f599e28b
 --- /dev/null
 +++ b/debian/compat
 @@ -0,0 +1 @@
 +10
 diff --git a/debian/control b/debian/control
-index 192c4a2..9318fa1 100644
+index 192c4a2a..9318fa12 100644
 --- a/debian/control
 +++ b/debian/control
 @@ -4,7 +4,7 @@ Priority: optional
@@ -46,27 +45,6 @@ index 192c4a2..9318fa1 100644
                 libubootenv-dev <pkg.swupdate.uboot>,
                 libebgenv-dev <pkg.swupdate.efibootguard> | efibootguard-dev <pkg.swupdate.efibootguard>,
                 libcmocka-dev,
-diff --git a/debian/rules b/debian/rules
-index 4dc9e17..370ca3d 100755
---- a/debian/rules
-+++ b/debian/rules
-@@ -19,13 +19,15 @@ endif
- 
- override_dh_auto_configure:
- 	cp debian/configs/defconfig  configs/debian_defconfig
--ifeq (,$(filter pkg.swupdate.bpo,$(DEB_BUILD_PROFILES)))
-+ifneq (,$(filter pkg.swupdate.mtd,$(DEB_BUILD_PROFILES)))
- 	echo CONFIG_MTD=y                  >> configs/debian_defconfig
-+ifneq (,$(filter pkg.swupdate.ubi,$(DEB_BUILD_PROFILES)))
- 	echo CONFIG_SWUFORWARDER_HANDLER=y >> configs/debian_defconfig
- 	echo CONFIG_CFI=y                  >> configs/debian_defconfig
- 	echo CONFIG_CFIHAMMING1=y          >> configs/debian_defconfig
- 	echo CONFIG_UBIVOL=y               >> configs/debian_defconfig
- 	echo CONFIG_SSBLSWITCH=y           >> configs/debian_defconfig
-+endif
- else
- 	echo "# CONFIG_MTD is not set"     >> configs/debian_defconfig
- endif
 -- 
-2.34.1
+2.35.1
 

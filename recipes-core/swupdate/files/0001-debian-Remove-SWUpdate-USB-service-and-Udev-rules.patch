@@ -1,7 +1,7 @@
-From db391d1dd34806ae6694205b08b4661318bef37b Mon Sep 17 00:00:00 2001
+From 7925d016efc3e9ebac10a465f165135f21c5d799 Mon Sep 17 00:00:00 2001
 From: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 Date: Mon, 7 Feb 2022 09:28:39 +0100
-Subject: [PATCH 07/10] debian: Remove SWUpdate USB service and Udev rules
+Subject: [PATCH 1/6] debian: Remove SWUpdate USB service and Udev rules
 
 The current implementation will install an abitrary SWUpdate binary
 from a plug-in USB stick. This is a major security risk for devices
@@ -13,16 +13,14 @@ Signed-off-by: Quirin Gylstorff <quirin.gylstorff@siemens.com>
 ---
  debian/rules                          | 1 -
  debian/swupdate.swupdate-usb@.service | 8 --------
- debian/swupdate.udev                  | 2 --
- 3 files changed, 11 deletions(-)
+ 2 files changed, 9 deletions(-)
  delete mode 100644 debian/swupdate.swupdate-usb@.service
- delete mode 100644 debian/swupdate.udev
 
 diff --git a/debian/rules b/debian/rules
-index 12eb0ba..76fce01 100755
+index 95d4d48f..ff8b6726 100755
 --- a/debian/rules
 +++ b/debian/rules
-@@ -101,7 +101,6 @@ override_dh_auto_install:
+@@ -79,7 +79,6 @@ override_dh_auto_install:
  override_dh_installsystemd:
  	dh_installsystemd --no-start
  	dh_installsystemd --name=swupdate-progress
@@ -32,7 +30,7 @@ index 12eb0ba..76fce01 100755
  override_dh_gencontrol:
 diff --git a/debian/swupdate.swupdate-usb@.service b/debian/swupdate.swupdate-usb@.service
 deleted file mode 100644
-index eda9d15..0000000
+index eda9d153..00000000
 --- a/debian/swupdate.swupdate-usb@.service
 +++ /dev/null
 @@ -1,8 +0,0 @@
@@ -44,14 +42,6 @@ index eda9d15..0000000
 -ExecStartPre=/bin/mount /dev/%I /mnt
 -ExecStart=/bin/sh -c "swupdate-client -v /mnt/*.swu"
 -ExecStopPost=/bin/umount /mnt
-diff --git a/debian/swupdate.udev b/debian/swupdate.udev
-deleted file mode 100644
-index b4efd0b..0000000
---- a/debian/swupdate.udev
-+++ /dev/null
-@@ -1,2 +0,0 @@
--ACTION=="add", KERNEL=="sd*", SUBSYSTEM=="block", ENV{ID_BUS}=="usb", ENV{ID_FS_USAGE}=="filesystem", TAG+="systemd", ENV{SYSTEMD_WANTS}+="swupdate-usb@%k.service"
--
 -- 
-2.34.1
+2.35.1
 
