@@ -50,7 +50,7 @@ shift 1
 
 case "${arch}" in
 	x86|x86_64|amd64)
-		DISTRO_ARCH=amd64
+		QEMU_ARCH=amd64
 		QEMU=qemu-system-x86_64
 		QEMU_EXTRA_ARGS=" \
 			-cpu qemu64 \
@@ -70,7 +70,7 @@ case "${arch}" in
 			root=/dev/sda"
 		;;
 	arm64|aarch64)
-		DISTRO_ARCH=arm64
+		QEMU_ARCH=arm64
 		QEMU=qemu-system-aarch64
 		QEMU_EXTRA_ARGS=" \
 			-cpu cortex-a57 \
@@ -84,7 +84,7 @@ case "${arch}" in
 			root=/dev/vda"
 		;;
 	arm|armhf)
-		DISTRO_ARCH=armhf
+		QEMU_ARCH=arm
 		QEMU=qemu-system-arm
 		QEMU_EXTRA_ARGS=" \
 			-cpu cortex-a15 \
@@ -106,7 +106,7 @@ case "${arch}" in
 		;;
 esac
 
-IMAGE_PREFIX="$(dirname $0)/build/tmp/deploy/images/qemu-${DISTRO_ARCH}/${TARGET_IMAGE}-cip-core-${DISTRO_RELEASE}-qemu-${DISTRO_ARCH}"
+IMAGE_PREFIX="$(dirname $0)/build/tmp/deploy/images/qemu-${QEMU_ARCH}/${TARGET_IMAGE}-cip-core-${DISTRO_RELEASE}-qemu-${QEMU_ARCH}"
 
 if [ -z "${DISPLAY}" ]; then
 	QEMU_EXTRA_ARGS="${QEMU_EXTRA_ARGS} -nographic"
