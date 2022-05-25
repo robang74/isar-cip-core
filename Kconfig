@@ -80,7 +80,7 @@ comment "Debian distribution options"
 
 choice
 	prompt "Debian Release"
-	default DEBIAN_BUSTER
+	default DEBIAN_BULLSEYE
 
 config DEBIAN_BUSTER
 	bool "buster (10)"
@@ -92,6 +92,7 @@ endchoice
 
 config KAS_INCLUDE_DEBIAN
 	string
+	default "kas/opt/buster.yml" if DEBIAN_BUSTER
 	default "kas/opt/bullseye.yml" if DEBIAN_BULLSEYE
 
 comment "Image features"
