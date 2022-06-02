@@ -1,4 +1,15 @@
 #!/bin/sh
+#
+# CIP Core, generic profile
+#
+# Copyright (c) Siemens AG, 2021-2022
+#
+# Authors:
+#  Quirin Gylstorff <quirin.gylstorff@siemens.com>
+#  Jan Kiszka <jan.kiszka@siemens.com>
+#
+# SPDX-License-Identifier: MIT
+
 prereqs()
 {
     # Make sure that this script is run last in local-top
@@ -22,42 +33,98 @@ esac
 . /scripts/functions
 . /lib/cryptsetup/functions
 . /usr/share/verity-env/verity.env
+
+find_root_via_image_uuid()
+{
+    for part in ${partitions}; do
+        if [ "$(blkid -p ${part} --match-types novfat -s USAGE -o value)" = "filesystem" ]; then
+            verity_uuid=$(
+                veritysetup dump "${part}" --hash-offset "${HASH_OFFSET}" | \
+                    while IFS=":" read key value; do
+                        if [ "${key}" = "UUID" ]; then
+                            # this pattern must use a real tab
+                            echo "${value##*	}"
+                            break
+                        fi
+                    done
+                )
+            if [ "${UUID}" = "${verity_uuid}" ]; then
+                found_root="${part}"
+                break
+            fi
+        fi
+    done
+}
+
 # Even if this script fails horribly, make sure there won't be a chance the
 # current $ROOT will be attempted.  As this device most likely contains a
 # perfectly valid filesystem, it would be mounted successfully, leading to a
 # broken trust chain.
 echo "ROOT=/dev/null" >/conf/param.conf
 wait_for_udev 10
+
 case "$ROOT" in
     PART*)
-        # root was given as PARTUUID= or PARTLABEL=. Use blkid to find the matching
-        # partition
-        ROOT=$(blkid --list-one --output device --match-token "$ROOT")
+        # Root was given as PARTUUID= or PARTLABEL=.
+        # Use blkid to find the matching partition
+        found_root=$(blkid --list-one --output device --match-token "$ROOT")
+        if [ -z "${found_root}" ]; then
+            log_begin_msg "Waiting for ${ROOT}"
+            while true; do
+                sleep 1
+                time_elapsed="$(time_elapsed)"
+
+                found_root=$(blkid --list-one --output device --match-token "$ROOT")
+                if [ -n "${found_root}" ]; then
+                    log_end_msg 1
+                    break
+                fi
+                if [ "${time_elapsed}" -ge 30 ]; then
+                    log_end_msg 0
+                    break
+                fi
+            done
+        fi
         ;;
     "")
         # No Root device was given. Use veritysetup verify to search matching roots
-        partitions=$(blkid -o device)
-        for part in ${partitions}; do
-            if [ "$(blkid -p ${part} --match-types novfat -s USAGE -o value)" = "filesystem" ]; then
-                verity_uuid=$(
-                    veritysetup dump "${part}" --hash-offset "${HASH_OFFSET}" | \
-                        while IFS=":" read key value; do
-                            if [ "${key}" = "UUID" ]; then
-                                # this pattern must use a real tab
-                                echo "${value##*	}"
-                                break
-                            fi
-                        done
-                    )
-                if [ "${UUID}" = "${verity_uuid}" ]; then
-                    ROOT="${part}"
+        partitions="$(blkid -o device)"
+        find_root_via_image_uuid
+        if [ -z "${found_root}" ]; then
+            log_begin_msg "Waiting for IMAGE_UUID=${TARGET_IMAGE_UUID}"
+            scanned_partitions="${partitions}"
+            while true; do
+                sleep 1
+                time_elapsed="$(time_elapsed)"
+
+                unset partitions
+                for part in $(blkid -o device); do
+                    unset found
+                    for scanned_part in ${scanned_partitions}; do
+                        if [ "${scanned_part}" = "${part}" ]; then
+                            found=1
+                            break
+                        fi
+                    done
+                    if [ -z "${found}" ]; then
+                        partitions="${partitions} ${part}"
+                    fi
+                done
+                find_root_via_image_uuid
+                if [ -n "${found_root}" ]; then
+                    log_end_msg 1
                     break
                 fi
-            fi
-        done
+                if [ "${time_elapsed}" -ge 30 ]; then
+                    log_end_msg 0
+                    break
+                fi
+                scanned_partitions="${scanned_partitions} ${partitions}"
+            done
+        fi
         ;;
 esac
-set -- "$ROOT" verityroot
+set -- "${found_root}" verityroot
 if ! veritysetup open \
      ${VERITY_BEHAVIOR_ON_CORRUPTION} \
      --data-block-size "${DATA_BLOCK_SIZE}" \
