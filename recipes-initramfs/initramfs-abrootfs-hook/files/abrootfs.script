@@ -30,37 +30,93 @@ esac
 . /scripts/functions
 . /usr/share/abrootfs/image-uuid.env
 
+find_root_via_image_uuid()
+{
+    for part in $partitions; do
+        if [ "$(blkid -p "${part}" --match-types novfat -s USAGE -o value)" = "filesystem" ]; then
+            mount -o ro -t "$(get_fstype "${part}")" "${part}" "${rootmnt}"
+            . "${rootmnt}/etc/os-release"
+            umount "${rootmnt}"
+            if [ "${IMAGE_UUID}" = "${TARGET_IMAGE_UUID}" ]; then
+                found_root="${part}"
+                break
+            fi
+        fi
+    done
+}
+
 # Even if this script fails horribly, make sure there won't be a chance the
 # current $ROOT will be attempted.  As this device most likely contains a
 # perfectly valid filesystem, it would be mounted successfully, leading to a
 # broken boot.
 echo "ROOT=/dev/null" >/conf/param.conf
 wait_for_udev 10
+
 case "$ROOT" in
     PART*)
-        # root was given as PARTUUID= or PARTLABEL=. Use blkid to find the matching
-        # partition
-        ROOT=$(blkid --list-one --output device --match-token "$ROOT")
-        ;;
-    "")
-        # No Root device was given. Use find the matching IMAGE_UUID
-        partitions=$(blkid -o device)
-        for part in $partitions; do
-            if [ "$(blkid -p ${part} --match-types novfat -s USAGE -o value)" = "filesystem" ]; then
-                mount -o ro -t $(get_fstype $part) $part ${rootmnt}
-                . ${rootmnt}/etc/os-release
-                umount ${rootmnt}
-                if [ "${IMAGE_UUID}" = "${TARGET_IMAGE_UUID}" ]; then
-                    ROOT="$part"
+        # Root was given as PARTUUID= or PARTLABEL=.
+        # Use blkid to find the matching partition
+        found_root=$(blkid --list-one --output device --match-token "$ROOT")
+        if [ -z "${found_root}" ]; then
+            log_begin_msg "Waiting for ${ROOT}"
+            while true; do
+                sleep 1
+                time_elapsed="$(time_elapsed)"
+
+                found_root=$(blkid --list-one --output device --match-token "$ROOT")
+                if [ -n "${found_root}" ]; then
+                    log_end_msg 1
                     break
                 fi
-            fi
-        done
+                if [ "${time_elapsed}" -ge 30 ]; then
+                    log_end_msg 0
+                    break
+                fi
+            done
+        fi
+        ;;
+    "")
+        # No Root device was given. Search for the matching IMAGE_UUID
+        partitions="$(blkid -o device)"
+        find_root_via_image_uuid
+        if [ -z "${found_root}" ]; then
+            log_begin_msg "Waiting for IMAGE_UUID=${TARGET_IMAGE_UUID}"
+            scanned_partitions="${partitions}"
+            while true; do
+                sleep 1
+                time_elapsed="$(time_elapsed)"
+
+                unset partitions
+                for part in $(blkid -o device); do
+                    unset found
+                    for scanned_part in ${scanned_partitions}; do
+                        if [ "${scanned_part}" = "${part}" ]; then
+                            found=1
+                            break
+                        fi
+                    done
+                    if [ -z "${found}" ]; then
+                        partitions="${partitions} ${part}"
+                    fi
+                done
+                find_root_via_image_uuid
+                if [ -n "${found_root}" ]; then
+                    log_end_msg 1
+                    break
+                fi
+                if [ "${time_elapsed}" -ge 30 ]; then
+                    log_end_msg 0
+                    break
+                fi
+                scanned_partitions="${scanned_partitions} ${partitions}"
+            done
+        fi
         ;;
 esac
 
-if [ -z "${ROOT}" ]; then
+if [ -z "${found_root}" ]; then
     panic "Can't find the root device with matching UUID!"
 fi
 
+ROOT="${found_root}"
 echo "ROOT=${ROOT}" >/conf/param.conf
