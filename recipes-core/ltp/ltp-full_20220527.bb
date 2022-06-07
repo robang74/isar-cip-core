@@ -14,10 +14,10 @@ inherit dpkg
 DESCRIPTION = "Linux Test project for CIP"
 
 SRC_URI = " \
-   https://github.com/linux-test-project/ltp/releases/download/20190930/ltp-full-${PV}.tar.xz \
+   https://github.com/linux-test-project/ltp/releases/download/${PV}/ltp-full-${PV}.tar.xz \
    file://debian \
    "
-SRC_URI[sha256sum] = "c7049590df2da3135030db5ef4c0076b76c789724a752b1102b4a01db0189f9a"
+SRC_URI[sha256sum] = "d635afb5ec7b0de763ab50713baf9fbf65cf089da6e6768f816e4a166cbd17c4"
 
 
 do_prepare_build() {

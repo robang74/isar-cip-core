@@ -2,7 +2,7 @@ Source: ltp-full
 Section: embedded
 Priority: optional
 Maintainer: Gylstorff Quirin <quirin.gylstorff@siemens.com>
-Build-Depends: debhelper (>= 11), autotools-dev
+Build-Depends: debhelper (>= 11), autotools-dev, pkg-config
 Standards-Version: 4.1.3
 Homepage: https://linux-test-project.github.io/
 
