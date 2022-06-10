@@ -19,7 +19,7 @@ override_dh_auto_build:
 		tools/efivar.py set -i ubootefi.var -n KEK -d secure-boot.esl -t file; \
 		tools/efivar.py set -i ubootefi.var -n db -d secure-boot.esl -t file; \
 	fi
-	$(MAKE) $(PARALLEL_MAKE) $(U_BOOT_CONFIG)
+	$(MAKE) $(PARALLEL_MAKE) ${U_BOOT_CONFIG}
 	$(MAKE) $(PARALLEL_MAKE) ${U_BOOT_BIN}
 	$(MAKE) -n u-boot-initial-env >/dev/null 2>&1; if [ $$? -ne 2 ]; then \
 		$(MAKE) $(PARALLEL_MAKE) u-boot-initial-env; \

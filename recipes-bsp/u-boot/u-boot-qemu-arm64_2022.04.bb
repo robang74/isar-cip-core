@@ -14,7 +14,7 @@ require recipes-bsp/u-boot/u-boot-custom.inc
 SRC_URI += " \
     https://ftp.denx.de/pub/u-boot/u-boot-${PV}.tar.bz2 \
     file://0001-lib-date-Make-rtc_mktime-and-mktime64-Y2038-ready.patch \
-    file://rules"
+    file://rules.tmpl;subdir=debian"
 SRC_URI[sha256sum] = "68e065413926778e276ec3abd28bb32fa82abaa4a6898d570c1f48fbdb08bcd0"
 
 SRC_URI_append_secureboot = " \
@@ -30,10 +30,6 @@ DEPENDS_append_secureboot = " secure-boot-secrets"
 
 U_BOOT_CONFIG = "qemu_arm64_defconfig"
 U_BOOT_BIN = "u-boot.bin"
-
-do_prepare_build_append() {
-    cp ${WORKDIR}/rules ${S}/debian/rules
-}
 
 do_prepare_build_append_secureboot() {
     sed -ni '/### Secure boot config/q;p' ${S}/configs/${U_BOOT_CONFIG}
