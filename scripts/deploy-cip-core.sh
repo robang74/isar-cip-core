@@ -28,12 +28,12 @@ fi
 BASE_PATH=build/tmp/deploy/images/$TARGET/$BASE_FILENAME
 S3_TARGET=s3://download2.cip-project.org/cip-core/$REF/$TARGET/
 
-if [ -f $BASE_PATH.wic.img ] ; then
-	echo "Compressing $BASE_FILENAME.wic.img..."
-	xz -9 -k $BASE_PATH.wic.img
+if [ -f $BASE_PATH.wic ] ; then
+	echo "Compressing $BASE_FILENAME.wic..."
+	xz -9 -k $BASE_PATH.wic
 
 	echo "Uploading artifacts..."
-	aws s3 cp --no-progress --acl public-read $BASE_PATH.wic.img.xz ${S3_TARGET}
+	aws s3 cp --no-progress --acl public-read $BASE_PATH.wic.xz ${S3_TARGET}
 fi
 
 if [ -f $BASE_PATH.tar.gz ]; then
