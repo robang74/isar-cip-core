@@ -23,5 +23,5 @@ local_conf_header:
     CIP_IMAGE_OPTIONS_append = " swupdate.inc"
 
   wic-swu: |
-    IMAGE_FSTYPES = "wic-swu-img"
+    IMAGE_FSTYPES = "wic"
     WKS_FILE ?= "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks.in"

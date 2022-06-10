@@ -22,13 +22,9 @@ repos:
 
   isar:
     url: https://github.com/ilbers/isar.git
-    refspec: cf3f18a649ff42726677a58b224b9bb58ea4ba46
+    refspec: 1000df8e98b9a5849a7897698039687fd0cdd7d3
     layers:
       meta:
-    patches:
-      fix-pseudo:
-        repo: cip-core
-        path: patches/isar/0001-Fix-permissions-when-splitting-rootfs-folders-across.patch
 
 bblayers_conf_header:
   standard: |

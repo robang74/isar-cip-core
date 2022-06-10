@@ -17,4 +17,4 @@ header:
 
 local_conf_header:
   image-type: |
-    IMAGE_FSTYPES = "wic-targz-img"
+    IMAGE_FSTYPES = "wic tar.gz"

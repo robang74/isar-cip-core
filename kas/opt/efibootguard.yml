@@ -24,7 +24,7 @@ local_conf_header:
     WIC_IMAGER_INSTALL_append = " efibootguard"
     WDOG_TIMEOUT ?= "60"
     WICVARS += "WDOG_TIMEOUT KERNEL_IMAGE INITRD_IMAGE DTB_FILES"
-    IMAGE_FSTYPES ?= "wic-img"
+    IMAGE_FSTYPES ?= "wic"
     WKS_FILE ?= "${MACHINE}-efibootguard.wks.in"
 
   firmware-binaries: |
