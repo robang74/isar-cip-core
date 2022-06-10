@@ -23,7 +23,8 @@ local_conf_header:
     IMAGE_INSTALL_append = " swupdate-handler-roundrobin"
 
   secure-boot-image: |
-    IMAGE_FSTYPES = "secure-wic-swu-img"
+    IMAGE_CLASSES += "verity"
+    IMAGE_FSTYPES = "wic"
     WKS_FILE = "${MACHINE}-efibootguard-secureboot.wks.in"
     INITRAMFS_INSTALL_append = " initramfs-verity-hook"
 

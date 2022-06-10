@@ -9,16 +9,10 @@
 # SPDX-License-Identifier: MIT
 #
 
-SQUASHFS_EXCLUDE_DIRS += "home var"
-
-inherit squashfs-img
-inherit wic-img
-inherit swupdate-img
-
 INITRAMFS_RECIPE ?= "cip-core-initramfs"
 INITRD_IMAGE = "${INITRAMFS_RECIPE}-${DISTRO}-${MACHINE}.initrd.img"
 
-do_wic_image[depends] += "${INITRAMFS_RECIPE}:do_build"
+do_image_wic[depends] += "${INITRAMFS_RECIPE}:do_build"
 
 IMAGE_INSTALL += "home-fs"
 IMAGE_INSTALL += "tmp-fs"
@@ -37,6 +31,3 @@ devtmpfs	/dev		devtmpfs	mode=0755,nosuid		0	0
 EOF
 }
 
-addtask do_wic_image after do_squashfs_image
-
-addtask do_swupdate_image after do_wic_image

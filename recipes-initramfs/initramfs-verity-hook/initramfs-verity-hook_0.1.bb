@@ -28,7 +28,7 @@ VERITY_IMAGE_RECIPE ?= "cip-core-image"
 
 VERITY_ENV_FILE = "${DEPLOY_DIR_IMAGE}/${VERITY_IMAGE_RECIPE}-${DISTRO}-${MACHINE}.verity.env"
 
-do_install[depends] += "${VERITY_IMAGE_RECIPE}:do_verity_image"
+do_install[depends] += "${VERITY_IMAGE_RECIPE}:do_image_verity"
 do_install[cleandirs] += " \
     ${D}/usr/share/initramfs-tools/hooks \
     ${D}/usr/share/verity-env \

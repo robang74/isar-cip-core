@@ -9,9 +9,12 @@
 # SPDX-License-Identifier: MIT
 #
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+inherit swupdate
+inherit read-only-rootfs
 
-ROOTFS_PARTITION_NAME = "${IMAGE_FULLNAME}.wic.img.p4.gz"
+ROOTFS_PARTITION_NAME = "${IMAGE_FULLNAME}.wic.p4.gz"
+
+FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 SRC_URI += "file://sw-description.tmpl"
 TEMPLATE_FILES += "sw-description.tmpl"

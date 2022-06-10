@@ -9,9 +9,7 @@
 # SPDX-License-Identifier: MIT
 #
 
-SQUASHFS_IMAGE_FILE = "${IMAGE_FULLNAME}.squashfs.img"
-
-IMAGER_INSTALL += "squashfs-tools"
+IMAGER_INSTALL_squashfs += "squashfs-tools"
 
 SQUASHFS_EXCLUDE_DIRS ?= ""
 SQUASHFS_CONTENT ?= "${PP_ROOTFS}"
@@ -29,14 +27,11 @@ python __anonymous() {
     d.appendVar('SQUASHFS_CREATION_ARGS', args)
 }
 
-do_squashfs_image[dirs] = "${DEPLOY_DIR_IMAGE}"
-do_squashfs_image() {
+IMAGE_CMD_squashfs[depends] = "${PN}:do_transform_template"
+IMAGE_CMD_squashfs() {
     rm -f '${DEPLOY_DIR_IMAGE}/${SQUASHFS_IMAGE_FILE}'
 
-    image_do_mounts
-
-    sudo chroot "${BUILDCHROOT_DIR}" /bin/mksquashfs  \
-        "${SQUASHFS_CONTENT}" "${PP_DEPLOY}/${SQUASHFS_IMAGE_FILE}" \
+    ${SUDO_CHROOT} /bin/mksquashfs \
+        '${SQUASHFS_CONTENT}' '${IMAGE_FILE_CHROOT}' \
         ${SQUASHFS_CREATION_ARGS}
 }
-addtask do_squashfs_image before do_image after do_image_tools do_excl_directories

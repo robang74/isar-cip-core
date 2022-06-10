@@ -11,10 +11,14 @@
 
 VERITY_IMAGE_TYPE ?= "squashfs"
 
-inherit ${VERITY_IMAGE_TYPE}-img
+inherit ${VERITY_IMAGE_TYPE}
 
-VERITY_INPUT_IMAGE ?= "${IMAGE_FULLNAME}.${VERITY_IMAGE_TYPE}.img"
-VERITY_OUTPUT_IMAGE ?= "${IMAGE_FULLNAME}.${VERITY_IMAGE_TYPE}.verity.img"
+IMAGE_TYPEDEP_verity = "${VERITY_IMAGE_TYPE}"
+IMAGE_TYPEDEP_wic += "verity"
+IMAGER_INSTALL_verity += "cryptsetup"
+
+VERITY_INPUT_IMAGE ?= "${IMAGE_FULLNAME}.${VERITY_IMAGE_TYPE}"
+VERITY_OUTPUT_IMAGE ?= "${IMAGE_FULLNAME}.verity"
 VERITY_IMAGE_METADATA = "${VERITY_OUTPUT_IMAGE}.metadata"
 VERITY_HASH_BLOCK_SIZE ?= "1024"
 VERITY_DATA_BLOCK_SIZE ?= "1024"
@@ -37,28 +41,7 @@ create_verity_env_file() {
     done < $input
 }
 
-verity_setup() {
-    rm -f ${DEPLOY_DIR_IMAGE}/${VERITY_OUTPUT_IMAGE}
-    rm -f ${WORKDIR}/${VERITY_IMAGE_METADATA}
-
-    cp -a ${DEPLOY_DIR_IMAGE}/${VERITY_INPUT_IMAGE} ${DEPLOY_DIR_IMAGE}/${VERITY_OUTPUT_IMAGE}
-
-    image_do_mounts
-    sudo chroot "${BUILDCHROOT_DIR}" /sbin/veritysetup format \
-        --hash-block-size "${VERITY_HASH_BLOCK_SIZE}"  \
-        --data-block-size "${VERITY_DATA_BLOCK_SIZE}"  \
-        --data-blocks "${VERITY_DATA_BLOCKS}" \
-        --hash-offset "${VERITY_INPUT_IMAGE_SIZE}" \
-        "${PP_DEPLOY}/${VERITY_OUTPUT_IMAGE}" \
-        "${PP_DEPLOY}/${VERITY_OUTPUT_IMAGE}" \
-        >"${WORKDIR}/${VERITY_IMAGE_METADATA}"
-
-    echo "Hash offset:    	${VERITY_INPUT_IMAGE_SIZE}" \
-        >>"${WORKDIR}/${VERITY_IMAGE_METADATA}"
-}
-
-do_verity_image[cleandirs] = "${WORKDIR}/verity"
-python do_verity_image() {
+python calculate_verity_data_blocks() {
     import os
 
     image_file = os.path.join(
@@ -70,8 +53,25 @@ python do_verity_image() {
     assert size % data_block_size == 0, f"image is not well-sized!"
     d.setVar("VERITY_INPUT_IMAGE_SIZE", str(size))
     d.setVar("VERITY_DATA_BLOCKS", str(size // data_block_size))
-
-    bb.build.exec_func('verity_setup', d)
-    bb.build.exec_func('create_verity_env_file', d)
 }
-addtask verity_image before do_image after do_${VERITY_IMAGE_TYPE}_image
+do_image_verity[cleandirs] = "${WORKDIR}/verity"
+do_image_verity[prefuncs] = "calculate_verity_data_blocks"
+IMAGE_CMD_verity() {
+    rm -f ${DEPLOY_DIR_IMAGE}/${VERITY_OUTPUT_IMAGE}
+    rm -f ${WORKDIR}/${VERITY_IMAGE_METADATA}
+
+    cp -a ${DEPLOY_DIR_IMAGE}/${VERITY_INPUT_IMAGE} ${DEPLOY_DIR_IMAGE}/${VERITY_OUTPUT_IMAGE}
+
+    ${SUDO_CHROOT} /sbin/veritysetup format \
+        --hash-block-size "${VERITY_HASH_BLOCK_SIZE}"  \
+        --data-block-size "${VERITY_DATA_BLOCK_SIZE}"  \
+        --data-blocks "${VERITY_DATA_BLOCKS}" \
+        --hash-offset "${VERITY_INPUT_IMAGE_SIZE}" \
+        "${PP_DEPLOY}/${VERITY_OUTPUT_IMAGE}" \
+        "${PP_DEPLOY}/${VERITY_OUTPUT_IMAGE}" \
+        >"${WORKDIR}/${VERITY_IMAGE_METADATA}"
+
+    echo "Hash offset:    	${VERITY_INPUT_IMAGE_SIZE}" \
+        >>"${WORKDIR}/${VERITY_IMAGE_METADATA}"
+    create_verity_env_file
+}

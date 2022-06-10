@@ -18,9 +18,9 @@ SWU_SIGNATURE_TYPE ?= "rsa"
 
 IMAGER_INSTALL += "${@'openssl' if bb.utils.to_boolean(d.getVar('SWU_SIGNED')) else ''}"
 
-do_swupdate_image[stamp-extra-info] = "${DISTRO}-${MACHINE}"
-do_swupdate_image[cleandirs] += "${WORKDIR}/swu"
-do_swupdate_image() {
+do_swupdate_binary[stamp-extra-info] = "${DISTRO}-${MACHINE}"
+do_swupdate_binary[cleandirs] += "${WORKDIR}/swu"
+do_swupdate_binary() {
     rm -f '${SWU_IMAGE_FILE}'
     cp '${WORKDIR}/${SWU_DESCRIPTION_FILE}' '${WORKDIR}/swu/${SWU_DESCRIPTION_FILE}'
 
@@ -91,4 +91,4 @@ do_swupdate_image() {
     cd -
 }
 
-addtask swupdate_image before do_build after do_copy_boot_files do_install_imager_deps do_transform_template
+addtask swupdate_binary before do_build after do_deploy do_copy_boot_files do_install_imager_deps do_transform_template
