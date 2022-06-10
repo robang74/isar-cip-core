@@ -2,7 +2,7 @@ image: ghcr.io/siemens/kas/kas-isar:3.0.2
 
 variables:
   GIT_STRATEGY: clone
-  release: buster
+  release: bullseye
   extension: base
   use_rt: enable
   wic_targz: enable
@@ -218,34 +218,34 @@ build:qemu-amd64-swupdate:
     targz: disable
     deploy: disable
 
-# bullseye images
-build:simatic-ipc227e-bullseye:
+# buster images
+build:simatic-ipc227e-buster:
   extends:
     - .build_base
   variables:
     target: simatic-ipc227e
-    release: bullseye
+    release: buster
 
-build:bbb-bullseye:
+build:bbb-buster:
   extends:
     - .build_base
   variables:
     target: bbb
     dtb: am335x-boneblack.dtb
-    release: bullseye
+    release: buster
 
-build:iwg20m-bullseye:
+build:iwg20m-buster:
   extends:
     - .build_base
   variables:
     target: iwg20m
     dtb: r8a7743-iwg20d-q7-dbcm-ca.dtb
-    release: bullseye
+    release: buster
 
-build:hihope-rzg2m-bullseye:
+build:hihope-rzg2m-buster:
   extends:
     - .build_base
   variables:
     target: hihope-rzg2m
     dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
-    release: bullseye
+    release: buster
