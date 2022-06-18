@@ -29,9 +29,7 @@ python __anonymous() {
 
 IMAGE_CMD_squashfs[depends] = "${PN}:do_transform_template"
 IMAGE_CMD_squashfs() {
-    rm -f '${DEPLOY_DIR_IMAGE}/${SQUASHFS_IMAGE_FILE}'
-
     ${SUDO_CHROOT} /bin/mksquashfs \
         '${SQUASHFS_CONTENT}' '${IMAGE_FILE_CHROOT}' \
-        ${SQUASHFS_CREATION_ARGS}
+        -noappend ${SQUASHFS_CREATION_ARGS}
 }
