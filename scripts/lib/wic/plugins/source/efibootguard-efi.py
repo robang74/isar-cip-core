@@ -98,7 +98,11 @@ class EfibootguardEFIPlugin(SourcePlugin):
             (part.label.upper(), efi_part_image, blocks)
         exec_cmd(dosfs_cmd)
 
-        mcopy_cmd = "mcopy -v -i %s -s %s/* ::/" % \
+        # mtools for buster have problems with resursive mcopy.
+        # Therefore, create the target dir via mmd first.
+        mmd_cmd = "mmd -i %s ::/EFI ::/EFI/BOOT" % (efi_part_image)
+        exec_cmd(mmd_cmd, True)
+        mcopy_cmd = "mcopy -v -i %s -s %s/EFI/BOOT/* ::/EFI/BOOT" % \
             (efi_part_image, part_rootfs_dir)
         exec_cmd(mcopy_cmd, True)
 
