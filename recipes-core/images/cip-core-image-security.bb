@@ -32,6 +32,7 @@ IMAGE_PREINSTALL += " \
 	audispd-plugins auditd \
 	uuid-runtime \
 	sudo \
+	aide-common \
 "
 
 OVERRIDES_append = ":${BASE_DISTRO_CODENAME}"
