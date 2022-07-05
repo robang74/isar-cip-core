@@ -67,7 +67,7 @@ case "${arch}" in
 			${QEMU_EXTRA_ARGS} -device ide-hd,drive=disk"
 		fi
 		KERNEL_CMDLINE=" \
-			root=/dev/sda"
+			root=/dev/sda rw"
 		;;
 	arm64|aarch64)
 		QEMU_ARCH=arm64
@@ -81,7 +81,7 @@ case "${arch}" in
 			-device virtio-blk-device,drive=disk \
 			-device virtio-net-device,netdev=net"
 		KERNEL_CMDLINE=" \
-			root=/dev/vda"
+			root=/dev/vda rw"
 		;;
 	arm|armhf)
 		QEMU_ARCH=arm
@@ -95,7 +95,7 @@ case "${arch}" in
 			-device virtio-blk-device,drive=disk \
 			-device virtio-net-device,netdev=net"
 		KERNEL_CMDLINE=" \
-			root=/dev/vda"
+			root=/dev/vda rw"
 		;;
 	""|--help)
 		usage
