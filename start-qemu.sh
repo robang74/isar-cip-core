@@ -88,7 +88,7 @@ case "${arch}" in
 		QEMU=qemu-system-arm
 		QEMU_EXTRA_ARGS=" \
 			-cpu cortex-a15 \
-			-smp 4 \
+			-smp 2 \
 			-machine virt \
 			-device virtio-serial-device \
 			-device virtconsole,chardev=con -chardev vc,id=con \
