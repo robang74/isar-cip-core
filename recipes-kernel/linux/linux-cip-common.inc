@@ -16,7 +16,7 @@ KERNEL_DEFCONFIG ?= "${MACHINE}_defconfig"
 require recipes-kernel/linux/linux-custom.inc
 
 SRC_URI += " \
-    https://gitlab.com/cip-project/cip-kernel/linux-cip/-/archive/v${PV}/linux-cip-v${PV}.tar.gz \
+    https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git/snapshot/linux-cip-${PV}.tar.gz \
     "
 
 SRC_URI_append = " ${@ "git://gitlab.com/cip-project/cip-kernel/cip-kernel-config.git;protocol=https;destsuffix=cip-kernel-config;name=cip-kernel-config" \
@@ -27,4 +27,4 @@ SRC_URI_append_bbb = "file://${KERNEL_DEFCONFIG}"
 
 SRCREV_cip-kernel-config ?= "a8d04df6595344091eee2b242c3a0f5e108f966c"
 
-S = "${WORKDIR}/linux-cip-v${PV}"
+S = "${WORKDIR}/linux-cip-${PV}"
