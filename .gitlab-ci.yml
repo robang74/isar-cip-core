@@ -230,6 +230,18 @@ build:qemu-arm64-secure-boot:
     targz: disable
     deploy: disable
 
+# secure boot images arm
+build:qemu-arm-secure-boot:
+  extends:
+    - .build_base
+  variables:
+    target: qemu-arm
+    extension: ebg-secure-boot-snakeoil
+    use_rt: disable
+    wic_targz: disable
+    targz: disable
+    deploy: disable
+
 # buster images
 build:simatic-ipc227e-buster:
   extends:
