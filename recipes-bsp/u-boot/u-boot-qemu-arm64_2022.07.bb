@@ -9,37 +9,8 @@
 # SPDX-License-Identifier: MIT
 #
 
-require recipes-bsp/u-boot/u-boot-custom.inc
-
-SRC_URI += " \
-    https://ftp.denx.de/pub/u-boot/u-boot-${PV}.tar.bz2 \
-    file://rules.tmpl;subdir=debian"
-SRC_URI[sha256sum] = "92b08eb49c24da14c1adbf70a71ae8f37cc53eeb4230e859ad8b6733d13dcf5e"
-
-SRC_URI_append_secureboot = " \
-    file://secure-boot.cfg"
-
-S = "${WORKDIR}/u-boot-${PV}"
-
-DEBIAN_BUILD_DEPENDS += ", libssl-dev:native, libssl-dev:arm64"
-
-DEBIAN_BUILD_DEPENDS_append_secureboot = ", \
-    openssl, pesign, secure-boot-secrets, python3-openssl:native"
-DEPENDS_append_secureboot = " secure-boot-secrets"
+require u-boot-qemu-common.inc
 
 U_BOOT_CONFIG = "qemu_arm64_defconfig"
-U_BOOT_BIN = "u-boot.bin"
 
-do_prepare_build_append_secureboot() {
-    sed -ni '/### Secure boot config/q;p' ${S}/configs/${U_BOOT_CONFIG}
-    cat ${WORKDIR}/secure-boot.cfg >> ${S}/configs/${U_BOOT_CONFIG}
-}
-
-do_deploy[dirs] = "${DEPLOY_DIR_IMAGE}"
-do_deploy() {
-    dpkg --fsys-tarfile "${WORKDIR}/u-boot-${MACHINE}_${PV}_${DISTRO_ARCH}.deb" | \
-        tar xOf - "./usr/lib/u-boot/${MACHINE}/${U_BOOT_BIN}" \
-        > "${DEPLOY_DIR_IMAGE}/firmware.bin"
-}
-
-addtask deploy after do_dpkg_build before do_deploy_deb
+EFI_ARCH = "aa64"
