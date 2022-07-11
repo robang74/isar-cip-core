@@ -49,3 +49,14 @@ sed -i 's/admin_space_left_action = .*/admin_space_left_action = SYSLOG/' $AUDIT
 
 # CR2.10: Response to audit processing failures
 sed -i 's/disk_error_action = .*/disk_error_action = SYSLOG/' $AUDIT_CONF_FILE
+
+# CR2.11: Enable Mutli Factor Authentication for Local and Remote Session
+SSHD_AUTH_CONFIG="/etc/pam.d/common-auth"
+google_authenticator="auth required pam_google_authenticator.so nullok"
+if grep -c "pam_google_authenticator.so" "${SSHD_AUTH_CONFIG}";then
+        sed -i '/pam_google_authenticator.so/ s/^#*/#/'  "${SSHD_AUTH_CONFIG}"
+fi
+echo "auth required pam_google_authenticator.so nullok" | tee -a "${SSHD_AUTH_CONFIG}"
+# Enable PAM configuration for Remote Session
+sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/g' "${SSHD_CONFIG}"
+echo "AuthenticationMethods keyboard-interactive" | tee -a "${SSHD_CONFIG}"
