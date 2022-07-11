@@ -145,8 +145,8 @@ if [ -n "${SECURE_BOOT}${SWUPDATE_BOOT}" ]; then
 					${QEMU_COMMON_OPTIONS} "$@"
 			fi
 			;;
-		arm64|aarch64)
-			u_boot_bin=${FIRMWARE_BIN:-./build/tmp/deploy/images/qemu-arm64/firmware.bin}
+		arm64|aarch64|arm|armhf)
+			u_boot_bin=${FIRMWARE_BIN:-./build/tmp/deploy/images/qemu-${QEMU_ARCH}/firmware.bin}
 
 			${QEMU_PATH}${QEMU} \
 				-drive file=${IMAGE_PREFIX}.wic,discard=unmap,if=none,id=disk,format=raw \

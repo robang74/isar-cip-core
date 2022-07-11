@@ -36,3 +36,4 @@ local_conf_header:
     DISTRO_APT_PREFERENCES_append_qemu-amd64_buster = " conf/distro/preferences.ovmf-snakeoil.conf"
     # Add U-Boot for qemu
     IMAGER_BUILD_DEPS_append_qemu-arm64 += "u-boot-qemu-arm64"
+    IMAGER_BUILD_DEPS_append_qemu-arm += "u-boot-qemu-arm"

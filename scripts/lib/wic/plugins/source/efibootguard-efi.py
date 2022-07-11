@@ -55,6 +55,7 @@ class EfibootguardEFIPlugin(SourcePlugin):
         distro_to_efi_arch = {
             "amd64": "x64",
             "arm64": "aa64",
+            "armhf": "arm",
             "i386": "ia32"
         }
 

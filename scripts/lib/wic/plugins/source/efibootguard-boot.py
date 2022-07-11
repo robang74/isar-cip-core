@@ -184,6 +184,7 @@ class EfibootguardBootPlugin(SourcePlugin):
         distro_to_efi_arch = {
             "amd64": "x64",
             "arm64": "aa64",
+            "armhf": "arm",
             "i386": "ia32"
         }
         rootfs_path = rootfs_dir.get('ROOTFS_DIR')
