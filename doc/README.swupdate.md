@@ -15,7 +15,7 @@ Then build the image which will later serve as update package:
 ```
 host$ ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml
 ```
-Save the generated swu `build/tmp/deploy/images/qemu-amd64/cip-core-image-cip-core-buster-qemu-amd64.swu` into a separate folder (ex: /tmp).
+Save the generated swu `build/tmp/deploy/images/qemu-amd64/cip-core-image-cip-core-bullseye-qemu-amd64.swu` into a separate folder (ex: /tmp).
 
 Next, rebuild the image, switching to the RT kernel as modification:
 ```
@@ -27,9 +27,9 @@ Now start the image which will contain the RT kernel:
 host$ SWUPDATE_BOOT=y ./start-qemu.sh amd64
 ```
 
-Copy `cip-core-image-cip-core-buster-qemu-amd64.swu` file from `tmp` folder into the running system:
+Copy `cip-core-image-cip-core-bullseye-qemu-amd64.swu` file from `tmp` folder into the running system:
 ```
-host$ scp -P 22222 /tmp/cip-core-image-cip-core-buster-qemu-amd64.swu root@localhost:
+host$ scp -P 22222 /tmp/cip-core-image-cip-core-bullseye-qemu-amd64.swu root@localhost:
 ```
 
 Check which partition is booted, e.g. with lsblk:
@@ -56,7 +56,7 @@ root@demo:~# cat /sys/kernel/realtime
 
 Now apply swupdate and reboot
 ```
-root@demo:~# swupdate -i cip-core-image-cip-core-buster-qemu-amd64.swu
+root@demo:~# swupdate -i cip-core-image-cip-core-bullseye-qemu-amd64.swu
 root@demo:~# reboot
 ```
 
@@ -123,7 +123,7 @@ Build the image for swupdate with a service which causes kernel panic during sys
 ```
 host$ ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml:kas/opt/kernel-panic.yml
 ```
-Save the generated swu `build/tmp/deploy/images/qemu-amd64/cip-core-image-cip-core-buster-qemu-amd64.swu` in a separate folder.
+Save the generated swu `build/tmp/deploy/images/qemu-amd64/cip-core-image-cip-core-bullseye-qemu-amd64.swu` in a separate folder.
 Then build the image without `kernel-panic.yml` recipe using below command:
 ```
 host$ ./kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-swu.yml
@@ -134,14 +134,14 @@ Start the target on QEMU:
 host$ SWUPDATE_BOOT=y ./start-qemu.sh amd64
 ```
 
-Copy `cip-core-image-cip-core-buster-qemu-amd64.swu` file from `tmp` folder into the running system:
+Copy `cip-core-image-cip-core-bullseye-qemu-amd64.swu` file from `tmp` folder into the running system:
 ```
-host$ scp -P 22222 /tmp/cip-core-image-cip-core-buster-qemu-amd64.swu root@localhost:
+host$ scp -P 22222 /tmp/cip-core-image-cip-core-bullseye-qemu-amd64.swu root@localhost:
 ```
 
 Apply swupdate as below:
 ```
-root@demo:~# swupdate -i cip-core-image-cip-core-buster-qemu-amd64.swu
+root@demo:~# swupdate -i cip-core-image-cip-core-bullseye-qemu-amd64.swu
 ```
 
 Check bootloader ustate after swupdate. If the swupdate is successful then **revision number** should be **3** and status should be changed to **INSTALLED** for Partition #1.

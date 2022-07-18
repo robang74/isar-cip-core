@@ -204,10 +204,10 @@ OVMF_VARS=<path to the modified OVMF_VARS.fd> \
 
 For updating the image, the following steps are necessary:
 - [Build the image with snakeoil keys](### Build image)
-- save the generated swu `build/tmp/deploy/images/qemu-amd64/cip-core-image-cip-core-buster-qemu-amd64.swu` to /tmp
+- save the generated swu `build/tmp/deploy/images/qemu-amd64/cip-core-image-cip-core-bullseye-qemu-amd64.swu` to /tmp
 - modify the image for example add a new version to the image by adding `PV=2.0.0` to
   [cip-core-image.bb](recipes-core/images/cip-core-image.bb)
-- start the new target and copy the swu `cip-core-image-cip-core-buster-qemu-amd64.swu`
+- start the new target and copy the swu `cip-core-image-cip-core-bullseye-qemu-amd64.swu`
   to the running system, e.g.:
 ```
 SECURE=y ./start-qemu.sh amd64 -virtfs local,path=/tmp,mount_tag=host0,security_model=passthrough,id=host0
@@ -228,7 +228,7 @@ sda      8:0    0    2G  0 disk
 └─sda5   8:5    0 1000M  0 part
 ```
 
-- install with `swupdate -i /mnt/cip-core-image-cip-core-buster-qemu-amd64.swu`
+- install with `swupdate -i /mnt/cip-core-image-cip-core-bullseye-qemu-amd64.swu`
 - reboot
 - check which partition is booted, e.g. with `lsblk`. The rootfs should have changed:
 ```
