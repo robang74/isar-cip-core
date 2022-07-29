@@ -68,7 +68,7 @@ build:hihope-rzg2m-base:
     - .build_base
   variables:
     target: hihope-rzg2m
-    dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
+    dtb: r8a774a1-hihope-rzg2m-ex.dtb
 
 build:qemu-amd64-base:
   extends:
@@ -166,7 +166,7 @@ build:hihope-rzg2m-test:
   variables:
     target: hihope-rzg2m
     extension: test
-    dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
+    dtb: r8a774a1-hihope-rzg2m-ex.dtb
 
 build:qemu-amd64-test:
   extends:
@@ -271,7 +271,7 @@ build:hihope-rzg2m-buster:
     - .build_base
   variables:
     target: hihope-rzg2m
-    dtb: renesas/r8a774a1-hihope-rzg2m-ex.dtb
+    dtb: r8a774a1-hihope-rzg2m-ex.dtb
     release: buster
 
 build:qemu-amd64-secure-boot-buster:

@@ -50,5 +50,5 @@ aws s3 cp --no-progress --acl public-read $KERNEL_IMAGE ${S3_TARGET}
 aws s3 cp --no-progress --acl public-read $BASE_PATH-initrd.img ${S3_TARGET}
 
 if [ "$DTB" != "none" ]; then
-	aws s3 cp --no-progress --acl public-read build/tmp/work/cip-core-*/linux-cip*/*/linux-cip-*/debian/linux-image-cip*/usr/lib/linux-image-*/$DTB ${S3_TARGET}
+	aws s3 cp --no-progress --acl public-read build/tmp/deploy/images/*/$DTB ${S3_TARGET}
 fi
