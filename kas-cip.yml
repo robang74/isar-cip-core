@@ -25,6 +25,10 @@ repos:
     refspec: 1000df8e98b9a5849a7897698039687fd0cdd7d3
     layers:
       meta:
+    patches:
+      fix-hihope-kernel-build:
+        repo: cip-core
+        path: isar-patches/0001-recipes-kernel-Check-if-CONFIG_MODULES-is-set.patch
 
 bblayers_conf_header:
   standard: |
