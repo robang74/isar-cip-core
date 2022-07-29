@@ -14,18 +14,22 @@ inherit dpkg-raw
 DESCRIPTION = "Copy the OVMF biniaries from the build changeroot to the deploy dir"
 
 # this is a empty debian package
-SRC_URI = "file://control.tmpl"
+SRC_URI = "file://rules"
 
 DEBIAN_BUILD_DEPENDS = "ovmf"
-TEMPLATE_FILES = "control.tmpl"
-TEMPLATE_VARS += "PN DEBIAN_DEPENDS MAINTAINER DESCRIPTION DPKG_ARCH DEBIAN_BUILD_DEPENDS"
 
 SSTATETASKS = ""
 
-do_extract_ovmf() {
-    install -m 0755 -d ${DEPLOY_DIR_IMAGE}
-    cp -r ${BUILDCHROOT_DIR}/usr/share/OVMF ${DEPLOY_DIR_IMAGE}
-    chown $(id -u):$(id -g) ${DEPLOY_DIR_IMAGE}/OVMF
+do_install() {
+     install -v -d ${D}/var/share
+     touch ${D}/var/share/test
 }
 
-addtask do_extract_ovmf after do_install_builddeps before do_dpkg_build
+do_deploy() {
+    install -m 0755 -d ${DEPLOY_DIR_IMAGE}
+    dpkg --extract ${WORKDIR}/${PN}_${PV}*.deb ${WORKDIR}
+    cp -r ${WORKDIR}/var/share/OVMF ${DEPLOY_DIR_IMAGE}
+}
+addtask do_deploy after do_dpkg_build before do_deploy_deb
+
+

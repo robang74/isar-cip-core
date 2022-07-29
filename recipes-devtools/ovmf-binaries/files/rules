@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+#
+# Copyright (c) Siemens AG, 2022
+#
+# Authors:
+#  Quirin Gylstorff <quirin.gylstorff@siemens.com>
+#
+# This file is subject to the terms and conditions of the MIT License.
+# See COPYING.MIT file in the top-level directory.
+#
+
+override_dh_auto_configure:
+	mkdir -p /home/builder/ovmf-binaries/image/var/share/
+	cp -r /usr/share/OVMF /home/builder/ovmf-binaries/image/var/share/
+
+%:
+	dh $@
