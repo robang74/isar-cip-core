@@ -11,4 +11,4 @@ part --source rawcopy --sourceparams "file=/usr/lib/u-boot/am335x_boneblack/u-bo
 
 part / --source rootfs-u-boot --ondisk mmcblk0 --fstype ext4 --mkfs-extraopts "-T default" --label platform --align 1024 --active
 
-bootloader --append "rootwait console=ttyO,115200"
+bootloader --append "rootwait console=ttyO0,115200"
