@@ -23,6 +23,7 @@ TEMPLATE_FILES = "verity.script.tmpl"
 TEMPLATE_VARS += "VERITY_BEHAVIOR_ON_CORRUPTION"
 
 DEBIAN_DEPENDS = "initramfs-tools, cryptsetup"
+DEBIAN_CONFLICTS = "initramfs-abrootfs-hook"
 
 VERITY_IMAGE_RECIPE ?= "cip-core-image"
 

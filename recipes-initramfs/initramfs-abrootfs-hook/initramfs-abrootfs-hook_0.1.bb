@@ -13,6 +13,7 @@
 inherit dpkg-raw
 
 DEBIAN_DEPENDS = "initramfs-tools"
+DEBIAN_CONFLICTS = "initramfs-verity-hook"
 
 SRC_URI += "file://abrootfs.hook \
             file://abrootfs.script"
