@@ -12,17 +12,16 @@
 header:
   version: 10
   includes:
-   - kas/opt/efibootguard.yml
+    - kas/opt/ebg-swu.yml
 
 local_conf_header:
-  image-options-swupdate: |
-    CIP_IMAGE_OPTIONS_append = " swupdate.inc"
-
   secure-boot-image: |
     IMAGE_CLASSES += "verity"
     IMAGE_FSTYPES = "wic"
     WKS_FILE = "${MACHINE}-efibootguard-secureboot.wks.in"
     INITRAMFS_INSTALL_append = " initramfs-verity-hook"
+    # abrootfs cannot be installed together with verity
+    INITRAMFS_INSTALL_remove = " initramfs-abrootfs-hook"
 
   secure-boot: |
     IMAGER_BUILD_DEPS += "ebg-secure-boot-signer"
