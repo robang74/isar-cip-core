@@ -18,10 +18,6 @@ local_conf_header:
   image-options-swupdate: |
     CIP_IMAGE_OPTIONS_append = " swupdate.inc"
 
-  swupdate: |
-    IMAGE_INSTALL_append = " swupdate"
-    IMAGE_INSTALL_append = " swupdate-handler-roundrobin"
-
   secure-boot-image: |
     IMAGE_CLASSES += "verity"
     IMAGE_FSTYPES = "wic"

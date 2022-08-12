@@ -12,6 +12,9 @@
 inherit swupdate
 inherit read-only-rootfs
 
+IMAGE_INSTALL += " swupdate"
+IMAGE_INSTALL += " swupdate-handler-roundrobin"
+
 ROOTFS_PARTITION_NAME = "${IMAGE_FULLNAME}.wic.p4.gz"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
