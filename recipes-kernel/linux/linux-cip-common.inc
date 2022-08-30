@@ -23,6 +23,6 @@ SRC_URI_append = " ${@ "git://gitlab.com/cip-project/cip-kernel/cip-kernel-confi
     if d.getVar('USE_CIP_KERNEL_CONFIG') == '1' else '' \
     }"
 
-SRCREV_cip-kernel-config ?= "59f7903d120e529cc26b8e5fd7b13c3bbb632e15"
+SRCREV_cip-kernel-config ?= "ce52837418aea714e780e0cbc8afb9515c12cc1b"
 
 S = "${WORKDIR}/linux-cip-${PV}"
