@@ -22,13 +22,9 @@ repos:
 
   isar:
     url: https://github.com/ilbers/isar.git
-    refspec: 64c755053d1252d183757b294cf9849fced64799
+    refspec: 8dfa97cf6e25a7adec2e02c50c5ef6329f31931b
     layers:
       meta:
-    patches:
-      fix-hihope-kernel-build:
-        repo: cip-core
-        path: isar-patches/0001-recipes-kernel-Check-if-CONFIG_MODULES-is-set.patch
 
 bblayers_conf_header:
   standard: |
