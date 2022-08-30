@@ -18,6 +18,7 @@ local_conf_header:
   ebg_swu_bootloader: |
     WKS_FILE ?= "${MACHINE}-efibootguard.wks.in"
     SWUPDATE_BOOTLOADER = "efibootguard"
+    IMAGE_INSTALL_remove = "u-boot-script"
   ebg_swu_image_options: |
     CIP_IMAGE_OPTIONS_append = " efibootguard.inc image-uuid.inc"
   initramfs: |
