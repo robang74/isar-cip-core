@@ -278,6 +278,7 @@ build:qemu-amd64-secure-boot-buster:
   extends:
     - .build_base
   variables:
+    base_yaml: "kas-cip.yml:kas/board/${target}.yml:kas/opt/5.10.yml"
     release: buster
     target: qemu-amd64
     extension: ebg-secure-boot-snakeoil
