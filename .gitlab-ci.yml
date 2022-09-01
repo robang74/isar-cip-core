@@ -3,7 +3,7 @@ image: ghcr.io/siemens/kas/kas-isar:3.0.2
 variables:
   GIT_STRATEGY: clone
   release: bullseye
-  extension: base
+  extension: none
   use_rt: enable
   wic_targz: enable
   targz: disable
@@ -31,7 +31,7 @@ default:
     base_yaml: "kas-cip.yml:kas/board/${target}.yml"
   script:
     - if [ "${use_rt}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/rt.yml"; fi
-    - if [ "${extension}" != "base" ]; then base_yaml="${base_yaml}:kas/opt/${extension}.yml"; fi
+    - if [ "${extension}" != "none" ]; then base_yaml="${base_yaml}:kas/opt/${extension}.yml"; fi
     - if [ "${wic_targz}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/wic-targz-img.yml"; fi
     - if [ "${targz}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/targz-img.yml"; fi
     - if [ "${release}" = "buster" ]; then base_yaml="${base_yaml}:kas/opt/buster.yml"; fi

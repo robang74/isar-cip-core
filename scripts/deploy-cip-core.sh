@@ -17,7 +17,7 @@ DTB=$4
 REF=$5
 
 BASE_FILENAME=cip-core-image-cip-core-$RELEASE-$TARGET
-if [ "${EXTENSION}" != "base" ] ; then
+if [ "${EXTENSION}" != "none" ] ; then
 	if [ "${EXTENSION}" = "security" ] ; then
 		BASE_FILENAME=cip-core-image-$EXTENSION-cip-core-$RELEASE-$TARGET
 	else
