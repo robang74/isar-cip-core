@@ -34,6 +34,10 @@ IMAGE_PREINSTALL += " \
 	sudo \
 	aide-common \
 	libpam-google-authenticator \
+	passwd \
+	login \
+	libpam-runtime \
+	util-linux \
 "
 
 OVERRIDES_append = ":${BASE_DISTRO_CODENAME}"
