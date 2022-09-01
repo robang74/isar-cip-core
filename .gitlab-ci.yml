@@ -30,7 +30,6 @@ default:
   variables:
     base_yaml: "kas-cip.yml:kas/board/${target}.yml"
   script:
-    - sudo rm -rf build/tmp
     - if [ "${use_rt}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/rt.yml"; fi
     - if [ "${extension}" != "base" ]; then base_yaml="${base_yaml}:kas/opt/${extension}.yml"; fi
     - if [ "${wic_targz}" = "enable" ]; then base_yaml="${base_yaml}:kas/opt/wic-targz-img.yml"; fi
@@ -204,7 +203,6 @@ build:qemu-amd64-secure-boot:
     extension: ebg-secure-boot-snakeoil
     use_rt: disable
     wic_targz: disable
-    targz: disable
     deploy: disable
 
 build:qemu-amd64-swupdate:
@@ -215,7 +213,6 @@ build:qemu-amd64-swupdate:
     extension: ebg-swu
     use_rt: disable
     wic_targz: disable
-    targz: disable
     deploy: disable
 
 # secure boot images arm64
@@ -227,7 +224,6 @@ build:qemu-arm64-secure-boot:
     extension: ebg-secure-boot-snakeoil
     use_rt: disable
     wic_targz: disable
-    targz: disable
     deploy: disable
 
 # secure boot images arm
@@ -239,7 +235,6 @@ build:qemu-arm-secure-boot:
     extension: ebg-secure-boot-snakeoil
     use_rt: disable
     wic_targz: disable
-    targz: disable
     deploy: disable
 
 # buster images
@@ -284,5 +279,4 @@ build:qemu-amd64-secure-boot-buster:
     extension: ebg-secure-boot-snakeoil
     use_rt: disable
     wic_targz: disable
-    targz: disable
     deploy: disable
