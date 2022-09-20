@@ -58,19 +58,18 @@ do_swupdate_binary() {
     image_do_mounts
 
     # Prepare for signing
-    sign='${@'x' if bb.utils.to_boolean(d.getVar('SWU_SIGNED')) else ''}'
+    export sign='${@'x' if bb.utils.to_boolean(d.getVar('SWU_SIGNED')) else ''}'
     if [ -n "$sign" ]; then
         cp -f '${SIGN_KEY}' '${WORKDIR}/dev.key'
         test -e '${SIGN_CRT}' && cp -f '${SIGN_CRT}' '${WORKDIR}/dev.crt'
     fi
 
-    # Fill in file check sums
-    for file in ${SWU_ADDITIONAL_FILES}; do
-        sed -i "s:$file-sha256:$(sha256sum '${WORKDIR}/swu/'$file | cut -f 1 -d ' '):g" \
-            '${WORKDIR}/swu/${SWU_DESCRIPTION_FILE}'
-    done
-
     sudo -E chroot ${BUILDCHROOT_DIR} sh -c ' \
+        # Fill in file check sums
+        for file in ${SWU_ADDITIONAL_FILES}; do
+            sed -i "s:$file-sha256:$(sha256sum "${PP_WORK}/swu/"$file | cut -f 1 -d " "):g" \
+                "${PP_WORK}/swu/${SWU_DESCRIPTION_FILE}"
+        done
         cd "${PP_WORK}/swu"
         for file in "${SWU_DESCRIPTION_FILE}" ${SWU_ADDITIONAL_FILES}; do
             echo "$file"
