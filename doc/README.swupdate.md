@@ -32,6 +32,8 @@ Copy `cip-core-image-cip-core-bullseye-qemu-amd64.swu` file from `tmp` folder in
 host$ scp -P 22222 /tmp/cip-core-image-cip-core-bullseye-qemu-amd64.swu root@localhost:
 ```
 
+## SWUpdate verification
+
 Check which partition is booted, e.g. with lsblk:
 ```
 root@demo:~# lsblk
@@ -215,3 +217,27 @@ user variables:
 
 
 ```
+
+# Building and testing the CIP Core image for BBB
+
+Follow the steps mentioned in the section [Building and testing the CIP Core image](README.swupdate.md#building-and-testing-the-cip-core-image) for creating images and .swu files.
+- Replace qemu-amd64.yml kas file with BBB board specific file i.e bbb.yml
+- .swu file will be generated in the following folder build/tmp/deploy/images/bbb/
+- Create Non-RT and RT Kernel images as mentioned in the section
+
+Flash the BeagleBone Black RT kernel image into SDcard
+```
+host$ dd if=build/tmp/deploy/images/bbb/cip-core-image-cip-core-bullseye-bbb.wic \
+   of=/dev/<medium-device> bs=1M status=progress
+```
+
+After flashing the BBB RT kernel image into SD card, mount the SD card on host PC and copy .swu file from `tmp` folder to root partition like below.
+
+```
+host$ sudo cp tmp/cip-core-image-cip-core-bullseye-bbb.swu /<mnt>/home/root/
+```
+
+Connect a serial port cable between host PC and BBB.
+Insert SD card to BBB, hold S2 button while applying power supply to BBB.
+
+For verifying swupdate on BBB use the same steps as mentioned in above [SWUpdate Verification](README.swupdate.md#swupdate-verification).
