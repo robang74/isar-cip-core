@@ -12,3 +12,11 @@
 require common.inc
 
 DESCRIPTION = "CIP Core image demo & customizations"
+
+do_prepare_build_prepend_qemu-riscv64() {
+	if ! grep -q serial-getty@hvc0.service ${WORKDIR}/postinst; then
+		# suppress SBI console - overlaps with serial console
+		echo >> ${WORKDIR}/postinst
+		echo "systemctl mask serial-getty@hvc0.service" >> ${WORKDIR}/postinst
+	fi
+}
