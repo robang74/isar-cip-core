@@ -34,7 +34,9 @@ if [ -n "${QEMU_PATH}" ]; then
 fi
 
 if [ -z "${DISTRO_RELEASE}" ]; then
-	if grep -s -q "DEBIAN_BULLSEYE: true" .config.yaml; then
+	if grep -s -q "DEBIAN_SID_PORTS: true" .config.yaml; then
+		DISTRO_RELEASE="sid-ports"
+	elif grep -s -q "DEBIAN_BULLSEYE: true" .config.yaml; then
 		DISTRO_RELEASE="bullseye"
 	else
 		DISTRO_RELEASE="buster"
@@ -99,6 +101,20 @@ case "${arch}" in
 			-device virtio-net-device,netdev=net"
 		KERNEL_CMDLINE=" \
 			root=/dev/vda rw"
+		;;
+	rv64|riscv64)
+		QEMU_ARCH=riscv64
+		QEMU=qemu-system-riscv64
+		QEMU_EXTRA_ARGS=" \
+			-cpu rv64 \
+			-smp 4 \
+			-machine virt \
+			-device virtio-serial-device \
+			-device virtconsole,chardev=con -chardev vc,id=con \
+			-device virtio-blk-device,drive=disk \
+			-device virtio-net-device,netdev=net"
+		KERNEL_CMDLINE=" \
+			console=hvc1 console=ttyS0 root=/dev/vda rw"
 		;;
 	""|--help)
 		usage
