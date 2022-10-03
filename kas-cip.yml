@@ -29,8 +29,6 @@ repos:
 bblayers_conf_header:
   standard: |
     LCONF_VERSION = "6"
-    BBPATH = "${TOPDIR}"
-    BBFILES ?= ""
 
 local_conf_header:
   standard: |
