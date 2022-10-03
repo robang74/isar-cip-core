@@ -10,7 +10,7 @@
 #
 
 header:
-  version: 10
+  version: 12
 
 local_conf_header:
   preempt-rt: |

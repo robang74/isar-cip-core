@@ -145,7 +145,7 @@ kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-secure-boot
 For user-generated keys, create a new option file in the repository. This option file could look like this:
 ```
 header:
-  version: 10
+  version: 12
   includes:
    - kas/opt/ebg-secure-boot-base.yml
 

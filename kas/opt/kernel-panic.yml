@@ -11,7 +11,7 @@
 # This kas file adds systemd service file to cause kernel panic during system boot.
 
 header:
-  version: 10
+  version: 12
 
 local_conf_header:
   kernel-panic: |

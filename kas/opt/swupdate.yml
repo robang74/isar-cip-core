@@ -12,7 +12,7 @@
 # from the first wic partition
 
 header:
-  version: 10
+  version: 12
 
 local_conf_header:
   image-option-swupdate: |

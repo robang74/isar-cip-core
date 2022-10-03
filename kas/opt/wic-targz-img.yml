@@ -10,7 +10,7 @@
 #
 
 header:
-  version: 10
+  version: 12
 
 # lava uses nfs to deploy the image. For this we need a tarball instead of
 # full image

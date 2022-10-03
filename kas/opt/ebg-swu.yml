@@ -10,7 +10,7 @@
 #
 
 header:
-  version: 10
+  version: 12
   includes:
    - kas/opt/swupdate.yml
 

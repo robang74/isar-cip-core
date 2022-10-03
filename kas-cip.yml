@@ -10,7 +10,7 @@
 #
 
 header:
-  version: 10
+  version: 12
 
 distro: cip-core-bullseye
 target: cip-core-image
