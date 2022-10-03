@@ -13,10 +13,13 @@
 usage()
 {
 	echo "Usage: $0 ARCHITECTURE [QEMU_OPTIONS]"
-	echo -e "\nSet QEMU_PATH environment variable to use a locally " \
-		"built QEMU version"
-	echo -e "\nSet SWUPDATE_BOOT environment variable to boot swupdate image." \
-	echo -e "\nSet SECURE_BOOT environment variable to boot a secure boot environment."
+	echo
+	echo "Environment variables (default to settings in .config.yml):"
+	echo "  QEMU_PATH         use a locally built QEMU version"
+	echo "  SWUPDATE_BOOT     boot swupdate image"
+	echo "  SECURE_BOOT       start a secure boot environment"
+	echo "  DISTRO_RELEASE    select a specific Debian release"
+	echo "  TARGET_IMAGE      select a specific image type"
 	exit 1
 }
 
