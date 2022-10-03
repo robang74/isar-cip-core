@@ -83,6 +83,7 @@ choice
 
 config KERNEL_4_4
 	bool "Kernel 4.4.x-cip"
+	depends on !ARCH_ARM64
 
 config KERNEL_4_19
 	bool "Kernel 4.19.x-cip"
