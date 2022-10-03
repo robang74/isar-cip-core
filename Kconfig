@@ -63,6 +63,10 @@ config TARGET_IWG20D
 	bool "iWave Systems RainboW-G20D-Qseven"
 	select ARCH_ARM
 
+config TARGET_QEMU_RISCV64
+	bool "QEMU RISC-V 64-bit (riscv64)"
+	select ARCH_RISCV64
+
 endchoice
 
 config KAS_INCLUDE_BOARD
@@ -74,6 +78,7 @@ config KAS_INCLUDE_BOARD
 	default "kas/board/qemu-arm.yml" if TARGET_QEMU_ARM
 	default "kas/board/bbb.yml" if TARGET_BBB
 	default "kas/board/iwg20m.yml" if TARGET_IWG20D
+	default "kas/board/qemu-riscv64.yml" if TARGET_QEMU_RISCV64
 
 comment "Kernel options"
 
@@ -83,10 +88,11 @@ choice
 
 config KERNEL_4_4
 	bool "Kernel 4.4.x-cip"
-	depends on !ARCH_ARM64
+	depends on !ARCH_ARM64 && !ARCH_RISCV64
 
 config KERNEL_4_19
 	bool "Kernel 4.19.x-cip"
+	depends on !ARCH_RISCV64
 
 config KERNEL_5_10
 	bool "Kernel 5.10.x-cip"
@@ -101,6 +107,7 @@ config KAS_INCLUDE_KERNEL
 
 config KERNEL_RT
 	bool "Real-time CIP kernel"
+	depends on !ARCH_RISCV64
 
 config KAS_INCLUDE_KERNEL_RT
 	string
@@ -115,9 +122,15 @@ choice
 
 config DEBIAN_BUSTER
 	bool "buster (10)"
+	depends on !ARCH_RISCV64
 
 config DEBIAN_BULLSEYE
 	bool "bullseye (11)"
+	depends on !ARCH_RISCV64
+
+config DEBIAN_SID_PORTS
+	bool "sid (unstable) with unofficial ports"
+	depends on ARCH_RISCV64
 
 endchoice
 
@@ -125,6 +138,7 @@ config KAS_INCLUDE_DEBIAN
 	string
 	default "kas/opt/buster.yml" if DEBIAN_BUSTER
 	default "kas/opt/bullseye.yml" if DEBIAN_BULLSEYE
+	default "kas/opt/sid-ports.yml" if DEBIAN_SID_PORTS
 
 comment "Image features"
 
