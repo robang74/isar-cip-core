@@ -41,3 +41,6 @@ local_conf_header:
     USERS += "root"
     # 'root'
     USER_root[password] = "oC3wEGl799tZU"
+
+env:
+  DISTRO_APT_PREMIRRORS: ""
