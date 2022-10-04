@@ -30,7 +30,7 @@ S3_TARGET=s3://download2.cip-project.org/cip-core/$REF/$TARGET/
 
 if [ -f $BASE_PATH.wic ] ; then
 	echo "Compressing $BASE_FILENAME.wic..."
-	xz -9 -k $BASE_PATH.wic
+	xz -9 -k -T0 $BASE_PATH.wic
 
 	echo "Uploading artifacts..."
 	aws s3 cp --no-progress --acl public-read $BASE_PATH.wic.xz ${S3_TARGET}
