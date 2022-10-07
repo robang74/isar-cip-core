@@ -1,7 +1,7 @@
 #
 # CIP Core, generic profile
 #
-# Copyright (c) Siemens AG, 2021
+# Copyright (c) Siemens AG, 2021-2022
 #
 # Authors:
 #  Quirin Gylstorff <quirin.gylstorff@siemens.com>
@@ -12,8 +12,6 @@ DESCRIPTION = "swupdate utility for software updates"
 HOMEPAGE= "https://github.com/sbabic/swupdate"
 LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://${LAYERDIR_isar}/licenses/COPYING.GPLv2;md5=751419260aa954499f7abaabaa882bbe"
-
-OVERRIDES_append = ":${BASE_DISTRO_CODENAME}"
 
 def get_bootloader_build_profile(d):
     bootloader = d.getVar("SWUPDATE_BOOTLOADER") or ""

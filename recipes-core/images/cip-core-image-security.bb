@@ -40,8 +40,6 @@ IMAGE_PREINSTALL += " \
 	util-linux \
 "
 
-OVERRIDES_append = ":${BASE_DISTRO_CODENAME}"
-
 # Package names based on the distro version
 IMAGE_PREINSTALL_append_buster = " libtss2-esys0"
 IMAGE_PREINSTALL_append_bullseye = " libtss2-esys-3.0.2-0"
