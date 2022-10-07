@@ -10,7 +10,7 @@
 
 inherit dpkg-gbp
 
-include swupdate.inc
+require swupdate.inc
 
 SRC_URI = "git://salsa.debian.org/debian/swupdate.git;protocol=https;branch=debian/master"
 SRCREV ="344548c816b555c58ec199f31e45703897d23fb5"
