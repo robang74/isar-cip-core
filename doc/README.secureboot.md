@@ -76,7 +76,7 @@ Set up a secure boot test environment with [QEMU](https://www.qemu.org/)
 ### Debian Snakeoil keys
 
 The build copies the  Debian Snakeoil keys to the directory `./build/tmp/deploy/images/<machine>/OVMF.
-You can use them as described in section [Start Image](### Start the image).
+You can use them as described in section [Start Image](#start-the-image).
 
 ### Generate Keys
 
@@ -147,16 +147,28 @@ For user-generated keys, create a new option file in the repository. This option
 header:
   version: 12
   includes:
-   - kas/opt/ebg-secure-boot-base.yml
+   - kas/opt/ebg-swu.yml
+
+local_conf_header:
+  secure-boot-image: |
+    IMAGE_CLASSES += "verity"
+    IMAGE_FSTYPES = "wic"
+    WKS_FILE = "${MACHINE}-efibootguard-secureboot.wks.in"
+    INITRAMFS_INSTALL_append = " initramfs-verity-hook"
+    # abrootfs cannot be installed together with verity
+    INITRAMFS_INSTALL_remove = " initramfs-abrootfs-hook"
 
 local_conf_header:
   secure-boot: |
-    IMAGER_BUILD_DEPS += "ebg-secure-boot-secrets"
-    IMAGER_INSTALL += "ebg-secure-boot-secrets"
+    IMAGER_BUILD_DEPS += "ebg-secure-boot-signer"
+    IMAGER_INSTALL += "ebg-secure-boot-signer"
+
+# Use user-generated keys
+    PREFERRED_PROVIDER_secure-boot-secrets = "secure-boot-key"
+
   user-keys: |
-    SB_CERTDB = "democertdb"
-    SB_VERIFY_CERT = "demo.crt"
-    SB_KEY_NAME = "demo"
+    SB_CERT = "demo.crt"
+    SB_KEY = "demo.key"
 ```
 
 Replace `demo` with the name of the user-generated certificates. The user-generated certificates
@@ -200,21 +212,27 @@ OVMF_VARS=<path to the modified OVMF_VARS.fd> \
 ./start-qemu.sh amd64
 ```
 
+After boot check the dmesg for secure boot status like below:
+```
+root@demo:~# dmesg | grep Secure
+[    0.008368] Secure boot enabled
+```
 ## Example: Update the image
 
 For updating the image, the following steps are necessary:
-- [Build the image with snakeoil keys](### Build image)
+- [Build the image with snakeoil keys](#build-image)
 - save the generated swu `build/tmp/deploy/images/qemu-amd64/cip-core-image-cip-core-bullseye-qemu-amd64.swu` to /tmp
-- modify the image for example add a new version to the image by adding `PV=2.0.0` to
-  [cip-core-image.bb](recipes-core/images/cip-core-image.bb)
-- start the new target and copy the swu `cip-core-image-cip-core-bullseye-qemu-amd64.swu`
-  to the running system, e.g.:
+- modify the image for example, switch to the RT kernel as modification:
 ```
-SECURE=y ./start-qemu.sh amd64 -virtfs local,path=/tmp,mount_tag=host0,security_model=passthrough,id=host0
+kas-container build kas-cip.yml:kas/board/qemu-amd64.yml:kas/opt/ebg-secure-boot-snakeoil.yml:kas/opt/rt.yml
 ```
-- mount `host0` on target with:
+- start the new target
 ```
-mount -t 9p -o trans=virtio,version=9p2000.L host0 /mnt
+SECURE_BOOT=y ./start-qemu.sh amd64
+```
+Copy the swu cip-core-image-cip-core-bullseye-qemu-amd64.swu to the running system
+```
+scp -P 22222 /tmp/cip-core-image-cip-core-bullseye-qemu-amd64.swu root@127.0.0.1:/home/
 ```
 - check which partition is booted, e.g. with `lsblk`:
 ```
@@ -228,8 +246,11 @@ sda      8:0    0    2G  0 disk
 └─sda5   8:5    0 1000M  0 part
 ```
 
-- install with `swupdate -i /mnt/cip-core-image-cip-core-bullseye-qemu-amd64.swu`
-- reboot
+- install the swupdate and reboot the image
+```
+root@demo:~# swupdate -i /home/cip-core-image-cip-core-bullseye-qemu-amd64.swu`
+root@demo:~# reboot
+```
 - check which partition is booted, e.g. with `lsblk`. The rootfs should have changed:
 ```
 root@demo:~# lsblk
