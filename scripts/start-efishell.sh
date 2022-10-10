@@ -1,6 +1,6 @@
 #!/bin/sh
-ovmf_code=${OVMF_CODE:-/usr/share/OVMF/OVMF_CODE.secboot.fd}
-ovmf_vars=${OVMF_VARS:-./OVMF_VARS.fd}
+ovmf_code=${OVMF_CODE:-/usr/share/OVMF/OVMF_CODE_4M.secboot.fd}
+ovmf_vars=${OVMF_VARS:-./OVMF_VARS_4M.fd}
 DISK=$1
 qemu-system-x86_64 -enable-kvm -M q35 -nographic \
                    -cpu host,hv_relaxed,hv_vapic,hv-spinlocks=0xfff -smp 2 -m 2G -no-hpet \
