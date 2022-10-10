@@ -36,10 +36,10 @@ fi
 if [ -z "${DISTRO_RELEASE}" ]; then
 	if grep -s -q "DEBIAN_SID_PORTS: true" .config.yaml; then
 		DISTRO_RELEASE="sid-ports"
-	elif grep -s -q "DEBIAN_BULLSEYE: true" .config.yaml; then
-		DISTRO_RELEASE="bullseye"
-	else
+	elif grep -s -q "DEBIAN_BUSTER: true" .config.yaml; then
 		DISTRO_RELEASE="buster"
+	else
+		DISTRO_RELEASE="bullseye"
 	fi
 fi
 
