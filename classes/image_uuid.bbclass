@@ -10,6 +10,9 @@
 # SPDX-License-Identifier: MIT
 #
 
+inherit rootfs
+inherit image
+
 def generate_image_uuid(d):
     import uuid
 
