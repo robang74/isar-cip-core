@@ -12,6 +12,9 @@ inherit dpkg-gbp
 
 require swupdate.inc
 
+DEB_BUILD_PROFILES += "nodoc"
+DEB_BUILD_OPTIONS += "nodoc"
+
 SRC_URI = "git://salsa.debian.org/debian/swupdate.git;protocol=https;branch=debian/master"
 SRCREV ="344548c816b555c58ec199f31e45703897d23fb5"
 
