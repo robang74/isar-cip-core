@@ -14,7 +14,6 @@ VERITY_IMAGE_TYPE ?= "squashfs"
 inherit ${VERITY_IMAGE_TYPE}
 
 IMAGE_TYPEDEP_verity = "${VERITY_IMAGE_TYPE}"
-IMAGE_TYPEDEP_wic += "verity"
 IMAGER_INSTALL_verity += "cryptsetup"
 
 VERITY_INPUT_IMAGE ?= "${IMAGE_FULLNAME}.${VERITY_IMAGE_TYPE}"
