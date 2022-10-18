@@ -15,7 +15,7 @@ SRC_URI = "file://postinst \
 
 TMP_FS_SIZE ?= "500M"
 TMP_FS_MODE ?= "755"
-TMP_FS_OPTIONS = "nodev,nosuid,size=${TMP_SIZE},mode=${TMP_MODE}"
+TMP_FS_OPTIONS = "nodev,nosuid,size=${TMP_FS_SIZE},mode=${TMP_FS_MODE}"
 
 TEMPLATE_FILES = "tmp.mount.tmpl"
 TEMPLATE_VARS += "TMP_FS_OPTIONS"
