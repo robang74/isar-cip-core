@@ -24,3 +24,4 @@ local_conf_header:
     IMAGE_FSTYPES = "wic"
     WKS_FILE ?= "${MACHINE}-${SWUPDATE_BOOTLOADER}.wks.in"
     INITRAMFS_INSTALL_append = " initramfs-squashfs-hook"
+    WIC_DEPLOY_PARTITIONS = "1"
