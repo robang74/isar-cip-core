@@ -217,6 +217,10 @@ After boot check the dmesg for secure boot status like below:
 root@demo:~# dmesg | grep Secure
 [    0.008368] Secure boot enabled
 ```
+In case of arm64 or armhf architectures, the secure boot status can be found in bootloader logs like below:
+```
+EFI stub: UEFI Secure Boot is enabled.
+```
 ## Example: Update the image
 
 For updating the image, the following steps are necessary:
