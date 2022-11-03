@@ -59,9 +59,17 @@ class EfibootguardEFIPlugin(SourcePlugin):
             "i386": "ia32"
         }
 
+        distro_to_lib_arch = {
+            "amd64": "x86_64-linux-gnu",
+            "arm64": "aarch64-linux-gnu",
+            "armhf": "arm-linux-gnueabihf",
+            "i386": "i386-linux-gnu"
+        }
+
         distro_arch = get_bitbake_var("DISTRO_ARCH")
-        bootloader = "/usr/share/efibootguard/efibootguard{}.efi".format(
-            distro_to_efi_arch[distro_arch])
+        bootloader = "/usr/lib/{libpath}/efibootguard/efibootguard{efiarch}.efi".format(
+            libpath=distro_to_lib_arch[distro_arch],
+            efiarch=distro_to_efi_arch[distro_arch])
         part_rootfs_dir = "%s/disk/%s.%s" % (cr_workdir,
                                              part.label,
                                              part.lineno)

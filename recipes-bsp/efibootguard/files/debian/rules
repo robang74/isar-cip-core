@@ -1,21 +1,15 @@
 #!/usr/bin/make -f
 export DH_VERBOSE=1
-export DEB_BUILD_OPTIONS=hardening=-stackprotector
-export DPKG_EXPORT_BUILDFLAGS=1
-include /usr/share/dpkg/default.mk
+export DEB_BUILD_MAINT_OPTIONS=hardening=+all,-stackprotector
+include /usr/share/dpkg/pkg-info.mk
 
 override_dh_auto_test:
 	# we do not run the tests; that avoids having to pull the fff submodule
-
-override_dh_auto_install:
-	# install using Debian's .install files rather than
-	# make install in order to have a proper package split.
 
 override_dh_installchangelogs:
 	# we're not interested in changelogs
 
 override_dh_installdocs:
 	# we're not interested in docs
-
 %:
 	dh $@ --with autoreconf

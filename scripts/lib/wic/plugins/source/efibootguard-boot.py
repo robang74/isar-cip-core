@@ -187,10 +187,18 @@ class EfibootguardBootPlugin(SourcePlugin):
             "armhf": "arm",
             "i386": "ia32"
         }
+        distro_to_lib_arch = {
+            "amd64": "x86_64-linux-gnu",
+            "arm64": "aarch64-linux-gnu",
+            "armhf": "arm-linux-gnueabihf",
+            "i386": "i386-linux-gnu"
+        }
         rootfs_path = rootfs_dir.get('ROOTFS_DIR')
-        efistub = "{rootfs_path}/usr/share/efibootguard/kernel-stub{efiarch}.efi"\
+        distro_arch = get_bitbake_var("DISTRO_ARCH")
+        efistub = "{rootfs_path}/usr/lib/{libpath}/efibootguard/kernel-stub{efiarch}.efi"\
             .format(rootfs_path=rootfs_path,
-                    efiarch=distro_to_efi_arch[get_bitbake_var("DISTRO_ARCH")])
+                    libpath=distro_to_lib_arch[distro_arch],
+                    efiarch=distro_to_efi_arch[distro_arch])
         uefi_kernel_name = "linux.efi"
         uefi_kernel_file = "{deploy_dir}/{uefi_kernel_name}"\
             .format(deploy_dir=deploy_dir, uefi_kernel_name=uefi_kernel_name)

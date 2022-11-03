@@ -1,7 +1,5 @@
-#!/usr/bin/dh-exec
-bg_setenv usr/bin
-bg_printenv usr/bin
-tools/bg_gen_unified_kernel usr/bin
-*.efi usr/share/efibootguard
-completion/bash/bg_printenv.bash => usr/share/bash-completion/completions/bg_printenv
-completion/bash/bg_setenv.bash => usr/share/bash-completion/completions/bg_setenv
+usr/bin
+usr/lib/*/efibootguard/kernel-stub*.efi
+usr/lib/*/efibootguard/efibootguard*.efi
+usr/lib/*/libebgenv.so.0*
+usr/share/efibootguard/completion
