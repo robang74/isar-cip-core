@@ -21,6 +21,7 @@ software =
             properties: {
                         subtype = "image";
             };
+            sha256 = "${ROOTFS_PARTITION_NAME}-sha256";
     });
     files: ({
             filename = "linux.efi";
@@ -31,5 +32,6 @@ software =
             properties: {
                         subtype = "kernel";
             };
+            sha256 = "linux.efi-sha256";
     });
 }
