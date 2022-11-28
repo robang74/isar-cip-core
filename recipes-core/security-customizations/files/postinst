@@ -25,11 +25,13 @@ PAM_AUTH_FILE="/etc/pam.d/common-auth"
 # pam_tally2 is deprecated from pam version 1.4.0-7
 if [ -f /lib/*-linux-gnu*/security/pam_tally2.so ]; then
        PAM_MODULE="pam_tally2.so"
-       PAM_CONFIG="auth   required  pam_tally2.so  deny=3 even_deny_root unlock_time=60 root_unlock_time=60"
+       PAM_CONFIG="auth   required  pam_tally2.so  deny=3 even_deny_root unlock_time=60 root_unlock_time=60
+                 \naccount required pam_tally2.so"
 elif [ -f /lib/*-linux-gnu*/security/pam_faillock.so ]; then
        PAM_MODULE="pam_faillock.so"
        PAM_CONFIG="auth   required  pam_faillock.so preauth silent  deny=3 even_deny_root unlock_time=60 root_unlock_time=60 \
-               \nauth   required  pam_faillock.so .so authfail deny=3 even_deny_root unlock_time=60 root_unlock_time=60"
+               \nauth   required  pam_faillock.so .so authfail deny=3 even_deny_root unlock_time=60 root_unlock_time=60 \
+               \naccount required pam_faillock.so"
 else
        echo "No suitable pam module found to lock failed login attempts"
        exit 1
