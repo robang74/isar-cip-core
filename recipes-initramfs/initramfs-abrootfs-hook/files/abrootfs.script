@@ -35,9 +35,12 @@ find_root_via_image_uuid()
     for part in $partitions; do
         if [ "$(blkid -p "${part}" --match-types novfat -s USAGE -o value)" = "filesystem" ]; then
             mount -o ro -t "$(get_fstype "${part}")" "${part}" "${rootmnt}"
-            . "${rootmnt}/etc/os-release"
+            if [ -e "${rootmnt}/etc/os-release" ]; then
+                . "${rootmnt}/etc/os-release"
+            fi
             umount "${rootmnt}"
-            if [ "${IMAGE_UUID}" = "${TARGET_IMAGE_UUID}" ]; then
+            if [ -n "${IMAGE_UUID}" ] && [ -n "${TARGET_IMAGE_UUID}" ] &&
+                   [ "${IMAGE_UUID}" = "${TARGET_IMAGE_UUID}" ]; then
                 found_root="${part}"
                 break
             fi
