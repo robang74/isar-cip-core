@@ -9,6 +9,7 @@
 # SPDX-License-Identifier: MIT
 #
 
+inherit image_uuid
 inherit swupdate
 inherit read-only-rootfs
 
