@@ -20,6 +20,7 @@ software =
             filesystem = "ext4";
             properties: {
                         subtype = "image";
+                        configfilecheck = "/etc/os-release@not_match@IMAGE_UUID=${TARGET_IMAGE_UUID}";
             };
             sha256 = "${ROOTFS_PARTITION_NAME}-sha256";
     });
