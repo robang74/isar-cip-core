@@ -11,6 +11,6 @@
 
 require u-boot-qemu-common.inc
 
-U_BOOT_CONFIG = "qemu_arm64_defconfig"
+U_BOOT_CONFIG = "qemu:arm64_defconfig"
 
 EFI_ARCH = "aa64"

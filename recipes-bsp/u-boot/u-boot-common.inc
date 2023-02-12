@@ -16,21 +16,21 @@ SRC_URI += " \
     file://rules.tmpl;subdir=debian"
 SRC_URI[sha256sum] = "92b08eb49c24da14c1adbf70a71ae8f37cc53eeb4230e859ad8b6733d13dcf5e"
 
-SRC_URI_append_secureboot = " \
+SRC_URI:append_secureboot = " \
     file://secure-boot.cfg.tmpl"
 
 S = "${WORKDIR}/u-boot-${PV}"
 
 DEBIAN_BUILD_DEPENDS += ", libssl-dev:native, libssl-dev:${DISTRO_ARCH}"
 
-DEBIAN_BUILD_DEPENDS_append_secureboot = ", \
+DEBIAN_BUILD_DEPENDS:append_secureboot = ", \
     openssl, pesign, secure-boot-secrets, python3-openssl:native"
-DEPENDS_append_secureboot = " secure-boot-secrets"
+DEPENDS:append_secureboot = " secure-boot-secrets"
 
-TEMPLATE_FILES_append_secureboot = " secure-boot.cfg.tmpl"
-TEMPLATE_VARS_append_secureboot = " EFI_ARCH"
+TEMPLATE_FILES:append_secureboot = " secure-boot.cfg.tmpl"
+TEMPLATE_VARS:append_secureboot = " EFI_ARCH"
 
-do_prepare_build_append_secureboot() {
+do_prepare_build:append_secureboot() {
     sed -ni '/### Secure boot config/q;p' ${S}/configs/${U_BOOT_CONFIG}
     cat ${WORKDIR}/secure-boot.cfg >> ${S}/configs/${U_BOOT_CONFIG}
 }

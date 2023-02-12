@@ -9,7 +9,7 @@
 # SPDX-License-Identifier: MIT
 #
 
-IMAGER_INSTALL_squashfs += "squashfs-tools"
+IMAGER_INSTALL:squashfs += "squashfs-tools"
 
 SQUASHFS_EXCLUDE_DIRS ?= ""
 SQUASHFS_CONTENT ?= "${PP_ROOTFS}"
@@ -27,8 +27,8 @@ python __anonymous() {
     d.appendVar('SQUASHFS_CREATION_ARGS', args)
 }
 
-IMAGE_CMD_squashfs[depends] = "${PN}:do_transform_template"
-IMAGE_CMD_squashfs() {
+IMAGE_CMD:squashfs[depends] = "${PN}:do_transform_template"
+IMAGE_CMD:squashfs() {
     ${SUDO_CHROOT} /bin/mksquashfs \
         '${SQUASHFS_CONTENT}' '${IMAGE_FILE_CHROOT}' \
         -noappend ${SQUASHFS_CREATION_ARGS}

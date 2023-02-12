@@ -13,8 +13,8 @@ VERITY_IMAGE_TYPE ?= "squashfs"
 
 inherit ${VERITY_IMAGE_TYPE}
 
-IMAGE_TYPEDEP_verity = "${VERITY_IMAGE_TYPE}"
-IMAGER_INSTALL_verity += "cryptsetup"
+IMAGE_TYPEDEP:verity = "${VERITY_IMAGE_TYPE}"
+IMAGER_INSTALL:verity += "cryptsetup"
 
 VERITY_INPUT_IMAGE ?= "${IMAGE_FULLNAME}.${VERITY_IMAGE_TYPE}"
 VERITY_OUTPUT_IMAGE ?= "${IMAGE_FULLNAME}.verity"
@@ -55,7 +55,7 @@ python calculate_verity_data_blocks() {
 }
 do_image_verity[cleandirs] = "${WORKDIR}/verity"
 do_image_verity[prefuncs] = "calculate_verity_data_blocks"
-IMAGE_CMD_verity() {
+IMAGE_CMD:verity() {
     rm -f ${DEPLOY_DIR_IMAGE}/${VERITY_OUTPUT_IMAGE}
     rm -f ${WORKDIR}/${VERITY_IMAGE_METADATA}
 

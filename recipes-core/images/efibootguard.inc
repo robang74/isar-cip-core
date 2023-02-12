@@ -9,9 +9,9 @@
 # SPDX-License-Identifier: MIT
 #
 
-IMAGE_INSTALL_append = " efibootguard"
+IMAGE_INSTALL:append = " efibootguard"
 
-WIC_IMAGER_INSTALL_append = " efibootguard"
+WIC_IMAGER_INSTALL:append = " efibootguard"
 WDOG_TIMEOUT ?= "60"
 WICVARS += "WDOG_TIMEOUT KERNEL_IMAGE INITRD_IMAGE DTB_FILES"
 IMAGE_FSTYPES += "wic"

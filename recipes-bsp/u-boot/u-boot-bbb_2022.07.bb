@@ -16,7 +16,7 @@ U_BOOT_BIN = "all"
 
 EFI_ARCH = "arm"
 
-do_prepare_build_append() {
+do_prepare_build:append() {
     echo "MLO u-boot.img /usr/lib/u-boot/${MACHINE}" > \
         ${S}/debian/u-boot-${MACHINE}.install
 }

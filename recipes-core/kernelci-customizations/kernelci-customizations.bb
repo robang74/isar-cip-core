@@ -17,7 +17,7 @@ DESCRIPTION = "CIP Core KernelCI image customizations"
 
 SRC_URI += "file://dmesg.sh"
 
-do_install_append() {
+do_install:append() {
   install -v -d ${D}/opt/kernelci
   install -v -m 744 ${WORKDIR}/dmesg.sh ${D}/opt/kernelci/
 }

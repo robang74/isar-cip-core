@@ -11,7 +11,7 @@
 
 inherit dpkg-raw
 
-FILESPATH_append := ":${FILE_DIRNAME}/files"
+FILESPATH:append := ":${FILE_DIRNAME}/files"
 
 SRC_URI = " \
     file://postinst \

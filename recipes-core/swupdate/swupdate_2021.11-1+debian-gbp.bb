@@ -40,11 +40,11 @@ DEB_BUILD_PROFILES += "cross nocheck"
 # DEB_BUILD_PROFILES += "pkg.swupdate.embeddedlua"
 
 # modify for debian buster build
-SRC_URI_append_buster = " file://0006-debian-prepare-build-for-isar-debian-buster.patch"
+SRC_URI:append:buster = " file://0006-debian-prepare-build-for-isar-debian-buster.patch"
 
 # disable create filesystem due to missing symbols in debian buster
 # disable webserver due to missing symbols in debian buster
-DEB_BUILD_PROFILES_append_buster = " \
+DEB_BUILD_PROFILES:append:buster = " \
                                    pkg.swupdate.bpo \
                                    pkg.swupdate.nocreatefs \
                                    pkg.swupdate.nowebserver "
