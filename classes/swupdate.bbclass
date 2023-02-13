@@ -23,6 +23,7 @@ IMAGER_INSTALL += "${@'openssl' if bb.utils.to_boolean(d.getVar('SWU_SIGNED')) e
 
 do_swupdate_binary[stamp-extra-info] = "${DISTRO}-${MACHINE}"
 do_swupdate_binary[cleandirs] += "${WORKDIR}/swu"
+do_swupdate_binary[network] += "${TASK_USE_SUDO}"
 do_swupdate_binary() {
     rm -f '${SWU_IMAGE_FILE}'
     cp '${WORKDIR}/${SWU_DESCRIPTION_FILE}' '${WORKDIR}/swu/${SWU_DESCRIPTION_FILE}'
