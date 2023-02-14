@@ -36,11 +36,11 @@ do_swupdate_binary() {
         fi
         for uncompressed in "${WORKDIR}/$basefile" "${DEPLOY_DIR_IMAGE}/$basefile"; do
             if [ -e "$uncompressed" ]; then
-                rm  -f "$uncompressed.gz"
+                sudo rm -f "$uncompressed.gz"
                 if [ -x "$(command -v pigz)" ]; then
-                    pigz "$uncompressed"
+                    sudo pigz "$uncompressed"
                 else
-                    gzip "$uncompressed"
+                    sudo gzip "$uncompressed"
                 fi
                 break
             fi
